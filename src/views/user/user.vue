@@ -1,12 +1,14 @@
 
 <template>
-  <div class="content">
+  <div class="content" transition="bounce">
     <!-- 个人中心顶部信息栏 -->
     <div class="el_user_head_box">
 
       <!-- 顶部操作栏 -->
       <div class="el_user_head">
-        <a href="#"><img src="/img/11/return.png"></a>
+        <a v-link="{path: '/home', replace: true}">
+          <img src="/img/11/return.png">
+        </a>
         <strong>个人中心</strong>
       </div>
 

@@ -7,7 +7,9 @@
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <img src="/img/11/title.png" class="el_title">
-      <a href=""><img src="/img/11/user_icon.png" class="el_user_btn"></a>
+      <a v-link="{ path: '/user', replace: true}">
+        <img src="/img/11/user_icon.png" class="el_user_btn">
+      </a>
     </div>
 
     <!-- 推荐号码 -->
