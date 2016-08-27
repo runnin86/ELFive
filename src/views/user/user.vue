@@ -1,573 +1,235 @@
+
 <template>
-<div class="content user" distance="55" v-pull-to-refresh="refresh"
-  :style="(!this.user?'background-color:white':'')">
-  <v-layer></v-layer>
-  <!-- <div v-if="!user" class="submit-button">
-    <button @click="this.$route.router.go({path: '/login?from=user', replace: true})"
-      class="button button-big button-fill">
-      登录
-    </button>
-  </div> -->
-  <div v-else>
-    <div class="list-block" style="margin-top:0rem;margin-bottom:0rem;">
-      <ul style="background-image: url('/img/个人中心/个人背景图片.png')">
-        <li class="item-content">
-          <div style="width:100%;color:#FFFFFF;font-size:1.2rem;">
-            <a v-link="{ path: '/user/setting', replace: false}">
-              <span class="pull-right r08">
-                <img src="/img/个人中心/设置按钮.png" class="img-responsive"
-                  width="22" height="22">
-              </span>
-            </a>
-            <a v-link="{ path: '/user/message', replace: false}">
-              <span class="pull-right r08">
-                <img src="/img/个人中心/信息按钮.png" class="img-responsive"
-                  width="27" height="18">
-              </span>
-              <span class="pull-right badge-user"
-                v-if="this.$root.userUnreadMsg>0"
-                v-text="this.$root.userUnreadMsg>99?'99':this.$root.userUnreadMsg"></span>
-            </a>
-          </div>
-        </li>
-        <li class="item-content" style="margin-top:-0.4rem;margin-left:-0.76rem;">
-          <div class="center2">
-            <img src="/img/个人中心/默认头像.png" class="img-responsive"
-              style="border:solid 1px #e32;border-radius: 50px;overflow:hidden;"
-              width="64" height="64">
-          </div>
-        </li>
-        <li class="item-content" style="margin-top:-0.4rem;margin-left:-0.76rem;">
-          <div class="name_txt center2" v-if="user">
-            <span class="name">{{user.user_nickname?user.user_nickname:user.user_name}}</span>
-          </div>
-        </li>
-        <li class="item-content" style="margin-top:-0.4rem;">
-          <div style="margin-left:-0.4rem;width:48%;">
-            <a class="button button-dark" @click="doWithDraw()"
-              style="color:#FFFFFF;border-color:#FFFFFF">
-              提现
-            </a>
-          </div>
-          <div class="r04" style="width:48%;">
-            <a class="button button-dark" @click="doRecharge()"
-              style="background-color:#FFFFFF;border-color:#ef494a;color:#ef494a">
-              充值
-            </a>
-          </div>
-        </li>
-        <li class="item-content"
-          style="background-color:#3c3d42;font-size:0.68rem;color:#FFFFFF;">
-          <div class="pull-left" style="margin-left:0.2rem;margin-top:0.4rem;">
-            <div class="text-center">
-              <img src="/img/个人中心/我的本金.png" width="32" height="32">
-            </div>
-            <div>本金 {{user?(coinmeter?coinmeter:0):'...'}}</div>
-          </div>
-          <div class="center2" style="margin-top:0.4rem;">
-            <div class="text-center">
-              <img src="/img/个人中心/我的盈利.png" width="32" height="32">
-            </div>
-            <div>盈利 {{user?(userate?userate:0):'...'}}</div>
-          </div>
-          <div v-if="showsales === 'now'" @click="showsales='last'"
-            class="pull-right r08" style="margin-top:0.4rem;">
-            <div class="text-center">
-              <img src="/img/个人中心/本月.png" width="80" height="32">
-            </div>
-            <div>销量 {{user?(usersales?usersales:0):'...'}}</div>
-          </div>
-          <div v-if="showsales === 'last'" @click="showsales='now'"
-            class="pull-right r08" style="margin-top:0.4rem;">
-            <div class="text-center">
-              <img src="/img/个人中心/上月.png" width="80" height="32">
-            </div>
-            <div>销量 {{user?(lastsales?lastsales:0):'...'}}</div>
-          </div>
-        </li>
-      </ul>
+  <div class="content">
+    <!-- 个人中心顶部信息栏 -->
+    <div class="el_user_head_box">
+
+      <!-- 顶部操作栏 -->
+      <div class="el_user_head">
+        <a href="#"><img src="/img/11/return.png"></a>
+        <strong>个人中心</strong>
+      </div>
+
+      <!-- 个人头像/名字 -->
+      <div class="el_user_name_box">
+        <img src="/img/11/head_icon.png">
+        <span class="el_user_name">Robert De Niro</span>
+      </div>
+
+      <!-- 个人财产信息 -->
+      <div class="el_user_info_box">
+        <div class="el_user_info_left">
+          <span>可用余额</span>
+          <span class="el_balance">0.00</span>
+        </div>
+        <div class="el_user_info_right">
+          <span>冻结金额</span>
+          <span class="el_balance">0.00</span>
+        </div>
+      </div>
     </div>
-    <div class="list-block" style="margin-top:0rem;font-size:0.65rem;">
-      <ul>
-        <li class="item-content item-link"
-          v-link="{ path: '/user/bill', query: { pageTransition: 'bounce' }, replace: false}">
-          <div class="item-inner">
-            <div class="icon-filling item-title">
-              我的账单
-            </div>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li class="item-content item-link"
-          v-link="{ path: '/user/order', replace: false}">
-          <div class="item-inner">
-            <div class="icon-order item-title">
-              我的订单
-            </div>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li class="item-content item-link"
-          v-link="{ path: '/user/commission', replace: false}">
-          <div class="item-inner">
-            <div class="icon-golds2 item-title">
-              我的返佣
-            </div>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li class="item-content item-link"
-          v-link="{ path: '/user/team', replace: false}">
-          <div class="item-inner">
-            <div class="icon-team item-title">
-              我的团队
-            </div>
-          </div>
-        </li>
-      </ul>
-      <ul style="margin-top:0.8rem;">
-        <li class="item-content item-link" v-link="{ path: '/user/qrCode', replace: false}">
-          <div class="item-inner">
-            <div class="icon-qrcode item-title">
-              我的二维码
-            </div>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li class="item-content item-link" v-link="{ path: '/user/changePwd', replace: false}">
-          <div class="item-inner">
-            <div class="icon-pwd item-title">
-              修改密码
-            </div>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <div class="item-link item-content">
-              <div class="item-inner" v-link="{ path: '/more/about', replace: false}">
-                  <div class="icon-about item-title">
-                    关于
-                  </div>
-              </div>
-          </div>
-        </li>
-      </ul>
-      <br>
+
+    <!-- 提现按钮/充值按钮 -->
+    <div class="el_property_operation">
+      <div class="el_withdrawals_btn">
+        <strong>提现</strong>
+      </div>
+      <div class="el_recharge_btn">
+        <strong>充值</strong>
+      </div>
+    </div>
+
+    <!-- 账单 -->
+    <div class="el_bill_box">
+      <img src="/img/11/bill_icon.png" class="el_bill_icon">
+      <span class="el_bill_tagging">账单</span>
+      <div class="el_bill_remind">
+        <img src="/img/11/go_icon.png" class="el_go_icon">
+        <span class="el_transaction_info">所有交易信息</span>
+      </div>
+    </div>
+
+    <!-- 订单 -->
+    <div class="el_order_box">
+      <img src="/img/11/order_icon.png" class="el_order_icon">
+      <span class="el_order_tagging">订单</span>
+    </div>
+
+    <!-- 修改密码 -->
+    <div class="el_modify_pw">
+      <img src="/img/11/modify_pw.png" class="el_modify_pw_icon">
+      <span class="el_modify_pw_tagging">修改密码</span>
     </div>
   </div>
-</div>
 </template>
 
-<script>
-import VTabs from '../../components/Tabs'
-import VTab from '../../components/Tab'
-import VCardContainer from '../../components/Card'
-import Card from '../../components/CardItem'
-import VCountDown from '../../components/Countdown'
-import VLayer from '../../components/PullToRefreshLayer'
-import {userApi} from '../../util/service'
-// import pingpp from 'pingpp-js'
-import $ from 'zepto'
-var refreshMsg
-export default {
-  ready () {
-    $.init()
-    document.title = '个人中心'
-    if (!this.user) {
-      this.$route.router.go({path: '/login?from=user', replace: true})
-    }
-    else {
-      this.refresh()
-    }
-    refreshMsg = setInterval(function () {
-      // 30秒定时查询
-      // 从vuex中获取用户未读消息
-      this.$root.loadUserUnreadMsg()
-    }.bind(this), 15000)
-  },
-  destroyed () {
-    // console.log('销毁')
-    window.clearInterval(refreshMsg)
-  },
-  data () {
-    return {
-      loading: false,
-      user: JSON.parse(window.localStorage.getItem('user')),
-      showImg: window.localStorage.getItem('imageSwitch') === 'true',
-      showsales: 'now',
-      userate: 0, // 盈利
-      coinmeter: 0, // 本金
-      usersales: 0, // 本月销量
-      lastsales: 0 // 上月销量
-    }
-  },
-  methods: {
-    /*
-     * 刷新
-     */
-    refresh () {
-      if (this.user) {
-        $.showIndicator()
-        // 执行查询
-        setTimeout(function () {
-          let token = window.localStorage.getItem('token')
-          // 获取账户本金
-          this.getCoinmeter(token)
-          // 获取用户盈利
-          this.getUserate(token)
-          // 获取用户销量
-          this.getUsersales(token)
-          // 获取用户销量(上月)
-          this.getLastsales(token)
-          // 从vuex中获取用户未读消息
-          this.$root.loadUserUnreadMsg()
-          // 加载完毕需要重置
-          $.pullToRefreshDone('.pull-to-refresh-content')
-          $.hideIndicator()
-        }.bind(this), 500)
-      }
-      else {
-        // 加载完毕需要重置
-        $.pullToRefreshDone('.pull-to-refresh-content')
-      }
-    },
-    /*
-     * 获取用户账户的盈利
-     */
-    getUserate (token) {
-      this.$http.post(userApi.useRate, {}, {
-        headers: {
-          'x-token': token
-        },
-        emulateJSON: true
-      })
-      .then(({data: {code, msg, result}})=>{
-        if (code === 1) {
-          this.userate = result.rateAccount
-        }
-        else {
-          console.log('获取用户利润失败:' + msg)
-          $.alert(msg, ()=>{
-            window.localStorage.clear()
-            window.localStorage.setItem('imageSwitch', true)
-            this.$route.router.go({path: this.path, replace: true})
-            this.$route.router.go({path: '/login?from=user', replace: true})
-          })
-        }
-      }).catch((e)=>{
-        console.error('获取账户盈利失败:' + e)
-      })
-    },
-    /*
-     * 获取账户本金
-     */
-    getCoinmeter (token) {
-      this.$http.post(userApi.coinmeter, {}, {
-        headers: {
-          'x-token': token
-        },
-        emulateJSON: true
-      })
-      .then(({data: {code, msg, result}})=>{
-        if (code === 1) {
-          this.coinmeter = result.coinmeter
-        }
-        else if (code === 0) {
-          console.log('获取用户本金失败:' + msg)
-        }
-        else if (code === 3) {
-          $.alert(msg, ()=>{
-            window.localStorage.clear()
-            window.localStorage.setItem('imageSwitch', true)
-            this.$route.router.go({path: '/login?from=user', replace: true})
-          })
-        }
-      }).catch((e)=>{
-        console.error('获取账户本金失败:' + e)
-      })
-    },
-    /*
-     * 获取用户销量
-     */
-    getUsersales (token) {
-      this.$http.post(userApi.userSales, {}, {
-        headers: {
-          'x-token': token
-        },
-        emulateJSON: true
-      })
-      .then(({data: {code, msg, result}})=>{
-        if (code === 1) {
-          this.usersales = result.userFlow
-        }
-        else {
-          console.log('获取用户销量失败:' + msg)
-          // $.alert('会话失效,请重新登录', ()=>{
-          //   window.localStorage.clear()
-          //   window.localStorage.setItem('imageSwitch', true)
-          //   this.$route.router.go({path: '/login?from=user', replace: true})
-          // })
-        }
-      }).catch((e)=>{
-        console.error('获取账户本金失败:' + e)
-      })
-    },
-    /*
-     * 获取用户销量(上月)
-     */
-    getLastsales (token) {
-      this.$http.post(userApi.lastSales, {}, {
-        headers: {
-          'x-token': token
-        },
-        emulateJSON: true
-      })
-      .then(({data: {code, msg, result}})=>{
-        if (code === 1) {
-          this.lastsales = result.userFlow
-        }
-        else {
-          console.log('获取用户上月销量失败:' + msg)
-          // $.alert('会话失效,请重新登录', ()=>{
-          //   window.localStorage.clear()
-          //   window.localStorage.setItem('imageSwitch', true)
-          //   this.$route.router.go({path: '/login?from=user', replace: true})
-          // })
-        }
-      }).catch((e)=>{
-        console.error('获取账户本金失败:' + e)
-      })
-    },
-    doRecharge () {
-      // $.toast('充值功能暂未开放,敬请期待!')
-      // this.$route.router.go({path: '/recharge?from=user', replace: true})
-      // 去微信鉴权
-      let appid = 'wxadccc645716a9348'
-      let redirect_uri = 'http://reg.zqsml.com/user/reChargeForward.do'
-      let oauthUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?' +
-      'appid=' + appid +
-      '&redirect_uri=' + redirect_uri +
-      '&response_type=code&scope=snsapi_base&state=user#wechat_redirect'
-      window.location.href = oauthUrl
-    },
-    doWithDraw () {
-      let wdModals = {
-        title: '请输入提现金额',
-        text: '您可以提现的金额为:' + this.userate + '元',
-        afterText: '<div class="widthDraw-input">' +
-                     '<input id="widthDrawMoney" type="number" placeholder="请输入金额" min=10 max=99999>' +
-                   '</div>',
-        buttons: [
-          {
-            text: '取消'
-          },
-          {
-            text: '确定',
-            bold: true,
-            onClick: ()=> {
-              let money = document.getElementById('widthDrawMoney').value
-              if ((Math.round(parseFloat(money) * 100) / 100) < 10) {
-                $.toast('提现金额不能少于10元')
-              }
-              else {
-                let token = window.localStorage.getItem('token')
-                this.$http.post(userApi.withdraw,
-                  {
-                    wtype: 1,
-                    wmoney: money
-                  }, {
-                    headers: {
-                      'x-token': token
-                    },
-                    emulateJSON: true
-                  })
-                .then(({data: {code, msg, result}})=>{
-                  if (code === 1) {
-                    // $.toast('恭喜您，提现成功！(请您保持电话畅通，工作人员会在3个工作日内与您联系)')
-                    $.toast('恭喜您，提现成功!</br>工作人员会在3个工作日内与您联系', 2000, 'hightToast')
-                    this.getUserate(token)
-                  }
-                  else {
-                    $.toast('提现失败:' + msg)
-                  }
-                }).catch((e)=>{
-                  console.error('个人中心盈利提现失败:' + e)
-                })
-              }
-            }
-          }
-        ]
-      }
-      $.modal(wdModals)
-    }
-  },
-  components: {
-    VTabs,
-    VTab,
-    VCardContainer,
-    Card,
-    VLayer,
-    VCountDown
-  }
-}
-</script>
+
 
 <style>
-.user {
-  top: -2.2rem !important;
+body,ul{
+  margin: 0;
+  padding: 0;
 }
-.banner {
+ul,a,p{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.el_user_head_box{
   width: 100%;
-  background-color: white;
-  /*padding: 12.7999992px;*/
+  height: 8rem;
+  background-image: url(/img/11/user_bg.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
-.banner .logo {
-  background-image: url('/img/个人中心/个人背景图片.png');
-  /*border-radius: 10px;*/
+.el_user_head{
   width: 100%;
-  height: 110px;
-  padding: 20.2666654px 21.333332px 5.333333px;
-  box-shadow: 0 .0rem .8rem rgba(0,0,0,.3);
+  height: 2.5rem;
+  overflow: hidden;
 }
-.banner .logo .logo_img {
-  margin-top: 0px;
-  width: 58.666663px;
-  height: 58.666663px;
-  float: left;
-  margin-left: -0.6rem;
-  display: inline-block;
-}
-.name_txt {
-  margin-top: 0rem;
-  margin-left: 0.6rem;
-  float: left;
-  text-align: right;
-}
-.name_txt .name {
-  color: #ffffff;
-  font-size: 15.999999px;
-}
-.banner .logo .logo_txt {
-  margin-top: -0.6rem;
-  float: right;
-  text-align: right;
-}
-.banner .logo .logo_txt .yue {
-  color: #ffffff;
-  font-size: 10.999999px;
-}
-.banner .logo .logo_txt .amount {
+.el_user_head img{
   display: block;
-  margin-top: -8px;
-  color: #ffffff;
-  font-size: 20.8666638px;
+  height: 0.8rem;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.85rem;
 }
-.user-tab {
-  background: #efeff4;
+.el_user_head strong{
+  display: block;
+  color: #fff;
+  width: 100%;
+  line-height: 2.5rem;
+  text-align: center;
+}
+.el_user_name_box{
+  width: 100%;
   height: 3rem;
-  position: relative;
+  overflow: hidden;
 }
-.user-tab .tab-item {
-  height: 3rem;
-  background-color: white;
+.el_user_name_box img{
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-top: 0.4rem;
+  display: block;
+  margin-left: 0.5rem;
 }
-.user-tab:before {
-  background-color: white;
+.el_user_name_box img,.el_user_name_box span{
+  float: left;
 }
-#knowResult{
-  font-size: 0.48rem;
+.el_user_name{
+  line-height: 2.5rem;
+  margin-left: 0.5rem;
+  color: white;
 }
-.submit-button {
-  margin-top: .8rem;
+.el_user_info_box{
   width: 100%;
-  padding: 0 .45rem;
+  height: 2.5rem;
+  background-image: url(/img/11/opacity_bg.png);
 }
-.submit-button button {
-  background-color: #ed8e07;
+.el_user_info_left,.el_user_info_right{
+  width: 50%;
+  height: 1.6rem;
+  float: left;
+  margin-top: 0.45rem;
+}
+.el_user_info_left{
+  border-right: 0.05rem #4c4c4c solid;
+}
+.el_user_info_left span,.el_user_info_right span{
+  display: block;
   width: 100%;
-  line-height: 2.1rem !important;
-  height: 2.1rem !important;
-}
-.r04 {
-  margin-right:0.4rem;
-}
-.r08 {
-  margin-right:0.8rem;
-}
-.center2 {
-  margin-left: auto;
-  margin-right: auto;
-}
-.icon-golds2:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e653";
-}
-.icon-filling:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e645";
-}
-.icon-order:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e651";
-}
-.icon-team:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e648";
-}
-.icon-pwd:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e64f";
-}
-.icon-about:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e603";
-}
-.icon-qrcode:before {
-  font-family: iconfont-sml !important;
-  font-size: 1rem;
-  content: "\e602";
-}
-.widthDraw-input input{
-  width: 100%;
-  height: 2.15rem;
-  font-size: .7rem;
-  padding: .4rem .5rem;
-  background-color: #fff;
-  margin-top: .8rem;
-  margin-bottom: .3rem;
-  border: 1px solid rgba(0,0,0,.2);
-  border-radius: .2rem;
-}
-.hightToast {
-  height: 4rem;
-  font-size: 0.68rem;
-  /*margin: 0 auto;*/
-  /*text-align: center;*/
-}
-.badge-user {
-  display: inline-block;
-  padding: 0.15rem 0.28rem 0.15rem;
-  margin-right: -1.7rem;
   font-size: 0.6rem;
-  line-height: 1;
-  color: #000000;
-  /*background-color: #FFF4C1;*/
-  background-color: #ed8e07;
-  border-radius: 5rem;
+  color: white;
+  text-align: center;
+  line-height: 0.6rem;
 }
-.badge-user.badge-inverted {
-  /*padding: 0 0.25rem 0 0;
-  background-color: transparent;*/
+.el_balance{
+  margin-top:0.4rem;
+}
+.el_property_operation{
+  width: 100%;
+  height: 2.5rem;
+  background-color: white;
+  overflow: hidden;
+}
+.el_withdrawals_btn,.el_recharge_btn{
+  width: 50%;
+  height: 2.5rem;
+  overflow: hidden;
+  float: left;
+}
+.el_withdrawals_btn{
+  border-right: 0.05rem #f0f0f0 solid;
+}
+.el_withdrawals_btn strong,.el_recharge_btn strong{
+  width: 100%;
+  line-height: 2.5rem;
+  text-align: center;
+  display: block;
+  font-size: 0.7rem;
+}
+.el_recharge_btn strong{
+  color: #3ec4a0;
+}
+.el_withdrawals_btn strong{
+  color: #999999;
+}
+.el_bill_box{
+  width: 100%;
+  height: 2.5rem;
+  background-color: white;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border: none;
+}
+.el_order_box,.el_modify_pw{
+  width: 100%;
+  height: 2.5rem;
+  background-color: white;
+  margin-top: 0.05rem;
+  overflow: hidden;
+  border: none;
+}
+.el_bill_icon{
+  height:1.15rem;
+  float: left;
+  display: block;
+  margin-left:0.5rem;
+  margin-top:0.675rem;
+}
+.el_order_icon,.el_modify_pw_icon{
+  height:1.15rem;
+  float: left;
+  display: block;
+  margin-left:0.62rem;
+  margin-top:0.675rem;
+}
+.el_transaction_info,.el_go_icon{
+  float:right;
+  display: block;
+  margin-right:0.5rem;
+}
+.el_go_icon{
+  height:0.6rem;
+  margin-top:0.95rem;
+}
+.el_bill_tagging{
+  float: left;
+  display: block;
+  margin-left: 0.5rem;
+  font-size: 0.7rem;
+  line-height: 2.5rem;
+}
+.el_order_tagging,.el_modify_pw_tagging{
+  float: left;
+  display: block;
+  margin-left: 0.55rem;
+  font-size: 0.7rem;
+  line-height: 2.5rem;
+}
+.el_bill_remind span{
+  font-size: 0.6rem;
+  color: #999999;
+  line-height: 2.5rem;
 }
 </style>

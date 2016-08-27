@@ -1,163 +1,116 @@
 <template>
-<div class="content login" transition="pushtop">
-  <header class="bar bar-nav">
-    <a class="button button-link button-nav pull-left"
-      @click="this.$root.back()">
-    <!-- <a class="button button-link button-nav pull-left" v-link="{path: path, replace: true}"> -->
-    <span class="icon"></span>
-      取消
-    </a>
-    <h1 class="title color" v-text="title"></h1>
-  </header>
-  <div class="content-block">
-    <div class="login-input">
-      <input type="number" v-model="userName" placeholder="用户名">
-      <input type="password" v-model="password" placeholder="密码">
+  <div class="content">
+    <!-- 顶部操作栏 -->
+    <div class="el_head">
+      <a href="#"><img src="/img/11/return.png"></a>
+      <strong>登录</strong>
     </div>
+
+    <!-- 登录/注册 -->
+    <div class="el_login_box">
+      <div class="el_choice_btn">
+        <strong class="el_login_btn el_click_blue">登录</strong>
+        <strong class="el_sign_up_btn">注册</strong>
+      </div>
+      <div>
+        <div class="el_phone_input_box">
+          <input class="el_phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_pw_input_box">
+          <input class="el_password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_login_go_box">
+          <a href="" class="el_login_go">登录</a>
+        </div>
+      </div>
+    </div>
+
+
   </div>
-  <div class="submit-button">
-    <button class="button button-big button-fill"
-      :class="submit?'button-fill':'disabled'"
-      @click="login()">登录</button>
-  </div>
-  <div class="pull-right" style="font-size:0.68rem;margin:0.6rem;">
-    <a @click="forgetPwd()">忘记密码?</a>
-  </div>
-</div>
 </template>
 
-<script>
-import {userApi} from '../../util/service'
-import $ from 'zepto'
-export default {
-  ready () {
-  },
-  data () {
-    return {
-      title: '登录',
-      path: '/' + this.$route.query.from,
-      userName: window.localStorage.getItem('localPhone') ? window.localStorage.getItem('localPhone') : '',
-      password: '',
-      submit: false
-    }
-  },
-  methods: {
-    login () {
-      window.localStorage.setItem('localPhone', this.userName)
-      // 登录时清空公告Id对象
-      window.localStorage.removeItem('globalNoticeId')
-      if (!this.userName || !this.password) {
-        $.toast('请输入用户名或密码')
-        return
-      }
-      this.$http.post(userApi.login,
-        {
-          'userName': this.userName,
-          'password': this.password
-        })
-      .then(({data: {code, msg, info}})=>{
-        if (code === 1) {
-          if (info.user.user_status === 0) {
-            $.toast('账户未激活，充值后激活账户')
-          }
-          else if (info.user.user_status === 1) {
-            $.toast('登录成功')
-            window.localStorage.setItem('user', JSON.stringify(info.user))
-            window.localStorage.setItem('token', info.token)
-            window.localStorage.setItem('imageSwitch', true)
-            // 调用公告处理
-            this.$root.loadNotice()
-            this.$route.router.go({path: this.path, replace: true})
-            // 设置购物车图标
-            this.$root.setCardBadge()
-          }
-        }
-        else {
-          $.toast(msg)
-        }
-      }).catch((e)=>{
-        $.alert('服务器连接中断...')
-        console.error('无法连接服务器:' + e)
-      })
-    },
-    forgetPwd () {
-      this.$route.router.go({path: '/user/forgetPwd', replace: false})
-    }
-  },
-  watch: {
-    'userName': {
-      handler: function (newVal, oldVal) {
-        if (this.userName && this.password) {
-          this.submit = true
-        }
-      }
-    },
-    'password': {
-      handler: function (newVal, oldVal) {
-        if (this.userName && this.password) {
-          this.submit = true
-        }
-      }
-    }
-  }
-}
-</script>
-
 <style>
-.sub-title {
-  margin-top: 2.2rem;
-  background-color: white;
-  height: 2.2rem;
-  font-size: .8rem;
-  font-weight: normal;
-  line-height: 2.2rem;
+body,ul{
+  margin: 0;
+  padding: 0;
+}
+ul,a,p{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.el_head{
+  width: 100%;
+  height: 2.5rem;
+  background-color: #1a6be4;
+  position: relative;
+}
+.el_head strong{
+  display: block;
+  color: #fff;
+  width: 100%;
+  line-height: 2.5rem;
   text-align: center;
-  border-bottom: 1px solid #d8d8d9;
 }
-.login .content-block {
-  margin: 2.3rem 0 0 0;
-  padding: 0 .45rem;
+.el_head img{
+  display: block;
+  height: 0.8rem;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.85rem;
 }
-.login-label {
-  font-size: .7rem;
-  line-height: 1.2rem;
+.el_login_box{
+  width: 90%;
+  margin: 1rem 5%;
+  background-color: white;
+  overflow: hidden;
 }
-.login-input input{
+.el_choice_btn{
   width: 100%;
-  height: 2.15rem;
-  font-size: .7rem;
-  padding: .4rem .5rem;
-  background-color: #fff;
-  margin-top: .8rem;
-  margin-bottom: .3rem;
-  border: 1px solid rgba(0,0,0,.2);
-  border-radius: .2rem;
+  height: 2.5rem;
+  background-color: white;
 }
-.login textarea {
-  height: auto;
-  resize: none;
+.el_choice_btn strong{
+  width: 50%;
+  display: block;
+  line-height: 2.5rem;
+  text-align: center;
+  float: left;
+  font-size: 0.7rem;
+}
+.el_login_btn{
+  border-right: 0.05rem #f0f0f0 solid;
+}
+.el_click_blue{
+  color: #1a6be4;
+}
+.el_phone_input_box,.el_pw_input_box,.el_login_go_box{
   width: 100%;
-  font-size: .7rem;
-  -webkit-appearance: none;
-  padding: .4rem .5rem;
-  -webkit-user-select: text;
-  background-color: #fff;
-  border: 1px solid rgba(0,0,0,.2);
-  border-radius: .2rem;
-  outline: 0;
+  background-color: white;
+  height: 3.45rem;
+  border-top: 0.05rem solid #f0f0f0;
 }
-.login .submit-button {
-  margin-top: .8rem;
-  width: 100%;
-  padding: 0 .45rem;
+.el_phone,.el_password{
+  padding-left: 0.5rem;
+  font-size: 0.7rem;
+  width: 94%;
+  border: none;
+  background-color: #f5f5f5;
+  height: 2.5rem;
+  margin: 0.475rem 3%;
+  border-radius: 0;
 }
-.login .submit-button button {
-  background-color: #ed8e07;
-  width: 100%;
-  line-height: 2.1rem !important;
-  height: 2.1rem !important;
+.el_login_go{
+  font-size: 0.7rem;
+  width: 94%;
+  background-color: #1a6be4;
+  margin: 0.475rem 3%;
+  display: block;
+  color: white;
+  text-align: center;
+  line-height: 2.5rem;
 }
-.color {
-  background-color: #ed8e07;
-}
+
+
+
 </style>
