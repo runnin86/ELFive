@@ -109,9 +109,9 @@ export default {
       numberList: this.$route.params.number.split(','), // 截取数组
       currentPeriod: 78, // 当前期数(从服务器获取)
       price: 2, // 单价(从上一页传递过来)
-      addPeriod: 5,
+      addPeriod: 20,
       addMultiple: 1,
-      addProfit: 2000,
+      addProfit: 300,
       showList: [],
       totalMoney: 0
     }
@@ -121,6 +121,7 @@ export default {
      * 自动计算利润b=倍数,q=期数,l=利润
      */
     calculateProfit () {
+      let odds = getOdds(this.gameType)
       this.showList = []
       let startMul = this.addMultiple
       // 默认生成追号7期
@@ -135,12 +136,12 @@ export default {
         let lastPeriodMoney = (i > 0 ? this.showList[i - 1].buy : 0)
         // 如果利润小于期望利润则要加倍
         let tempBuy = this.price * (i + 1) * startMul
-        let tempMon = getOdds(this.gameType) * this.price * startMul - tempBuy
+        let tempMon = odds * this.price * startMul - tempBuy
         let tempRate = parseInt((tempMon / tempBuy) * 100, 0)
         while (tempRate < this.addProfit) {
           startMul++
           let b = this.price * startMul + lastPeriodMoney
-          let m = getOdds(this.gameType) * this.price * startMul - b
+          let m = odds * this.price * startMul - b
           tempRate = parseInt((m / b) * 100, 0)
         }
         // 组装数据
@@ -148,7 +149,7 @@ export default {
         obj.pid = p < 10 ? '0' + p : p // 期号
         obj.mul = startMul
         obj.buy = this.price * startMul + lastPeriodMoney
-        obj.mon = getOdds(this.gameType) * this.price * startMul - obj.buy
+        obj.mon = odds * this.price * startMul - obj.buy
         obj.rate = tempRate
         // 填充数据
         this.showList.push(obj)
