@@ -16,14 +16,14 @@
     <div class="el_recommend">
         <span>自选号码-任6</span>
     </div>
-    <div class="recommendation_number_box">
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-    </div>
+    <table width="100%" class="recommendation_number_box">
+      <tr align="center">
+        <!-- 数组带入并根据数组数量自动循环 -->
+        <td v-for="n in numberList">
+          {{n}}
+        </td>
+      </tr>
+    </table>
 
     <!-- 计算表格 -->
     <table class="el_number_table" width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -35,21 +35,13 @@
         <th><span>中奖盈利</span></th>
         <th><span>利润率</span></th>
       </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
+      <tr v-for="l in showList">
+        <td><span>{{l.id}}</span></td>
+        <td><span>{{l.pid}}</span></td>
+        <td><span>{{l.mul}}</span></td>
+        <td><span>{{l.buy}}</span></td>
+        <td><span>{{l.mon}}</span></td>
+        <td><span>{{l.rate}}%</span></td>
       </tr>
     </table>
   </div>
@@ -57,21 +49,21 @@
   <!-- 付款窗口 -->
   <div class="el_payment_box">
       <div class="el_payment_proposal">
-        <span>需&nbsp680&nbsp元</span>
+        <span>需&nbsp{{totalMoney}}&nbsp元</span>
       </div>
       <ul class="el_condition_input">
         <li class="el_times">
           <span>追</span>
-          <input type="text" name="times" class="el_times_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="times" v-model="addMultiple" class="el_times_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>倍</span>
         </li>
         <li class="el_stage">
           <span>追</span>
-          <input type="text" name="stage" class="el_stage_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="stage" v-model="addPeriod" class="el_stage_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>期</span>
         </li>
         <li class="el_profit">
-          <input type="text" name="profit" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="profit" v-model="addProfit" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>%利润率</span>
         </li>
       </ul>
@@ -103,17 +95,89 @@
 
 <script>
 import $ from 'zepto'
+import {getOdds} from '../../util/util'
 
 export default {
   ready () {
     $.init()
+    this.calculateProfit()
   },
   data () {
     return {
-      showTabs: 1
+      showTabs: 1,
+      gameType: this.$route.params.gameType,
+      numberList: this.$route.params.number.split(','), // 截取数组
+      currentPeriod: 78, // 当前期数(从服务器获取)
+      price: 2, // 单价(从上一页传递过来)
+      addPeriod: 5,
+      addMultiple: 1,
+      addProfit: 2000,
+      showList: [],
+      totalMoney: 0
     }
   },
   methods: {
+    /*
+     * 自动计算利润b=倍数,q=期数,l=利润
+     */
+    calculateProfit () {
+      this.showList = []
+      let startMul = this.addMultiple
+      // 默认生成追号7期
+      for (let i = 0; i < this.addPeriod; i++) {
+        let obj = {}
+        // 期号大于78时变更
+        let p = this.currentPeriod + i
+        if (p >= 78 * parseInt(p / 78, 0)) {
+          p = p - 78 * parseInt(p / 78, 0) + 1
+        }
+        // 截止上一期累计投入
+        let lastPeriodMoney = (i > 0 ? this.showList[i - 1].buy : 0)
+        // 如果利润小于期望利润则要加倍
+        let tempBuy = this.price * (i + 1) * startMul
+        let tempMon = getOdds(this.gameType) * this.price * startMul - tempBuy
+        let tempRate = parseInt((tempMon / tempBuy) * 100, 0)
+        while (tempRate < this.addProfit) {
+          startMul++
+          let b = this.price * startMul + lastPeriodMoney
+          let m = getOdds(this.gameType) * this.price * startMul - b
+          tempRate = parseInt((m / b) * 100, 0)
+        }
+        // 组装数据
+        obj.id = i + 1 // 序号
+        obj.pid = p < 10 ? '0' + p : p // 期号
+        obj.mul = startMul
+        obj.buy = this.price * startMul + lastPeriodMoney
+        obj.mon = getOdds(this.gameType) * this.price * startMul - obj.buy
+        obj.rate = tempRate
+        // 填充数据
+        this.showList.push(obj)
+      }
+      // 总花费=showList的最后一条数据的累计投入
+      this.totalMoney = this.showList[this.showList.length - 1].buy
+    }
+  },
+  watch: {
+    'addMultiple': {
+      handler: function (newVal, oldVal) {
+        // 倍数 无值时默认为1
+        this.addMultiple = !newVal ? 1 : newVal
+        this.calculateProfit()
+      }
+    },
+    'addPeriod': {
+      handler: function (newVal, oldVal) {
+        // 追期 无值时默认为1
+        this.addPeriod = !newVal ? 1 : newVal
+        this.calculateProfit()
+      }
+    },
+    'addProfit': {
+      handler: function (newVal, oldVal) {
+        this.addProfit = !newVal ? 1 : newVal
+        this.calculateProfit()
+      }
+    }
   }
 }
 </script>
@@ -176,14 +240,8 @@ ul,a,p{
   height: 2.5rem;
   background-color: #282828;
 }
-.recommendation_number_box strong{
+.recommendation_number_box tr td{
   color: #fff;
-  line-height: 2.5rem;
-  display: block;
-  float: left;
-  text-align: center;
-  font-size: 1rem;
-  width: 16.6%;
 }
 .el_number_table{
   background-color: white;
@@ -259,6 +317,8 @@ ul,a,p{
    height: 1.4rem;
    border-radius: none;
    font-size: 0.7rem;
+   text-align: center;
+   color: #666666;
 }
 .el_times span,.el_stage span{
   font-size: 0.6rem;

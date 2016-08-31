@@ -133,3 +133,39 @@ export let dateFormat = (date, fmt)=> {
   }
   return fmt
 }
+
+// 计算时间差
+// R1(6.5), R2(3), R3(9.5), R4(39), R5(270), R6(45), R7(13), R8(4.5);
+export let getOdds = (gameType) => {
+  let odds = 0
+  switch (gameType)
+  {
+    case 'R1':
+      odds = 6.5
+      break
+    case 'R2':
+      odds = 3
+      break
+    case 'R3':
+      odds = 9.5
+      break
+    case 'R4':
+      odds = 39
+      break
+    case 'R5':
+      odds = 270
+      break
+    case 'R6':
+      odds = 45
+      break
+    case 'R7':
+      odds = 13
+      break
+    case 'R8':
+      odds = 4.5
+      break
+    default:
+      break
+  }
+  return parseFloat(odds)
+}

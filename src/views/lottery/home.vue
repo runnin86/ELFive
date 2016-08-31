@@ -163,7 +163,7 @@
         for (let item of this.numberList.keys()) {
           nums.push(item)
         }
-        console.log(nums.toString())
+        // console.log(nums.toString())
       },
       limitClick () {
         let isTarget = false
@@ -181,7 +181,7 @@
             isTarget = true
           }
           else {
-            num = 5
+            num = 6
           }
         }
         else if (this.gameType === 'R7') {
@@ -189,12 +189,23 @@
             isTarget = true
           }
           else {
-            num = 5
+            num = 7
           }
         }
 
         if (isTarget) {
-          this.$route.router.go({path: '/payment', replace: true})
+          let nums = []
+          for (let item of this.numberList.keys()) {
+            nums.push(item)
+          }
+          this.$route.router.go({
+            name: 'optional_payment',
+            params: {
+              number: nums,
+              gameType: this.gameType
+            },
+            replace: false
+          })
         }
         else {
           $.toast('本玩法至少选择' + num + '个号码')

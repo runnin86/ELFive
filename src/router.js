@@ -77,7 +77,8 @@ export default function (router) {
         require(['./views/user/withdrawals_complete'], resolve)
       }
     },
-    '/optional_payment': {
+    '/home/optional_payment/:number/:gameType': {
+      name: 'optional_payment',
       component (resolve) {
         require(['./views/pay/optional_payment'], resolve)
       }
