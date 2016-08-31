@@ -194,7 +194,7 @@
         }
 
         if (isTarget) {
-          this.$route.router.go({path: '/choose', replace: true})
+          this.$route.router.go({path: '/payment', replace: true})
         }
         else {
           $.toast('本玩法至少选择' + num + '个号码')
