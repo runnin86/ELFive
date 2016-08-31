@@ -54,16 +54,16 @@
       <ul class="el_condition_input">
         <li class="el_times">
           <span>追</span>
-          <input type="text" name="times" v-model="addMultiple" class="el_times_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="times" v-model="startMultiple" class="el_times_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>倍</span>
         </li>
         <li class="el_stage">
           <span>追</span>
-          <input type="text" name="stage" v-model="addPeriod" class="el_stage_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="stage" v-model="followPeriod" class="el_stage_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>期</span>
         </li>
         <li class="el_profit">
-          <input type="text" name="profit" v-model="addProfit" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="profit" v-model="expectProfit" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>%利润率</span>
         </li>
       </ul>
@@ -109,9 +109,9 @@ export default {
       numberList: this.$route.params.number.split(','), // 截取数组
       currentPeriod: 78, // 当前期数(从服务器获取)
       price: 2, // 单价(从上一页传递过来)
-      addPeriod: 20,
-      addMultiple: 1,
-      addProfit: 300,
+      followPeriod: 7,
+      startMultiple: 1,
+      expectProfit: 25,
       showList: [],
       totalMoney: 0
     }
@@ -123,9 +123,9 @@ export default {
     calculateProfit () {
       let odds = getOdds(this.gameType)
       this.showList = []
-      let startMul = this.addMultiple
+      let startMul = this.startMultiple
       // 默认生成追号7期
-      for (let i = 0; i < this.addPeriod; i++) {
+      for (let i = 0; i < this.followPeriod; i++) {
         let obj = {}
         // 期号大于78时变更
         let p = this.currentPeriod + i
@@ -135,10 +135,10 @@ export default {
         // 截止上一期累计投入
         let lastPeriodMoney = (i > 0 ? this.showList[i - 1].buy : 0)
         // 如果利润小于期望利润则要加倍
-        let tempBuy = this.price * (i + 1) * startMul
+        let tempBuy = this.price * startMul + lastPeriodMoney
         let tempMon = odds * this.price * startMul - tempBuy
         let tempRate = parseInt((tempMon / tempBuy) * 100, 0)
-        while (tempRate < this.addProfit) {
+        while (tempRate < this.expectProfit) {
           startMul++
           let b = this.price * startMul + lastPeriodMoney
           let m = odds * this.price * startMul - b
@@ -159,23 +159,23 @@ export default {
     }
   },
   watch: {
-    'addMultiple': {
+    'startMultiple': {
       handler: function (newVal, oldVal) {
         // 倍数 无值时默认为1
-        this.addMultiple = !newVal ? 1 : newVal
+        this.startMultiple = !newVal ? 1 : newVal
         this.calculateProfit()
       }
     },
-    'addPeriod': {
+    'followPeriod': {
       handler: function (newVal, oldVal) {
         // 追期 无值时默认为1
-        this.addPeriod = !newVal ? 1 : newVal
+        this.followPeriod = !newVal ? 1 : newVal
         this.calculateProfit()
       }
     },
-    'addProfit': {
+    'expectProfit': {
       handler: function (newVal, oldVal) {
-        this.addProfit = !newVal ? 1 : newVal
+        this.expectProfit = !newVal ? 1 : newVal
         this.calculateProfit()
       }
     }
