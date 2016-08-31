@@ -151,6 +151,9 @@ export default {
         let tempMon = odds * this.price * startMul - tempBuy
         let tempRate = parseInt((tempMon / tempBuy) * 100, 0)
         while (tempRate < this.expectProfit) {
+          if (startMul >= 999) {
+            break
+          }
           startMul++
           let b = this.price * startMul + lastPeriodMoney
           if (b > 999999) {
