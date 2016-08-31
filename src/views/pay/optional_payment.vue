@@ -54,16 +54,28 @@
       <ul class="el_condition_input">
         <li class="el_times">
           <span>追</span>
-          <input type="text" name="times" v-model="startMultiple" class="el_times_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            <input v-model="startMultiple"
+              type="number" min=1 max=999
+              class="el_times_input"
+              onKeyPress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+              onKeyUp="this.value=this.value.replace(/\D/g,'')"/>
           <span>倍</span>
         </li>
         <li class="el_stage">
           <span>追</span>
-          <input type="text" name="stage" v-model="followPeriod" class="el_stage_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+            <input v-model="followPeriod"
+              type="number" min=1
+              class="el_stage_input"
+              onKeyPress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+              onKeyUp="this.value=this.value.replace(/\D/g,'')"/>
           <span>期</span>
         </li>
         <li class="el_profit">
-          <input type="text" name="profit" v-model="expectProfit" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input v-model="expectProfit"
+            type="number" min=1
+            class="el_profit_input"
+            onKeyPress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+            onKeyUp="this.value=this.value.replace(/\D/g,'')"/>
           <span>%利润率</span>
         </li>
       </ul>
@@ -141,8 +153,16 @@ export default {
         while (tempRate < this.expectProfit) {
           startMul++
           let b = this.price * startMul + lastPeriodMoney
+          if (b > 999999) {
+            break
+          }
           let m = odds * this.price * startMul - b
           tempRate = parseInt((m / b) * 100, 0)
+        }
+        if (tempRate < this.expectProfit && i > 0) {
+          $.toast('该方案最多只能生成' + i + '期')
+          this.followPeriod = i
+          break
         }
         // 组装数据
         obj.id = i + 1 // 序号
@@ -162,14 +182,14 @@ export default {
     'startMultiple': {
       handler: function (newVal, oldVal) {
         // 倍数 无值时默认为1
-        this.startMultiple = !newVal ? 1 : newVal
+        this.startMultiple = !newVal ? 1 : (newVal > 999 ? 999 : newVal)
         this.calculateProfit()
       }
     },
     'followPeriod': {
       handler: function (newVal, oldVal) {
         // 追期 无值时默认为1
-        this.followPeriod = !newVal ? 1 : newVal
+        this.followPeriod = !newVal ? 1 : (newVal < 1 ? 1 : newVal)
         this.calculateProfit()
       }
     },
