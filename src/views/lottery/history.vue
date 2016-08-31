@@ -1,9 +1,15 @@
 <template>
-  <div class="content">
+  <!-- 防止ios自动获取电话号码 -->
+  <meta name = "format-detection" content = "telephone=no">
+
+  <div class="content" transition="bounce">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a href="#"><img src="/img/11/return.png"></a>
+      <a class="el_return_btn" v-link="{path: '/home', replace: true}">
+        <img src="/img/11/return.png">
+      </a>
       <strong>历史号码</strong>
+      <div class="el_placeholder">&nbsp</div>
     </div>
 
     <!-- 历史号码 -->
@@ -24,7 +30,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 body,ul{
   margin: 0;
   padding: 0;
@@ -38,21 +44,31 @@ ul,a,p{
   width: 100%;
   height: 2.5rem;
   background-color: #282828;
-  position: relative;
+  overflow: hidden;
+}
+.el_return_btn{
+  display: block;
+  width:10%;
+  height:2.5rem;
+  float: left;
+}
+.el_return_btn img{
+  height:0.8rem;
+  display: block;
+  margin:0.85rem auto;
 }
 .el_head strong{
-  display: block;
-  color: #fff;
-  width: 100%;
-  line-height: 2.5rem;
+  width: 80%;
   text-align: center;
-}
-.el_head img{
   display: block;
-  height: 0.8rem;
-  position: absolute;
-  left: 0.5rem;
-  top: 0.85rem;
+  line-height: 2.5rem;
+  float: left;
+  color: white;
+}
+.el_placeholder{
+  width: 10%;
+  height: 2.5rem;
+  float: left;
 }
 .el_history_box{
   background-color: white;

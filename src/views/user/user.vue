@@ -1,15 +1,19 @@
 
 <template>
+  <!-- 防止ios自动获取电话号码 -->
+  <meta name = "format-detection" content = "telephone=no">
+
   <div class="content" transition="bounce">
     <!-- 个人中心顶部信息栏 -->
     <div class="el_user_head_box">
 
       <!-- 顶部操作栏 -->
-      <div class="el_user_head">
-        <a v-link="{path: '/home', replace: true}">
+      <div class="el_head">
+        <a class="el_return_btn" v-link="{path: '/home', replace: true}">
           <img src="/img/11/return.png">
         </a>
         <strong>个人中心</strong>
+        <div class="el_placeholder">&nbsp</div>
       </div>
 
       <!-- 个人头像/名字 -->
@@ -34,7 +38,7 @@
     <!-- 提现按钮/充值按钮 -->
     <div class="el_property_operation">
       <div class="el_withdrawals_btn">
-        <strong>提现</strong>
+        <strong  v-link="{path: '/withdrawals', replace: true}">提现</strong>
       </div>
       <div class="el_recharge_btn">
         <strong>充值</strong>
@@ -42,7 +46,7 @@
     </div>
 
     <!-- 账单 -->
-    <div class="el_bill_box">
+    <div class="el_bill_box" v-link="{path: '/bill', replace: true}">
       <img src="/img/11/bill_icon.png" class="el_bill_icon">
       <span class="el_bill_tagging">账单</span>
       <div class="el_bill_remind">
@@ -52,22 +56,23 @@
     </div>
 
     <!-- 订单 -->
-    <div class="el_order_box">
+    <div class="el_order_box" v-link="{path: '/order', replace: true}">
       <img src="/img/11/order_icon.png" class="el_order_icon">
       <span class="el_order_tagging">订单</span>
     </div>
 
     <!-- 修改密码 -->
-    <div class="el_modify_pw">
-      <img src="/img/11/modify_pw.png" class="el_modify_pw_icon">
+    <div class="el_modify_pw" v-link="{path: '/modify', replace: true}" >
+      <img src="/img/11/modify_pw.png" class="el_modify_icon">
       <span class="el_modify_pw_tagging">修改密码</span>
     </div>
+
   </div>
 </template>
 
 
 
-<style>
+<style scoped>
 body,ul{
   margin: 0;
   padding: 0;
@@ -84,24 +89,34 @@ ul,a,p{
   background-size: 100%;
   background-repeat: no-repeat;
 }
-.el_user_head{
+.el_head{
   width: 100%;
   height: 2.5rem;
   overflow: hidden;
 }
-.el_user_head img{
+.el_return_btn{
   display: block;
-  height: 0.8rem;
-  position: absolute;
-  left: 0.5rem;
-  top: 0.85rem;
+  width:10%;
+  height:2.5rem;
+  float: left;
 }
-.el_user_head strong{
+.el_return_btn img{
+  height:0.8rem;
   display: block;
-  color: #fff;
-  width: 100%;
-  line-height: 2.5rem;
+  margin:0.85rem auto;
+}
+.el_head strong{
+  width: 80%;
   text-align: center;
+  display: block;
+  line-height: 2.5rem;
+  float: left;
+  color: white;
+}
+.el_placeholder{
+  width: 10%;
+  height: 2.5rem;
+  float: left;
 }
 .el_user_name_box{
   width: 100%;
@@ -111,7 +126,7 @@ ul,a,p{
 .el_user_name_box img{
   width: 1.7rem;
   height: 1.7rem;
-  margin-top: 0.4rem;
+  margin-top: 0.36rem;
   display: block;
   margin-left: 0.5rem;
 }
@@ -174,7 +189,7 @@ ul,a,p{
   color: #3ec4a0;
 }
 .el_withdrawals_btn strong{
-  color: #999999;
+  color: #666666;
 }
 .el_bill_box{
   width: 100%;
@@ -193,27 +208,27 @@ ul,a,p{
   border: none;
 }
 .el_bill_icon{
-  height:1.15rem;
+  height: 1.15rem;
   float: left;
   display: block;
-  margin-left:0.5rem;
-  margin-top:0.675rem;
+  margin-left: 0.5rem;
+  margin-top: 0.675rem;
 }
-.el_order_icon,.el_modify_pw_icon{
-  height:1.15rem;
+.el_order_icon,.el_modify_icon{
+  height: 1.15rem;
   float: left;
   display: block;
-  margin-left:0.62rem;
-  margin-top:0.675rem;
+  margin-left: 0.62rem;
+  margin-top: 0.675rem;
 }
 .el_transaction_info,.el_go_icon{
-  float:right;
+  float: right;
   display: block;
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
 }
 .el_go_icon{
-  height:0.6rem;
-  margin-top:0.95rem;
+  height: 0.6rem;
+  margin-top: 0.95rem;
 }
 .el_bill_tagging{
   float: left;

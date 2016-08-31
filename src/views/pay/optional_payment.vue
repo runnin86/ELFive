@@ -5,16 +5,16 @@
   <div class="content" transition="bounce">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/choose', replace: true}">
+      <a class="el_return_btn" v-link="{path: '/home', replace: true}">
         <img src="/img/11/return.png">
       </a>
-      <strong>跟单付款区</strong>
+      <strong>自选付款区</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
 
     <!-- 推荐号码 -->
     <div class="el_recommend">
-        <span>推荐号码</span>
+        <span>自选号码-任6</span>
     </div>
     <div class="recommendation_number_box">
         <strong >01</strong>
@@ -51,86 +51,27 @@
         <td><span>88</span></td>
         <td><span>4400%</span></td>
       </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
-      <tr>
-        <td><span>1</span></td>
-        <td><span>11</span></td>
-        <td><span>1</span></td>
-        <td><span>2</span></td>
-        <td><span>88</span></td>
-        <td><span>4400%</span></td>
-      </tr>
     </table>
   </div>
 
   <!-- 付款窗口 -->
   <div class="el_payment_box">
       <div class="el_payment_proposal">
-        <span>建议跟单16082402-16082532期（100期）</span>
-      </div>
-      <div class="el_payment_money">
-        <span>需&nbsp640&nbsp元</span>
+        <span>需&nbsp680&nbsp元</span>
       </div>
       <ul class="el_condition_input">
         <li class="el_times">
           <span>追</span>
-          <input type="text" name="times" class="el_times_input" value="1" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="times" class="el_times_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>倍</span>
         </li>
         <li class="el_stage">
           <span>追</span>
-          <input type="text" name="stage" class="el_stage_input" value="100" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="stage" class="el_stage_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>期</span>
         </li>
         <li class="el_profit">
-          <input type="text" name="profit" class="el_profit_input" value="25" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" name="profit" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
           <span>%利润率</span>
         </li>
       </ul>
@@ -158,7 +99,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -247,7 +187,7 @@ ul,a,p{
 }
 .el_number_table{
   background-color: white;
-  margin-bottom: 7.5rem;
+  margin-bottom: 6.3rem;
 }
 .el_number_table tr{
   width: 100%;
@@ -274,24 +214,11 @@ ul,a,p{
 }
 .el_payment_proposal{
   width: 100%;
-  background-color: #282828;
+  background-color: white   ;
   height: 1.3rem;
-}
-.el_payment_money{
-  width: 100%;
-  background-color: white;
-  height: 1.3rem;
-  border-bottom:0.05rem #f0f0f0 solid;
+  border-bottom:0.05rem solid #f0f0f0;
 }
 .el_payment_proposal span{
-  width: 100%;
-  line-height: 1.3rem;
-  text-align: center;
-  display: block;
-  color: white;
-  font-size: 0.6rem;
-}
-.el_payment_money span{
   width: 100%;
   line-height: 1.3rem;
   text-align: center;
@@ -332,7 +259,6 @@ ul,a,p{
    height: 1.4rem;
    border-radius: none;
    font-size: 0.7rem;
-   text-align: center;
 }
 .el_times span,.el_stage span{
   font-size: 0.6rem;

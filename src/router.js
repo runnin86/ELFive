@@ -46,6 +46,41 @@ export default function (router) {
       component (resolve) {
         require(['./views/user/login'], resolve)
       }
+    },
+    '/forget': {
+      component (resolve) {
+        require(['./views/user/forget'], resolve)
+      }
+    },
+    '/order': {
+      component (resolve) {
+        require(['./views/user/order'], resolve)
+      }
+    },
+    '/bill': {
+      component (resolve) {
+        require(['./views/user/bill'], resolve)
+      }
+    },
+    '/modify': {
+      component (resolve) {
+        require(['./views/user/modify'], resolve)
+      }
+    },
+    '/withdrawals': {
+      component (resolve) {
+        require(['./views/user/withdrawals'], resolve)
+      }
+    },
+    '/withdrawals_complete': {
+      component (resolve) {
+        require(['./views/user/withdrawals_complete'], resolve)
+      }
+    },
+    '/optional_payment': {
+      component (resolve) {
+        require(['./views/pay/optional_payment'], resolve)
+      }
     }
   })
 

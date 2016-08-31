@@ -1,35 +1,90 @@
 <template>
-  <div class="content">
+  <!-- 防止ios自动获取电话号码 -->
+  <meta name = "format-detection" content = "telephone=no">
+
+  <div class="content" transition="pushtop">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a href="#"><img src="/img/11/return.png"></a>
+      <a class="el_return_btn" v-link="{path: '/home', replace: true}">
+        <img src="/img/11/return.png">
+      </a>
       <strong>登录</strong>
+      <div class="el_placeholder">&nbsp</div>
     </div>
 
     <!-- 登录/注册 -->
-    <div class="el_login_box">
+    <div class="el_login_window">
       <div class="el_choice_btn">
-        <strong class="el_login_btn el_click_blue">登录</strong>
-        <strong class="el_sign_up_btn">注册</strong>
+        <strong class="el_login_btn el_click_blue"
+          @click="this.showTabs = 1"
+          :class="this.showTabs===1?'el_click_blue':''">
+        登录</strong>
+        <strong class="el_sign_up_btn"
+          @click="this.showTabs = 2"
+          :class="this.showTabs===2?'el_click_blue':''">
+        注册</strong>
       </div>
-      <div>
+
+      <!-- 登录盒子 -->
+      <div class="el_login_box"
+        :class="this.showTabs===1?'el_login_box':'hide'">
         <div class="el_phone_input_box">
-          <input class="el_phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
         <div class="el_pw_input_box">
-          <input class="el_password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input class="el_password" id="password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
         <div class="el_login_go_box">
-          <a href="" class="el_login_go">登录</a>
+          <a v-link="{path: '/user', replace: true}" class="el_login_go">登录</a>
+        </div>
+      </div>
+
+      <!-- 注册盒子 -->
+      <div class="el_sign_up_box"
+        :class="this.showTabs===2?'el_sign_up_box':'hide'">
+        <div class="el_phone_input_box">
+          <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_code_input_box">
+          <input class="el_code" id="code" placeholder="支付宝账号" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_code_input_box">
+          <input class="el_code" id="code" placeholder="姓名（需与支付宝一致）" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_pw_input_box">
+          <input class="el_password" id="password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_login_go_box">
+          <a v-link="{path: '/user', replace: true}" class="el_login_go">注册</a>
         </div>
       </div>
     </div>
 
-
+    <div class="forget_box">
+      <a v-link="{path: '/forget', replace: true}">忘记密码</a>
+    </div>
   </div>
+
 </template>
 
-<style>
+<script>
+  import $ from 'zepto'
+
+  export default {
+    ready () {
+      $.init()
+    },
+    data () {
+      return {
+        showTabs: 1
+      }
+    },
+    methods: {
+    }
+  }
+</script>
+
+<style scoped>
 body,ul{
   margin: 0;
   padding: 0;
@@ -43,25 +98,35 @@ ul,a,p{
   width: 100%;
   height: 2.5rem;
   background-color: #1a6be4;
-  position: relative;
+  overflow: hidden;
+}
+.el_return_btn{
+  display: block;
+  width:10%;
+  height:2.5rem;
+  float: left;
+}
+.el_return_btn img{
+  height:0.8rem;
+  display: block;
+  margin:0.7rem auto;
 }
 .el_head strong{
-  display: block;
-  color: #fff;
-  width: 100%;
-  line-height: 2.5rem;
+  width: 80%;
   text-align: center;
-}
-.el_head img{
   display: block;
-  height: 0.8rem;
-  position: absolute;
-  left: 0.5rem;
-  top: 0.85rem;
+  line-height: 2.5rem;
+  float: left;
+  color: white;
 }
-.el_login_box{
+.el_placeholder{
+  width: 10%;
+  height: 2.5rem;
+  float: left;
+}
+.el_login_window{
   width: 90%;
-  margin: 1rem 5%;
+  margin: 0.5rem 5%;
   background-color: white;
   overflow: hidden;
 }
@@ -84,7 +149,7 @@ ul,a,p{
 .el_click_blue{
   color: #1a6be4;
 }
-.el_phone_input_box,.el_pw_input_box,.el_login_go_box{
+.el_phone_input_box,.el_pw_input_box,.el_login_go_box,.el_code_input_box{
   width: 100%;
   background-color: white;
   height: 3.45rem;
@@ -110,7 +175,42 @@ ul,a,p{
   text-align: center;
   line-height: 2.5rem;
 }
-
-
-
+.el_code{
+  padding-left: 0.5rem;
+  font-size: 0.7rem;
+  width: 94%;
+  border: none;
+  background-color: #f5f5f5;
+  height: 2.5rem;
+  margin-top: 0.475rem;
+  margin-left: 3%;
+  border-radius: 0;
+  float: left;
+}
+.el_get_code{
+  margin-top: 0.475rem;
+  text-align: center;
+  width: 30%;
+  line-height: 2.4rem;
+  display: block;
+  float: left;
+  font-size: 0.6rem;
+  border:0.05rem solid #f5f5f5;
+}
+.forget_box{
+  width: 100%;
+  height: 2.5rem;
+  display: block;
+  position: absolute;
+  bottom: 0;
+}
+.forget_box a{
+  line-height: 2.5rem;
+  text-align: center;
+  display: block;
+  font-size: 0.7rem;
+}
+.hide{
+  display: none;
+}
 </style>

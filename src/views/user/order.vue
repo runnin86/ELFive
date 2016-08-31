@@ -6,15 +6,26 @@
   <div class="content" transition="bounce">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/home', replace: true}">
+      <a class="el_return_btn" v-link="{path: '/user', replace: true}">
         <img src="/img/11/return.png">
       </a>
-      <strong>跟单选购区</strong>
+      <strong>订单</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
+    <div class="el_choice_box">
+      <strong class="el_documentary_btn "
+        @click="this.showTabs = 1"
+        :class="this.showTabs===1?'el_click_white':''">
+      跟单</strong>
+      <strong class="el_optional_btn"
+        @click="this.showTabs = 2"
+        :class="this.showTabs===2?'el_click_white':''">
+      自选</strong>
+    </div>
 
-    <!-- 跟单票未购买状态 -->
-    <div class="el_bill_box">
+    <!-- 跟单 -->
+    <div class="el_bill_box"
+      :class="this.showTabs===1?'el_bill_box':'hide'">
       <div class="el_bill_title">
         <span>推荐号码</span>
       </div>
@@ -27,26 +38,58 @@
         <li>06</li>
       </ul>
       <div class="el_proposal">
-        <span>建议追单16082402-16082532期（100期）</span>
+          <span>建议追单16082402-16082532期（100期）</span>
       </div>
       <div class="el_state_box">
-        <span class="el_state">状态&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
-        <span class="el_process">已跟&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
+            <span class="el_state">状态&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
+            <span class="el_process">已跟&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
       </div>
       <div class="el_state_box">
-        <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
-        <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
-      </div>
-      <div class="el_button"
-        :class="this.showTabs===2?'hide':''">
-        <span class="el_see_btn">付费查看</span>
-        <a class="el_documentary_btn"
-         v-link="{path: '/payment', replace: true}">
-        跟单</a>
+            <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
+            <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
       </div>
       <div class="el_button">
-        <span class="el_stop_btn">
-        终止跟单</span>
+        <span class="el_see_btn">付费查看</span>
+        <a v-link="{path: '/payment', replace: true}" class="el_documentary_btn">跟单</a>
+      </div>
+      <div class="el_button">
+        <span class="el_stop_btn">终止跟单</span>
+      </div>
+      <div class="el_button">
+        <span class="el_stop_btn">未中奖/奖金200.00</span>
+      </div>
+    </div>
+
+    <!-- 自选 -->
+    <div class="el_bill_box"
+      :class="this.showTabs===2?'el_bill_box':'hide'">
+      <div class="el_bill_title">
+        <span>推荐号码</span>
+      </div>
+      <ul class="el_bill_number">
+        <li>01</li>
+        <li>02</li>
+        <li>03</li>
+        <li>04</li>
+        <li>05</li>
+        <li>06</li>
+      </ul>
+      <div class="el_proposal">
+          <span>建议追单16082402-16082532期（100期）</span>
+      </div>
+      <div class="el_state_box">
+            <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
+            <span class="el_process">已进行&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
+      </div>
+      <div class="el_state_box">
+            <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
+            <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
+      </div>
+      <div class="el_button">
+        <span class="el_stop_btn">终止跟单</span>
+      </div>
+      <div class="el_button">
+        <span class="el_stop_btn">未中奖/奖金200.00</span>
       </div>
     </div>
   </div>
@@ -87,14 +130,14 @@ ul,a,p{
 }
 .el_return_btn{
   display: block;
-  width: 10%;
-  height: 2.5rem;
+  width:10%;
+  height:2.5rem;
   float: left;
 }
 .el_return_btn img{
-  height: 0.8rem;
+  height:0.8rem;
   display: block;
-  margin: 0.85rem auto;
+  margin:0.85rem auto;
 }
 .el_head strong{
   width: 80%;
@@ -172,8 +215,8 @@ ul,a,p{
   border-right: 0.05rem solid #f0f0f0;
 }
 .el_button{
-  width: 100%;
-  height: 2.5rem;
+  width:100%;
+  height:2.5rem;
   border-top: 0.05rem solid #f0f0f0;
   background-color: #fff;
 }
@@ -194,6 +237,22 @@ ul,a,p{
   line-height: 2.5rem;
   text-align: center;
   display: block;
+}
+.el_choice_box{
+  width: 100%;
+  height:2.5rem;
+  background-color: #282828;
+}
+.el_documentary_btn,.el_optional_btn{
+  width:50%;
+  text-align: center;
+  line-height: 2.5rem;
+  display: block;
+  float: left;
+  font-size: 0.7rem;
+}
+.el_click_white{
+  color: white;
 }
 .hide{
   display: none;
