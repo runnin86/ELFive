@@ -134,7 +134,7 @@ export let dateFormat = (date, fmt)=> {
   return fmt
 }
 
-// 计算时间差
+// 定义玩法对应的赔率
 // R1(6.5), R2(3), R3(9.5), R4(39), R5(270), R6(45), R7(13), R8(4.5);
 export let getOdds = (gameType) => {
   let odds = 0

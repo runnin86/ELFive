@@ -52,16 +52,16 @@ export default {
   },
   ready () {
     // 获取乐夺宝的banner,滚动展示,商品列表
-    this.loadBannerForHP()
-    this.loadScrollMsgForHP()
-    this.loadHpList()
-    this.loadHpList10()
-    if (window.localStorage.getItem('user')) {
-      this.loadBannerForPlan()
-      this.loadScrollMsgForPlan()
-      this.loadRangeList()
-      this.loadNotice()
-    }
+    // this.loadBannerForHP()
+    // this.loadScrollMsgForHP()
+    // this.loadHpList()
+    // this.loadHpList10()
+    // if (window.localStorage.getItem('user')) {
+    //   this.loadBannerForPlan()
+    //   this.loadScrollMsgForPlan()
+    //   this.loadRangeList()
+    //   this.loadNotice()
+    // }
     // 微信配置参数
     $.sign = {
       appId: 'wxadccc645716a9348',
