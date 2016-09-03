@@ -92,12 +92,11 @@
         .then(({data: {code, msg, data}})=>{
           if (code === 1) {
             if (data) {
-              let userInfo = $.parseJSON(data.user)
-              if (userInfo.userStatus === 0) {
+              if (data.user.userStatus === 0) {
                 $.toast('账户禁用')
               }
-              else if (userInfo.userStatus === 1) {
-                window.localStorage.setItem('user', userInfo)
+              else if (data.user.userStatus === 1) {
+                window.localStorage.setItem('user', JSON.stringify(data.user))
                 window.localStorage.setItem('token', data.token)
                 window.localStorage.setItem('openid', data.openid)
                 this.$route.router.go({path: '/user', replace: true})

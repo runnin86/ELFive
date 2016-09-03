@@ -1,9 +1,9 @@
-
 <template>
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="bounce">
+  <div class="content user" distance="55" v-pull-to-refresh="refresh">
+    <v-layer></v-layer>
     <!-- 个人中心顶部信息栏 -->
     <div class="el_user_head_box">
 
@@ -19,7 +19,9 @@
       <!-- 个人头像/名字 -->
       <div class="el_user_name_box">
         <img src="/img/11/head_icon.png">
-        <span class="el_user_name">Robert De Niro</span>
+        <span class="el_user_name">
+          {{user.userName?user.userName:user.userPhone}}
+        </span>
       </div>
 
       <!-- 个人财产信息 -->
@@ -99,23 +101,62 @@
 </template>
 
 <script>
+  import VLayer from '../../components/PullToRefreshLayer'
   import $ from 'zepto'
 
   export default {
     ready () {
       $.init()
+      this.refresh()
     },
     data () {
       return {
-        showTabs: 1
+        showTabs: 1,
+        user: JSON.parse(window.localStorage.getItem('user'))
       }
     },
     methods: {
+      /*
+       * 刷新
+       */
+      refresh () {
+        if (this.user) {
+          $.showIndicator()
+          // 执行查询
+          setTimeout(function () {
+            console.log('刷新数据')
+            // let token = window.localStorage.getItem('token')
+            // // 获取账户本金
+            // this.getCoinmeter(token)
+            // // 获取用户盈利
+            // this.getUserate(token)
+            // // 获取用户销量
+            // this.getUsersales(token)
+            // // 获取用户销量(上月)
+            // this.getLastsales(token)
+            // // 从vuex中获取用户未读消息
+            // this.$root.loadUserUnreadMsg()
+            // 加载完毕需要重置
+            $.pullToRefreshDone('.pull-to-refresh-content')
+            $.hideIndicator()
+          }, 800)
+        }
+        else {
+          // 加载完毕需要重置
+          $.pullToRefreshDone('.pull-to-refresh-content')
+        }
+      }
+    },
+    components: {
+      VLayer
     }
   }
 </script>
 
 <style scoped>
+.user {
+  top: -2.2rem !important;
+}
 body,ul{
   margin: 0;
   padding: 0;
