@@ -73,40 +73,40 @@
     <!-- 自主选号区 -->
     <div class="el_pick_box">
       <div class="el_pick"
-        @click="this.showSelectType?this.showSelectType=false:this.showSelectType=true">
+        @click="this.showSelect?this.showSelect=false:this.showSelect=true">
         <span>{{gameType | gameTypeFilter}}</span>
       </div>
       <div class="el_pick_all"
-        :style="this.showSelectType ? 'display:block' : 'display:none'">
-        <span @click="this.gameType='R5',this.showSelectType=false">玩法-任选五</span>
-        <span @click="this.gameType='R6',this.showSelectType=false">玩法-任选六</span>
-        <span @click="this.gameType='R7',this.showSelectType=false">玩法-任选七</span>
+        :style="this.showSelect ? 'display:block' : 'display:none'">
+        <span @click="selectGameType('R5', 5)">玩法-任选五</span>
+        <span @click="selectGameType('R6', 6)">玩法-任选六</span>
+        <span @click="selectGameType('R7', 7)">玩法-任选七</span>
       </div>
     </div>
 
     <!-- 选号区数字按钮 -->
     <table class="el_number_btn" width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td><span @click="choseNumber('01', $event)">01</span></td>
-        <td><span @click="choseNumber('02', $event)">02</span></td>
-        <td><span @click="choseNumber('03', $event)">03</span></td>
-        <td><span @click="choseNumber('04', $event)">04</span></td>
-        <td><span @click="choseNumber('05', $event)">05</span></td>
-        <td><span @click="choseNumber('06', $event)">06</span></td>
+        <td><span z-name="ball" @click="choseNumber('01', $event)">01</span></td>
+        <td><span z-name="ball" @click="choseNumber('02', $event)">02</span></td>
+        <td><span z-name="ball" @click="choseNumber('03', $event)">03</span></td>
+        <td><span z-name="ball" @click="choseNumber('04', $event)">04</span></td>
+        <td><span z-name="ball" @click="choseNumber('05', $event)">05</span></td>
+        <td><span z-name="ball" @click="choseNumber('06', $event)">06</span></td>
       </tr>
       <tr>
-        <td><span @click="choseNumber('07', $event)">07</span></td>
-        <td><span @click="choseNumber('08', $event)">08</span></td>
-        <td><span @click="choseNumber('09', $event)">09</span></td>
-        <td><span @click="choseNumber('10', $event)">10</span></td>
-        <td><span @click="choseNumber('11', $event)">11</span></td>
+        <td><span z-name="ball" @click="choseNumber('07', $event)">07</span></td>
+        <td><span z-name="ball" @click="choseNumber('08', $event)">08</span></td>
+        <td><span z-name="ball" @click="choseNumber('09', $event)">09</span></td>
+        <td><span z-name="ball" @click="choseNumber('10', $event)">10</span></td>
+        <td><span z-name="ball" @click="choseNumber('11', $event)">11</span></td>
         <td>&nbsp</td>
       </tr>
     </table>
 
     <!-- 购买按钮 -->
     <div class="el_documentary_btn">
-      <span @click="limitClick()">购买</span>
+      <span @click="buy()">购买</span>
     </div>
   </div>
 </template>
@@ -137,11 +137,26 @@
     data () {
       return {
         numberList: new Set(),
-        showSelectType: false,
-        gameType: 'R5'
+        showSelect: false,
+        gameType: 'R5',
+        minBall: 5
       }
     },
     methods: {
+      selectGameType (t, min) {
+        this.gameType = t
+        this.minBall = min
+        this.showSelect = false
+        // 清空已选号码
+        this.numberList.clear()
+        // 清空已选号码样式
+        $("[z-name='ball']").each((i)=>{
+          let spanStyle = $("[z-name='ball']")[i].style
+          spanStyle.backgroundColor = ''
+          spanStyle.color = ''
+          spanStyle.border = ''
+        })
+      },
       choseNumber (num, e) {
         // 判断是否已选
         if (this.numberList.has(num)) {
@@ -163,52 +178,30 @@
         for (let item of this.numberList.keys()) {
           nums.push(item)
         }
-        // console.log(nums.toString())
       },
-      limitClick () {
-        let isTarget = false
-        let num = 0
-        if (this.gameType === 'R5') {
-          if (this.numberList.size >= 5) {
-            isTarget = true
+      buy () {
+        if (this.numberList.size >= this.minBall) {
+          if (window.localStorage.getItem('user')) {
+            let nums = []
+            for (let item of this.numberList.keys()) {
+              nums.push(item)
+            }
+            this.$route.router.go({
+              name: 'optional_payment',
+              params: {
+                number: nums,
+                gameType: this.gameType
+              },
+              replace: false
+            })
           }
           else {
-            num = 5
+            $.toast('你尚未登录')
+            this.$route.router.go({path: '/login', replace: false})
           }
-        }
-        else if (this.gameType === 'R6') {
-          if (this.numberList.size >= 6) {
-            isTarget = true
-          }
-          else {
-            num = 6
-          }
-        }
-        else if (this.gameType === 'R7') {
-          if (this.numberList.size >= 7) {
-            isTarget = true
-          }
-          else {
-            num = 7
-          }
-        }
-
-        if (isTarget) {
-          let nums = []
-          for (let item of this.numberList.keys()) {
-            nums.push(item)
-          }
-          this.$route.router.go({
-            name: 'optional_payment',
-            params: {
-              number: nums,
-              gameType: this.gameType
-            },
-            replace: false
-          })
         }
         else {
-          $.toast('本玩法至少选择' + num + '个号码')
+          $.toast('本玩法至少选择' + this.minBall + '个号码')
         }
       }
     }
