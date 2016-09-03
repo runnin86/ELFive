@@ -28,6 +28,9 @@
       <div class="el_withdrawals_btn_box">
         <strong class="el_withdrawals_btn"  v-link="{path: '/withdrawals_complete', replace: true}">确定</strong>
       </div>
+      <div class="el_prompt">
+        <span>请您认真核对支付宝账号是否正确后再进行提现</span>
+      </div>
     </div>
 
     <!-- 弹出窗口 -->
@@ -192,5 +195,16 @@ ul,a,p{
 }
 .el_button_left{
   border-right: 0.05rem #f0f0f0 solid;
+}
+.el_prompt{
+  width: 100%;
+}
+.el_prompt span{
+  width: 100%;
+  text-align: center;
+  line-height: 3rem;
+  display: block;
+  font-size: 0.6rem;
+  color: #666666;
 }
 </style>

@@ -22,7 +22,7 @@
         <strong class="el_sign_up_btn"
           @click="this.showTabs = 2"
           :class="this.showTabs===2?'el_click_blue':''">
-        注册</strong>
+        忘记密码</strong>
       </div>
 
       <!-- 登录盒子 -->
@@ -46,23 +46,18 @@
           <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
         <div class="el_code_input_box">
-          <input class="el_code" id="code" placeholder="支付宝账号" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-        </div>
-        <div class="el_code_input_box">
-          <input class="el_code" id="code" placeholder="姓名（需与支付宝一致）" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input class="el_code" id="code" placeholder="验证码" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <a class="el_get_code" href="#">获取验证码</a>
         </div>
         <div class="el_pw_input_box">
-          <input class="el_password" id="password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input class="el_password" id="password" placeholder="输入新密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
         <div class="el_login_go_box">
-          <a v-link="{path: '/user', replace: true}" class="el_login_go">注册</a>
+          <a v-link="{path: '/user', replace: true}" class="el_login_go">确定</a>
         </div>
       </div>
     </div>
 
-    <div class="forget_box">
-      <a v-link="{path: '/forget', replace: true}">忘记密码</a>
-    </div>
   </div>
 
 </template>
@@ -178,7 +173,7 @@ ul,a,p{
 .el_code{
   padding-left: 0.5rem;
   font-size: 0.7rem;
-  width: 94%;
+  width: 64%;
   border: none;
   background-color: #f5f5f5;
   height: 2.5rem;

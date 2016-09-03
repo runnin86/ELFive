@@ -67,10 +67,53 @@
       <span class="el_modify_pw_tagging">修改密码</span>
     </div>
 
+    <!-- 我的二维码 -->
+    <div class="el_mycode" @click="this.showTabs = 2">
+      <img src="/img/11/el_code_icon.png" class="el_code_icon">
+      <span class="el_code_tagging">二维码</span>
+    </div>
+
+  </div>
+
+  <div class="el_code_eject"
+    :class="this.showTabs===2?'el_code_eject':'hide'"
+    :class="this.showTabs===3?'el_code_eject':'hide'">
+    <div class="el_code_off"
+      @click="this.showTabs = 3">
+      <img src="/img/11/el_code_off.png">
+    </div>
+    <div class="el_code_photo">
+      <img src="/img/11/code_photo.png">
+      <span>扫描二维码进行注册</span>
+    </div>
+    <div class="el_register_step" style="padding-top:0.5rem;">
+      <span><font class="number_one">1</font>输入手机号<span>
+    </div>
+    <div class="el_register_step">
+      <span><font class="number_one">2</font>输入本人支付宝账号及姓名<span>
+    </div>
+    <div class="el_register_step" style="padding-bottom:0.5rem;">
+      <span><font class="number_one">3</font>注册完成<span>
+    </div>
   </div>
 </template>
 
+<script>
+  import $ from 'zepto'
 
+  export default {
+    ready () {
+      $.init()
+    },
+    data () {
+      return {
+        showTabs: 1
+      }
+    },
+    methods: {
+    }
+  }
+</script>
 
 <style scoped>
 body,ul{
@@ -207,12 +250,27 @@ ul,a,p{
   overflow: hidden;
   border: none;
 }
+.el_mycode{
+  width: 100%;
+  height: 2.5rem;
+  background-color: white;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border: none;
+}
 .el_bill_icon{
   height: 1.15rem;
   float: left;
   display: block;
   margin-left: 0.5rem;
   margin-top: 0.675rem;
+}
+.el_code_icon{
+  height: 1rem;
+  float: left;
+  display: block;
+  margin-left: 0.6rem;
+  margin-top: 0.75rem;
 }
 .el_order_icon,.el_modify_icon{
   height: 1.15rem;
@@ -244,9 +302,94 @@ ul,a,p{
   font-size: 0.7rem;
   line-height: 2.5rem;
 }
+.el_code_tagging{
+  float: left;
+  display: block;
+  margin-left: 0.5rem;
+  font-size: 0.7rem;
+  line-height: 2.5rem;
+}
 .el_bill_remind span{
   font-size: 0.6rem;
   color: #999999;
   line-height: 2.5rem;
+}
+.el_code_eject{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url(/img/11/el_black_bg.png);
+}
+.el_code_off{
+  background-color: white;
+  height: 1.7rem;
+  width: 70%;
+  margin-top: 1rem;
+  margin-left: 15%;
+  margin-right: 15%;
+  overflow: hidden;
+  border-bottom: 0.05rem solid #f6f6f6;
+}
+.el_code_off img{
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.el_code_photo{
+  background-color: white;
+  width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
+  overflow: hidden;
+}
+.el_code_photo img{
+  display: block;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1.4rem;
+}
+.el_code_photo span{
+  width: 100%;
+  text-align: center;
+  display: block;
+  line-height: 2.6rem;
+  font-size: 0.8rem;
+}
+.el_register_step{
+  background-color: #f6f8f7;
+  width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
+  overflow: hidden;
+}
+.el_register_step span{
+  width:80%;
+  text-align: left;
+  display: block;
+  line-height: 2rem;
+  font-size: 0.6rem;
+  margin-left: 10%;
+  margin-right: 10%;
+  height: 2rem;
+}
+.number_one{
+  background-color: #3dd555;
+  border-radius: 2rem;
+  height: 1rem;
+  width: 1rem;
+  display: block;
+  float: left;
+  margin-top: 0.5rem;
+  text-align: center;
+  line-height: 1rem;
+  color: white;
+  margin-right: 0.4rem;
+}
+.hide{
+  display: none;
 }
 </style>

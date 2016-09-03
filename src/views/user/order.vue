@@ -26,8 +26,8 @@
     <!-- 跟单 -->
     <div class="el_bill_box"
       :class="this.showTabs===1?'el_bill_box':'hide'">
-      <div class="el_bill_title">
-        <span>推荐号码</span>
+      <div class="ul_bill_type">
+        <span>多期订单</span>
       </div>
       <ul class="el_bill_number">
         <li>01</li>
@@ -37,8 +37,8 @@
         <li>05</li>
         <li>06</li>
       </ul>
-      <div class="el_proposal">
-          <span>建议追单16082402-16082532期（100期）</span>
+      <div class="el_bill_title">
+        <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
       </div>
       <div class="el_state_box">
             <span class="el_state">状态&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
@@ -49,22 +49,14 @@
             <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
       </div>
       <div class="el_button">
-        <span class="el_see_btn">付费查看</span>
-        <a v-link="{path: '/payment', replace: true}" class="el_documentary_btn">跟单</a>
-      </div>
-      <div class="el_button">
-        <span class="el_stop_btn">终止跟单</span>
-      </div>
-      <div class="el_button">
         <span class="el_stop_btn">未中奖/奖金200.00</span>
       </div>
     </div>
 
-    <!-- 自选 -->
     <div class="el_bill_box"
-      :class="this.showTabs===2?'el_bill_box':'hide'">
-      <div class="el_bill_title">
-        <span>推荐号码</span>
+      :class="this.showTabs===1?'el_bill_box':'hide'">
+      <div class="ul_bill_type">
+        <span>单期订单</span>
       </div>
       <ul class="el_bill_number">
         <li>01</li>
@@ -74,8 +66,34 @@
         <li>05</li>
         <li>06</li>
       </ul>
-      <div class="el_proposal">
-          <span>建议追单16082402-16082532期（100期）</span>
+      <div class="el_bill_title">
+        <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
+      </div>
+      <div class="el_button">
+        <span class="el_stop_btn">花费&nbsp<font color="#42c1b1">2.00</font>元</span>
+      </div>
+      <div class="el_button">
+        <span class="el_stop_btn">未中奖/奖金200.00</span>
+      </div>
+    </div>
+
+    <!-- 自选 -->
+    <div class="el_bill_box"
+      :class="this.showTabs===2?'el_bill_box':'hide'">
+      <table width="100%" class="el_bill_number_table">
+        <tr>
+        <td>01</td>
+        <td>02</td>
+        <td>03</td>
+        <td>04</td>
+        <td>05</td>
+        <td>06</td>
+        <td>06</td>
+        <td>06</td>
+        </tr>
+      </table>
+      <div class="el_bill_title">
+        <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
       </div>
       <div class="el_state_box">
             <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
@@ -84,9 +102,6 @@
       <div class="el_state_box">
             <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
             <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
-      </div>
-      <div class="el_button">
-        <span class="el_stop_btn">终止跟单</span>
       </div>
       <div class="el_button">
         <span class="el_stop_btn">未中奖/奖金200.00</span>
@@ -159,11 +174,13 @@ ul,a,p{
   margin-top: 0.5rem;
   margin-left: auto;
   margin-right: auto;
+  border: 0.05rem solid #eaeaea;
 }
 .el_bill_title{
   width: 100%;
   height: 1.3rem;
   background-color: #fff;
+  border-top: 0.05rem solid #f0f0f0;
 }
 .el_bill_title span{
   width: 100%;
@@ -172,16 +189,20 @@ ul,a,p{
   text-align: center;
   font-size: 0.6rem;
 }
-.el_bill_number{
+.el_bill_number,.el_bill_number_table{
   width: 100%;
-  height: 2.2rem;
+  height: 2.5rem;
   background-color: #fff;
+}
+.el_bill_number_table tr td{
+  line-height: 2.5rem;
+  text-align: center
 }
 .el_bill_number li{
   width: 16.6%;
   float: left;
   display: block;
-  line-height: 2rem;
+  line-height: 2.5rem;
   text-align: center
 }
 .el_proposal{
@@ -250,11 +271,24 @@ ul,a,p{
   display: block;
   float: left;
   font-size: 0.7rem;
+  color: #666666;
 }
 .el_click_white{
   color: white;
 }
 .hide{
   display: none;
+}
+.ul_bill_type{
+  width: 100%;
+  height:1.8rem;
+  background-color: white;
+  border-bottom: 0.05rem solid #f0f0f0;
+}
+.ul_bill_type span{
+  font-size: 0.6rem;
+  line-height: 1.8rem;
+  text-align: center;
+  display: block;
 }
 </style>

@@ -3,45 +3,24 @@
   <meta name = "format-detection" content = "telephone=no">
 
   <div class="content" transition="bounce">
-    <!-- 顶部操作栏 -->
-    <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/home', replace: true}">
-        <img src="/img/11/return.png">
-      </a>
-      <strong>自选付款区</strong>
-      <div class="el_placeholder">&nbsp</div>
-    </div>
-
-    <!-- 推荐号码 -->
-    <div class="el_recommend">
-        <span>自选号码-任6</span>
-    </div>
-    <table width="100%" class="recommendation_number_box">
-      <tr align="center">
-        <!-- 数组带入并根据数组数量自动循环 -->
-        <td v-for="n in numberList">
-          {{n}}
-        </td>
-      </tr>
-    </table>
 
     <!-- 计算表格 -->
     <table class="el_number_table" width="100%" border="0" cellpadding="0" cellspacing="0">
-      <tr>
+      <!-- <tr>
         <th><span>序号</span></th>
         <th><span>期号</span></th>
         <th><span>倍数</span></th>
         <th><span>累计投入</span></th>
         <th><span>中奖盈利</span></th>
         <th><span>利润率</span></th>
-      </tr>
+      </tr> -->
       <tr v-for="l in showList">
-        <td><span>{{l.id}}</span></td>
-        <td><span>{{l.pid}}</span></td>
-        <td><span>{{l.mul}}</span></td>
-        <td><span>{{l.buy}}</span></td>
-        <td><span>{{l.mon}}</span></td>
-        <td><span>{{l.rate}}%</span></td>
+        <td class="el_number_order"><span>{{l.id}}</span></td>
+        <td class="el_number_stage"><span>{{l.pid}}</span></td>
+        <td class="el_number_times"><span>{{l.mul}}</span></td>
+        <td class="el_number_investment"><span>{{l.buy}}</span></td>
+        <td class="el_number_profit"><span>{{l.mon}}</span></td>
+        <td class="el_number_rate"><span>{{l.rate}}%</span></td>
       </tr>
     </table>
   </div>
@@ -49,6 +28,7 @@
   <!-- 付款窗口 -->
   <div class="el_payment_box">
       <div class="el_payment_proposal">
+        <span>奖金&nbsp&nbsp元</span>
         <span>需&nbsp{{totalMoney}}&nbsp元</span>
       </div>
       <ul class="el_condition_input">
@@ -85,6 +65,37 @@
         付款</span>
       </div>
   </div>
+  <!-- 顶部操作栏 -->
+  <div class="el_head">
+    <a class="el_return_btn" v-link="{path: '/home', replace: true}">
+      <img src="/img/11/return.png">
+    </a>
+    <strong>自选付款区</strong>
+    <div class="el_placeholder">&nbsp</div>
+  </div>
+
+  <!-- 推荐号码 -->
+  <div class="el_recommend_box">
+    <div class="el_recommend">
+        <span>{{gameType | gameTypeFilter}}</span>
+    </div>
+    <table width="100%" class="recommendation_number_box">
+      <tr align="center">
+        <!-- 数组带入并根据数组数量自动循环 -->
+        <td v-for="n in numberList">
+          {{n}}
+        </td>
+      </tr>
+    </table>
+    <div class="el_number_title">
+      <span class="el_number_order">序号</span>
+      <span class="el_number_stage">期号</span>
+      <span class="el_number_times">倍数</span>
+      <span class="el_number_investment">累计投入</span>
+      <span class="el_number_profit">中奖盈利</span>
+      <span class="el_number_rate">利润率</span>
+    </div>
+  </div>
 
   <!-- 弹出窗口 -->
   <div class="el_eject_window_box"
@@ -93,7 +104,7 @@
     <div class="el_eject_window">
       <div class="el_confirm_info">
         <span class="el_confirm_info_up">总计消费640.00元</span>
-        <span class="el_confirm_info_lower">（如终止追单，剩余金额将返还到您的账户）</span>
+        <span class="el_confirm_info_lower">（博彩有风险，投注需谨慎）</span>
       </div>
       <div class="el_button">
         <span class="el_button_left"
@@ -221,6 +232,8 @@ ul,a,p{
   height: 2.5rem;
   background-color: #282828;
   overflow: hidden;
+  position: fixed;
+  top: 0;
 }
 .el_return_btn{
   display: block;
@@ -247,6 +260,8 @@ ul,a,p{
   float: left;
 }
 .el_recommend{
+  position: fixed;
+  top: 2.5rem;
   width: 100%;
   height: 1.2rem;
   background-color: #282828;
@@ -263,13 +278,16 @@ ul,a,p{
   width: 100%;
   height: 2.5rem;
   background-color: #282828;
+  position: fixed;
+  top: 3.7rem;
 }
 .recommendation_number_box tr td{
   color: #fff;
 }
 .el_number_table{
   background-color: white;
-  margin-bottom: 6.3rem;
+  margin-bottom: 6.35rem;
+  margin-top: 8.7rem;
 }
 .el_number_table tr{
   width: 100%;
@@ -284,7 +302,7 @@ ul,a,p{
   line-height: 1.6rem;
   text-align: center;
   margin: 0 auto;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
 }
 .el_payment_box{
   width: 100%;
@@ -420,5 +438,42 @@ ul,a,p{
 }
 .hide{
   display: none;
+}
+.el_number_title{
+  width: 100%;
+  height: 2.5rem;
+  background-color: white;
+  position: fixed;
+  top: 6.2rem;
+}
+.el_number_title span{
+  line-height: 2.5rem;
+  font-size: 0.6rem;
+  text-align: center;
+  display: block;
+  float: left;
+}
+.el_number_order{
+  width: 10%;
+}
+.el_number_stage{
+  border-left: 0.05rem solid #f0f0f0;
+  width: 15%;
+}
+.el_number_times{
+  width: 10%;
+  border-left: 0.05rem solid #f0f0f0;
+}
+.el_number_investment{
+  width: 20%;
+  border-left: 0.05rem solid #f0f0f0;
+}
+.el_number_profit{
+  width: 20%;
+  border-left: 0.05rem solid #f0f0f0;
+}
+.el_number_rate{
+  width: 25%;
+  border-left: 0.05rem solid #f0f0f0;
 }
 </style>

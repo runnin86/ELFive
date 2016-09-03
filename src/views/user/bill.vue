@@ -13,27 +13,27 @@
       <div class="el_placeholder">&nbsp</div>
     </div>
     <div class="el_choice_box">
-      <strong class="el_recharge_btn"
+      <!-- <strong class="el_recharge_btn"
         @click="this.showTabs = 1"
         :class="this.showTabs===1?'el_click_white':''">
         充值
-      </strong>
+      </strong> -->
       <strong class="el_purchase_btn"
-        @click="this.showTabs = 2"
-        :class="this.showTabs===2?'el_click_white':''">
+        @click="this.showTabs = 1"
+        :class="this.showTabs===1?'el_click_white':''">
       购买</strong>
       <strong class="el_bonus_btn"
-        @click="this.showTabs = 3"
-        :class="this.showTabs===3?'el_click_white':''">
+        @click="this.showTabs = 2"
+        :class="this.showTabs===2?'el_click_white':''">
       奖金</strong>
       <strong class="el_cash_btn"
-        @click="this.showTabs = 4"
-        :class="this.showTabs===4?'el_click_white':''">
+        @click="this.showTabs = 3"
+        :class="this.showTabs===3?'el_click_white':''">
       提现</strong>
     </div>
 
     <!-- 充值 -->
-    <table class="el_recharge_box" width="100%" border="0" cellpadding="0" cellspacing="0"
+    <!-- <table class="el_recharge_box" width="100%" border="0" cellpadding="0" cellspacing="0"
       :class="this.showTabs===1?'el_recharge_box':'hide'">
       <tr>
         <th>日期</th>
@@ -45,11 +45,11 @@
         <td>200.00</td>
         <td>成功</td>
       </tr>
-    </table>
+    </table> -->
 
     <!-- 购买 -->
     <table class="el_purchase_box" width="100%" border="0" cellpadding="0" cellspacing="0"
-      :class="this.showTabs===2?'el_recharge_box':'hide'">
+      :class="this.showTabs===1?'el_recharge_box':'hide'">
       <tr>
         <th>期数</th>
         <th>彩种</th>
@@ -66,7 +66,7 @@
 
     <!-- 奖金 -->
     <table class="el_bonus_box" width="100%" border="0" cellpadding="0" cellspacing="0"
-      :class="this.showTabs===3?'el_bonus_box':'hide'">
+      :class="this.showTabs===2?'el_bonus_box':'hide'">
       <tr>
         <th>期数</th>
         <th>彩种</th>
@@ -83,7 +83,7 @@
 
     <!-- 提现 -->
     <table class="el_recharge_box" width="100%" border="0" cellpadding="0" cellspacing="0"
-      :class="this.showTabs===4?'el_recharge_box':'hide'">
+      :class="this.showTabs===3?'el_recharge_box':'hide'">
       <tr>
         <th>日期</th>
         <th>金额</th>
@@ -92,7 +92,7 @@
       <tr align="center">
         <td>08.24<br>11:20</td>
         <td>200.00</td>
-        <td>审核中</td>
+        <td>拒绝<br>支付宝未实名认证</td>
       </tr>
     </table>
 
@@ -156,14 +156,32 @@ ul,a,p{
   height:2.5rem;
   background-color: #282828;
 }
-.el_recharge_btn,.el_purchase_btn,.el_bonus_btn,.el_cash_btn{
-  width:25%;
+.el_purchase_btn{
+  width:33%;
   text-align: center;
   line-height: 2.5rem;
   display: block;
   float: left;
   font-size: 0.7rem;
-  color: #999999;
+  color: #666666;
+}
+.el_bonus_btn{
+  width:34%;
+  text-align: center;
+  line-height: 2.5rem;
+  display: block;
+  float: left;
+  font-size: 0.7rem;
+  color: #666666;
+}
+.el_cash_btn{
+  width:33%;
+  text-align: center;
+  line-height: 2.5rem;
+  display: block;
+  float: left;
+  font-size: 0.7rem;
+  color: #666666;
 }
 .el_click_white{
   color: white;

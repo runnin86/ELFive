@@ -8,29 +8,31 @@
       <a class="el_return_btn" v-link="{path: '/login', replace: true}">
         <img src="/img/11/return.png">
       </a>
-      <strong>忘记密码</strong>
+      <strong>注册</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
 
     <!-- 登录/注册 -->
     <div class="el_forget_window">
       <div class="el_title_box">
-        <strong class="el_title">忘记密码</strong>
+        <strong class="el_title">注册</strong>
       </div>
-      <div class="el_phone_input_box">
-        <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-      </div>
-      <div class="el_code_input_box">
-        <input class="el_code" id="code" placeholder="验证码" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-        <a class="el_get_code" href="#">获取验证码</a>
-      </div>
-      <div class="el_pw_input_box">
-        <input class="el_password" id="password" placeholder="输入新密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-      </div>
-      <div class="el_true_go_box">
-        <a class="el_login_go"
-          @click="this.showTabs = 2">
-        确定</a>
+      <div class="el_sign_up_box">
+        <div class="el_phone_input_box">
+          <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_code_input_box">
+          <input class="el_code" id="code" placeholder="支付宝账号" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_code_input_box">
+          <input class="el_code" id="code" placeholder="姓名（需与支付宝一致）" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_pw_input_box">
+          <input class="el_password" id="password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <div class="el_login_go_box">
+          <a v-link="{path: '/login', replace: true}" class="el_login_go">注册</a>
+        </div>
       </div>
     </div>
   </div>
@@ -111,7 +113,7 @@ ul,a,p{
 }
 .el_forget_window{
   width: 90%;
-  margin: 1rem 5%;
+  margin: 0.5rem 5%;
   background-color: white;
   overflow: hidden;
 }
@@ -157,7 +159,7 @@ ul,a,p{
 .el_code{
   padding-left: 0.5rem;
   font-size: 0.7rem;
-  width: 64%;
+  width: 94%;
   border: none;
   background-color: #f5f5f5;
   height: 2.5rem;
@@ -224,6 +226,9 @@ ul,a,p{
 }
 .el_button_left{
   border-right: 0.05rem #f0f0f0 solid;
+}
+.el_login_go_box{
+  border-top: 0.05rem solid #f0f0f0;
 }
 .hide{
   display: none;

@@ -29,24 +29,12 @@
       <div class="el_proposal">
         <span>建议追单16082402-16082532期（100期）</span>
       </div>
-      <div class="el_state_box">
-        <span class="el_state">状态&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
-        <span class="el_process">已跟&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
-      </div>
-      <div class="el_state_box">
-        <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
-        <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
-      </div>
       <div class="el_button"
         :class="this.showTabs===2?'hide':''">
         <span class="el_see_btn">付费查看</span>
         <a class="el_documentary_btn"
          v-link="{path: '/payment', replace: true}">
         跟单</a>
-      </div>
-      <div class="el_button">
-        <span class="el_stop_btn">
-        终止跟单</span>
       </div>
     </div>
   </div>
