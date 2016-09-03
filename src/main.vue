@@ -14,7 +14,6 @@
 <script>
 import Bar from './components/Bar'
 import BarItem from './components/BarItem'
-import {hpApi, planApi} from './util/service'
 import {loadScrollMsgForPlan, loadBannerForPlan, loadRangeList, loadBannerForHP, loadScrollMsgForHP, loadHpList, loadHpList10, loadUserUnreadMsg, loadNotice, setShowImg} from './vuex/actions'
 import store from './vuex/store'
 // import {wxShareConfig} from './util/util'
@@ -128,8 +127,6 @@ export default {
     // if (window.localStorage.getItem('imageSwitch') === null) {
     window.localStorage.setItem('imageSwitch', true)
     // }
-    // 设置购物车图标
-    this.setCardBadge()
   },
   data () {
     return {
@@ -156,51 +153,6 @@ export default {
         pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
       }
       return pwd
-    },
-    setCardBadge () {
-      let token = window.localStorage.getItem('token')
-      if (token) {
-        // 处理购物车图标右上角的数字
-        this.cardBadge = 0
-        /*
-         * 获取服务器中的乐夺宝购物车信息
-         */
-        this.$http.get(hpApi.redisCart, {},
-          {
-            headers: {
-              'x-token': window.localStorage.getItem('token')
-            },
-            emulateJSON: true
-          })
-        .then(({data: {code, msg, info}})=>{
-          if (info) {
-            this.cardBadge += info.length
-          }
-        }).catch((e)=>{
-          console.error('无法获取乐夺宝购物车:' + e)
-        })
-        /*
-         * 获取服务器中的方案购物车信息
-         */
-        this.$http.post(planApi.queryCart, {},
-          {
-            headers: {
-              'x-token': window.localStorage.getItem('token')
-            },
-            emulateJSON: true
-          })
-        .then(({data: {code, msg, result}})=>{
-          if (code === 1) {
-            // 展示方案的菜单
-            this.showPlan = true
-            if (result) {
-              this.cardBadge += result.length
-            }
-          }
-        }).catch((e)=>{
-          console.error('无法获取方案购物车:' + e)
-        })
-      }
     }
   },
   components: {

@@ -29,13 +29,14 @@
       <div class="el_login_box"
         :class="this.showTabs===1?'el_login_box':'hide'">
         <div class="el_phone_input_box">
-          <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="number" v-model="userPhone" class="el_phone" placeholder="输入手机号">
         </div>
         <div class="el_pw_input_box">
-          <input class="el_password" id="password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="password" v-model="password" class="el_password" placeholder="输入密码">
         </div>
         <div class="el_login_go_box">
-          <a v-link="{path: '/user', replace: true}" class="el_login_go">登录</a>
+          <a @click="login()" class="el_login_go"
+            :style="{backgroundColor: (submit ? '#1a6be4' : '#c8c9cb')}">登录</a>
         </div>
       </div>
 
@@ -57,24 +58,74 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script>
   import $ from 'zepto'
+  import {api} from '../../util/service'
 
   export default {
     ready () {
-      $.init()
     },
     data () {
       return {
-        showTabs: 1
+        showTabs: 1,
+        userPhone: window.localStorage.getItem('localPhone') ? window.localStorage.getItem('localPhone') : '',
+        password: '',
+        submit: false
       }
     },
     methods: {
+      login () {
+        window.localStorage.setItem('localPhone', this.userPhone)
+        if (!this.userPhone || !this.password) {
+          $.toast('请输入手机号或密码')
+          return
+        }
+        this.$http.post(api.login,
+          {
+            'uphone': this.userPhone,
+            'upass': this.password,
+            'code': '123'
+          })
+        .then(({data: {code, msg, data}})=>{
+          if (code === 1) {
+            if (data) {
+              let userInfo = $.parseJSON(data.user)
+              if (userInfo.userStatus === 0) {
+                $.toast('账户禁用')
+              }
+              else if (userInfo.userStatus === 1) {
+                window.localStorage.setItem('user', userInfo)
+                window.localStorage.setItem('token', data.token)
+                window.localStorage.setItem('openid', data.openid)
+                this.$route.router.go({path: '/user', replace: true})
+              }
+            }
+          }
+          $.toast(msg)
+        }).catch((e)=>{
+          $.alert('服务器连接中断...')
+          console.error('无法连接服务器:' + e)
+        })
+      }
+    },
+    watch: {
+      'userPhone': {
+        handler: function (newVal, oldVal) {
+          if (this.userPhone && this.password) {
+            this.submit = true
+          }
+        }
+      },
+      'password': {
+        handler: function (newVal, oldVal) {
+          if (this.userPhone && this.password) {
+            this.submit = true
+          }
+        }
+      }
     }
   }
 </script>
@@ -163,7 +214,6 @@ ul,a,p{
 .el_login_go{
   font-size: 0.7rem;
   width: 94%;
-  background-color: #1a6be4;
   margin: 0.475rem 3%;
   display: block;
   color: white;

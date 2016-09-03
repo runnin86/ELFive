@@ -7,7 +7,7 @@
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <img src="/img/11/title.png" class="el_title">
-      <a v-link="{ path: '/login', replace: true}">
+      <a @click="targetUserCenter()">
         <img src="/img/11/user_icon.png" class="el_user_btn">
       </a>
     </div>
@@ -202,6 +202,15 @@
         }
         else {
           $.toast('本玩法至少选择' + this.minBall + '个号码')
+        }
+      },
+      targetUserCenter () {
+        if (window.localStorage.getItem('user')) {
+          this.$route.router.go({path: '/user', replace: true})
+        }
+        else {
+          $.toast('你尚未登录')
+          this.$route.router.go({path: '/login', replace: false})
         }
       }
     }
