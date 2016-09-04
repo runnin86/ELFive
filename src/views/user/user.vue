@@ -28,11 +28,15 @@
       <div class="el_user_info_box">
         <div class="el_user_info_left">
           <span>可用余额</span>
-          <span class="el_balance">0.00</span>
+          <span class="el_balance">
+            {{userAccount}}
+          </span>
         </div>
         <div class="el_user_info_right">
           <span>冻结金额</span>
-          <span class="el_balance">0.00</span>
+          <span class="el_balance">
+            {{userFrozeAccount}}
+          </span>
         </div>
       </div>
     </div>
@@ -102,6 +106,7 @@
 
 <script>
   import VLayer from '../../components/PullToRefreshLayer'
+  import {api} from '../../util/service'
   import $ from 'zepto'
 
   export default {
@@ -112,7 +117,9 @@
     data () {
       return {
         showTabs: 1,
-        user: JSON.parse(window.localStorage.getItem('user'))
+        user: JSON.parse(window.localStorage.getItem('user')),
+        userAccount: '-',
+        userFrozeAccount: '-'
       }
     },
     methods: {
@@ -124,27 +131,39 @@
           $.showIndicator()
           // 执行查询
           setTimeout(function () {
-            console.log('刷新数据')
-            // let token = window.localStorage.getItem('token')
-            // // 获取账户本金
-            // this.getCoinmeter(token)
-            // // 获取用户盈利
-            // this.getUserate(token)
-            // // 获取用户销量
-            // this.getUsersales(token)
-            // // 获取用户销量(上月)
-            // this.getLastsales(token)
-            // // 从vuex中获取用户未读消息
-            // this.$root.loadUserUnreadMsg()
+            let token = window.localStorage.getItem('token')
+            // 获取账户信息
+            this.getUserAccount(token)
             // 加载完毕需要重置
             $.pullToRefreshDone('.pull-to-refresh-content')
             $.hideIndicator()
-          }, 800)
+          }.bind(this), 800)
         }
         else {
           // 加载完毕需要重置
           $.pullToRefreshDone('.pull-to-refresh-content')
         }
+      },
+      /*
+       * 获取账户本金
+       */
+      getUserAccount (token) {
+        this.$http.get(api.userAccount, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          if (code === 1) {
+            this.userAccount = data.userAccount
+            this.userFrozeAccount = data.userFrozeAccount
+          }
+          else {
+            console.log('获取账户错误:' + msg)
+          }
+        }).catch((e)=>{
+          console.error('获取账户信息失败:' + e)
+        })
       }
     },
     components: {

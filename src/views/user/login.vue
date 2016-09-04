@@ -83,12 +83,15 @@
           $.toast('请输入手机号或密码')
           return
         }
-        this.$http.post(api.login,
-          {
-            'uphone': this.userPhone,
-            'upass': this.password,
-            'code': '123'
-          })
+        let spcarInfos = {
+          'uphone': this.userPhone,
+          'upass': this.password,
+          'code': '123'
+        }
+        // let postBody = JSON.stringify(spcarInfos)
+        this.$http.post(api.login, spcarInfos, {
+          emulateJSON: true
+        })
         .then(({data: {code, msg, data}})=>{
           if (code === 1) {
             if (data) {
