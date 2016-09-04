@@ -17,19 +17,33 @@
         <span>推荐号码</span>
     </div>
     <div class="recommendation_number_box">
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
-        <strong >01</strong>
+        <strong>
+          {{recommendBalls ? recommendBalls.split(',')[0] : ''}}
+        </strong>
+        <strong>
+          {{recommendBalls ? recommendBalls.split(',')[1] : ''}}
+        </strong>
+        <strong>
+          {{recommendBalls ? recommendBalls.split(',')[2] : ''}}
+        </strong>
+        <strong>
+          {{recommendBalls ? recommendBalls.split(',')[3] : ''}}
+        </strong>
+        <strong>
+          {{recommendBalls ? recommendBalls.split(',')[4] : ''}}
+        </strong>
+        <strong>
+          {{recommendBalls ? recommendBalls.split(',')[5] : ''}}
+        </strong>
     </div>
     <!-- 推荐号码即时状态 -->
     <table class="el_info" width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td style="border-left:#fff;">
           <p>推荐期数</p>
-          <p>100</p>
+          <p>
+            {{totperiods}}
+          </p>
         </td>
         <td>
           <p>已进行</p>
@@ -41,7 +55,9 @@
         </td>
         <td>
           <p>状态</p>
-          <p>进行中</p>
+          <p>
+            {{recommendStatus === '1' ? '进行中' : '-'}}
+          </p>
         </td>
       </tr>
     </table>
@@ -113,6 +129,7 @@
 
 <script>
   import Vue from 'vue'
+  import {api} from '../../util/service'
   import $ from 'zepto'
 
   Vue.filter('gameTypeFilter', function (gt) {
@@ -133,13 +150,20 @@
   export default {
     ready () {
       $.init()
+      if (window.localStorage.getItem('user')) {
+        // 登录获取推荐号码
+        this.getRecommendNum()
+      }
     },
     data () {
       return {
         numberList: new Set(),
         showSelect: false,
         gameType: 'R5',
-        minBall: 5
+        minBall: 5,
+        recommendBalls: null,
+        recommendStatus: null,
+        totperiods: null
       }
     },
     methods: {
@@ -211,6 +235,29 @@
         else {
           $.toast('你尚未登录')
           this.$route.router.go({path: '/login', replace: false})
+        }
+      },
+      /*
+       * 获取推荐号码
+       */
+      getRecommendNum () {
+        let token = window.localStorage.getItem('token')
+        if (token) {
+          this.$http.get(api.recommendNum, {}, {
+            headers: {
+              'x-token': token
+            }
+          })
+          .then(({data: {code, data, msg}})=>{
+            console.log(data)
+            // if (code === 1) {
+            //   this.recommendBalls = data.nums
+            //   this.totperiods = data.totperiods
+            //   this.recommendStatus = data.processtatus
+            // }
+          }).catch((e)=>{
+            console.error('获取推荐号码失败:' + e)
+          })
         }
       }
     }
