@@ -22,11 +22,6 @@ export default function (router) {
         require(['./views/pay/choose'], resolve)
       }
     },
-    '/payment': {
-      component (resolve) {
-        require(['./views/pay/payment'], resolve)
-      }
-    },
     '/history': {
       component (resolve) {
         require(['./views/lottery/history'], resolve)
@@ -82,10 +77,10 @@ export default function (router) {
         require(['./views/user/rule'], resolve)
       }
     },
-    '/home/optional_payment/:number/:gameType/:from': {
-      name: 'optional_payment',
+    '/home/payment/:number/:gameType/:from': {
+      name: 'payment',
       component (resolve) {
-        require(['./views/pay/optional_payment'], resolve)
+        require(['./views/pay/payment'], resolve)
       }
     }
   })

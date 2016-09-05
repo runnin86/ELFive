@@ -146,9 +146,8 @@
         // isCanQuit: "0"     -> 1 可以取消  0 不能取消
         if (isCanDoc === '1') {
           // 跳转至模拟收益
-          // this.$route.router.go({path: '/payment', replace: false})
           this.$route.router.go({
-            name: 'optional_payment',
+            name: 'payment',
             params: {
               number: nums,
               gameType: 'R6',

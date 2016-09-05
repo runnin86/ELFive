@@ -69,24 +69,22 @@
     <a class="el_return_btn" v-link="{path: '/home', replace: true}">
       <img src="/img/11/return.png">
     </a>
-    <strong>跟单付款区</strong>
+    <strong>{{from === 'gd' ? '跟单' : '自选'}}付款区</strong>
     <div class="el_placeholder">&nbsp</div>
   </div>
 
   <!-- 推荐号码 -->
   <div class="el_recommend_box">
     <div class="el_recommend">
-        <span>跟单号码</span>
+        <span v-if="from === 'gd'">跟单号码</span>
+        <span v-else>{{gameType | gameTypeFilter}}</span>
     </div>
     <table width="100%" class="recommendation_number_box">
-      <tr>
+      <tr align="center">
         <!-- 数组带入并根据数组数量自动循环 -->
-        <td>01</td>
-        <td>02</td>
-        <td>03</td>
-        <td>04</td>
-        <td>05</td>
-        <td>06</td>
+        <td v-for="n in numberList">
+          {{n}}
+        </td>
       </tr>
     </table>
     <div class="el_number_title">
@@ -120,7 +118,24 @@
 
 <script>
 import $ from 'zepto'
+import Vue from 'vue'
 import {getOdds} from '../../util/util'
+
+Vue.filter('gameTypeFilter', function (gt) {
+  console.log(gt)
+  // 计算时间差
+  let name = ''
+  if (gt === 'R5') {
+    name = '玩法-任选五'
+  }
+  else if (gt === 'R6') {
+    name = '玩法-任选六'
+  }
+  else if (gt === 'R7') {
+    name = '玩法-任选七'
+  }
+  return name
+})
 
 export default {
   ready () {
@@ -130,6 +145,9 @@ export default {
   data () {
     return {
       showTabs: 1,
+      from: this.$route.params.from,
+      gameType: this.$route.params.gameType,
+      numberList: this.$route.params.number.split(','), // 截取数组
       currentPeriod: 78, // 当前期数(从服务器获取)
       price: 2, // 单价(从上一页传递过来)
       followPeriod: 7,
@@ -283,7 +301,6 @@ ul,a,p{
 }
 .recommendation_number_box tr td{
   color: #fff;
-  text-align: center;
 }
 .el_number_table{
   background-color: white;

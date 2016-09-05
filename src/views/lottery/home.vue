@@ -223,7 +223,7 @@
               nums.push(item)
             }
             this.$route.router.go({
-              name: 'optional_payment',
+              name: 'payment',
               params: {
                 number: nums,
                 gameType: this.gameType,
