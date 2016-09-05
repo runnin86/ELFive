@@ -169,3 +169,13 @@ export let getOdds = (gameType) => {
   }
   return parseFloat(odds)
 }
+
+// 获得组合的个数C(6,5)=6
+export let getCombinationCount = (m, n) => {
+  n = (n < m - n) ? n : (m - n)
+  let a = 1
+  for (let i = 1; i <= n; i++) {
+    a = a * m-- / i
+  }
+  return parseInt(a, 0)
+}

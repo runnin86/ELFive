@@ -127,7 +127,7 @@
 
     <!-- 购买按钮 -->
     <div class="el_documentary_btn">
-      <span @click="buy()">购买</span>
+      <span @click="buy()">共{{bets}}注 {{bets*2}}元购买</span>
     </div>
   </div>
 </template>
@@ -135,6 +135,7 @@
 <script>
   import Vue from 'vue'
   import {api} from '../../util/service'
+  import {getCombinationCount} from '../../util/util'
   import $ from 'zepto'
 
   Vue.filter('gameTypeFilter', function (gt) {
@@ -164,6 +165,7 @@
     },
     data () {
       return {
+        bets: 0,
         numberList: new Set(), // 用户选中的号码
         showSelect: false, // 玩法选择
         gameType: 'R5', // 玩法类型
@@ -210,6 +212,10 @@
         let nums = []
         for (let item of this.numberList.keys()) {
           nums.push(item)
+        }
+        // 计算多少注
+        if (this.numberList.size >= this.minBall) {
+          this.bets = getCombinationCount(this.numberList.size, this.minBall)
         }
       },
       /*
