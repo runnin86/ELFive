@@ -14,45 +14,85 @@
     </div>
 
     <!-- 跟单票未购买状态 -->
-    <div class="el_bill_box">
+    <div class="el_bill_box"
+      v-for="doc in docList | orderBy 'istoll'" track-by="$index">
       <div class="el_bill_title">
         <span>推荐号码</span>
       </div>
       <ul class="el_bill_number">
-        <li>01</li>
-        <li>02</li>
-        <li>03</li>
-        <li>04</li>
-        <li>05</li>
-        <li>06</li>
+        <li>
+          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[0] : '*') : ''}}
+        </li>
+        <li>
+          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[1] : '*') : ''}}
+        </li>
+        <li>
+          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[2] : '*') : ''}}
+        </li>
+        <li>
+          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[3] : '*') : ''}}
+        </li>
+        <li>
+          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[4] : '*') : ''}}
+        </li>
+        <li>
+          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[5] : '*') : ''}}
+        </li>
       </ul>
       <div class="el_proposal">
-        <span>建议追单16082402-16082532期（100期）</span>
+        <span>{{doc.recinfo}}</span>
       </div>
-      <div class="el_button"
-        :class="this.showTabs===2?'hide':''">
-        <span class="el_see_btn">付费查看</span>
-        <a class="el_documentary_btn"
-         v-link="{path: '/payment', replace: true}">
-        跟单</a>
+      <div class="el_button" :class="this.showTabs===2?'hide':''">
+        <span class="el_see_btn">
+          付费查看
+        </span>
+        <a class="el_documentary_btn" v-link="{path: '/payment', replace: true}">
+         跟单
+       </a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import {api} from '../../util/service'
   import $ from 'zepto'
 
   export default {
     ready () {
       $.init()
+      this.getDocList()
     },
     data () {
       return {
-        showTabs: 1
+        showTabs: 1,
+        docList: []
       }
     },
     methods: {
+      getDocList () {
+        let token = window.localStorage.getItem('token')
+        // 获取跟单选购列表
+        this.$http.post(api.canDocList, {
+          'pagenum': 1,
+          'pagesize': 20
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.docList = data
+          }
+          else {
+            $.toast(msg)
+          }
+        }).catch((e)=>{
+          console.error('获取跟单选购列表失败:' + e)
+        })
+      }
     }
   }
 </script>
