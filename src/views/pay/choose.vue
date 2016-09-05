@@ -21,22 +21,22 @@
       </div>
       <ul class="el_bill_number">
         <li>
-          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[0]) : ''}}
+          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 0}}
         </li>
         <li>
-          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[1]) : ''}}
+          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 1}}
         </li>
         <li>
-          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[2]) : ''}}
+          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 2}}
         </li>
         <li>
-          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[3]) : ''}}
+          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 3}}
         </li>
         <li>
-          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[4]) : ''}}
+          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 4}}
         </li>
         <li>
-          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[5]) : ''}}
+          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 5}}
         </li>
       </ul>
       <div class="el_proposal">
@@ -56,7 +56,25 @@
 
 <script>
   import {api} from '../../util/service'
+  import Vue from 'vue'
   import $ from 'zepto'
+
+  Vue.filter('numberFilter', function (value, isFree, isPay, index) {
+    // isFree: 0 免费  1收费
+    // numPayStatus: 0 未付费不能查看   1 已付可看
+    let num = '*'
+    if (isFree === 0) {
+      // 免费的直接可看
+      num = value.split(',')[index]
+    }
+    else if (isFree === 1) {
+      if (isPay === 1) {
+        // 收费的付款后可看
+        num = value.split(',')[index]
+      }
+    }
+    return num
+  })
 
   export default {
     ready () {
@@ -73,6 +91,12 @@
        * 获取跟单选购列表
        */
       getDocList () {
+        // isCanDoc: "1"      -> 1 是可跟   0 是不可跟
+        // isCanQuit: "0"     -> 1 可以取消  0 不能取消
+        // numPayStatus: 0    -> 0 未付费查看   1 已付可看
+        // isToll: 0          -> 0 免费      1收费
+        // nums: "01,03,04,06,07,08"
+        // recInfo: "推荐期号2016090540-2016090662(100期)"
         let token = window.localStorage.getItem('token')
         // 获取跟单选购列表
         this.$http.get(api.recRecord, {}, {
