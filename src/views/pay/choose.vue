@@ -43,12 +43,32 @@
         <span>{{doc.recInfo}}</span>
       </div>
       <div class="el_button">
-        <span class="el_see_btn">
+        <span v-if="doc.isToll===1 || doc.numPayStatus===1"
+          class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
           付费查看
         </span>
-        <a class="el_documentary_btn" @click="doDocumentary()">
+        <a @click="doDocumentary()"
+          class="el_documentary_btn"
+          :style="{width: (doc.isToll===1 || doc.numPayStatus===1 ? '50%' : '100%')}">
          跟单
        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 弹出窗口 -->
+  <div :class="this.showPayWindow?'el_eject_window_box':'hide'">
+    <div class="el_eject_window">
+      <div class="el_confirm_info">
+        <span class="el_confirm_info_up">总计消费500.00元</span>
+      </div>
+      <div class="el_button">
+        <span class="el_button_left" @click="this.showPayWindow = false">
+          取消
+        </span>
+        <span class="el_button_right" @click="this.buyViewRec()">
+          确定
+        </span>
       </div>
     </div>
   </div>
@@ -83,7 +103,9 @@
     },
     data () {
       return {
-        docList: []
+        docList: [],
+        showPayWindow: false,
+        payRid: null
       }
     },
     methods: {
@@ -122,6 +144,36 @@
       doDocumentary () {
         console.log(3333)
         // /payment
+      },
+      /*
+       * 付费查看支付
+       */
+      buyViewRec () {
+        if (this.payRid) {
+          // 付费查看
+          let token = window.localStorage.getItem('token')
+          this.$http.post(api.payViewRec, {
+            'rid': this.payRid,
+            'price': 500,
+            'openid': '123'
+          }, {
+            headers: {
+              'x-token': token
+            }
+          })
+          .then(({data: {data, code, msg}})=>{
+            // console.log(data)
+            if (code === 1) {
+              this.showPayWindow = false
+              this.getDocList()
+            }
+            $.toast(msg)
+          }).catch((e)=>{
+            console.error('付费查看失败:' + e)
+          }).finally(()=>{
+            this.payRid = null
+          })
+        }
       }
     }
   }
@@ -235,9 +287,11 @@ ul,a,p{
   border-top: 0.05rem solid #f0f0f0;
   background-color: #fff;
 }
+.el_see_btn{
+  width: 50%;
+}
 .el_see_btn,.el_documentary_btn{
   font-size: 0.7rem;
-  width: 50%;
   line-height: 2.5rem;
   text-align: center;
   display: block;
@@ -255,5 +309,54 @@ ul,a,p{
 }
 .hide{
   display: none;
+}
+.el_eject_window_box{
+  display: block;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  top:0;
+  background-image: url(/img/11/el_black_bg.png);
+}
+.el_eject_window{
+  width: 80%;
+  background-color: white;
+  height: 7.5rem;
+  margin: 50% 10%;
+}
+.el_confirm_info{
+  width:100%;
+  height:5rem;
+  border-bottom:solid 0.05rem #f0f0f0;
+  overflow: hidden;
+}
+.el_confirm_info_up{
+  text-align: center;
+  line-height:3rem;
+  display: block;
+}
+.el_confirm_info_up{
+  font-size: 0.8rem;
+  margin-top: 0.9rem;
+}
+.el_confirm_info_lower{
+  font-size: 0.6rem;
+}
+.el_button{
+  width:100%;
+  height:2.5rem;
+  overflow: hidden;
+}
+.el_button_left,.el_button_right{
+  width: 50%;
+  line-height: 2.5rem;
+  text-align: center;
+  font-size: 0.7rem;
+  display: block;
+  float: left;
+}
+.el_button_left{
+  border-right: 0.05rem #f0f0f0 solid;
 }
 </style>
