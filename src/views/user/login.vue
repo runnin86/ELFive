@@ -30,7 +30,7 @@
       <div class="el_login_box"
         :class="this.showTabs===1?'el_login_box':'hide'">
         <div class="el_phone_input_box">
-          <input type="number" v-model="userPhone" class="el_phone" placeholder="输入手机号">
+          <input type="tel" v-model="userPhone" class="el_phone" placeholder="输入手机号">
         </div>
         <div class="el_pw_input_box">
           <input type="password" v-model="password" class="el_password" placeholder="输入密码">
@@ -43,18 +43,21 @@
         </div>
       </div>
 
-      <!-- 注册盒子 -->
+      <!-- 忘记密码盒子 -->
       <div class="el_sign_up_box"
         :class="this.showTabs===2?'el_sign_up_box':'hide'">
         <div class="el_phone_input_box">
-          <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="tel" v-model="forgetPhone" class="el_phone" placeholder="输入手机号">
         </div>
         <div class="el_code_input_box">
-          <input class="el_code" id="code" placeholder="验证码" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-          <a class="el_get_code" href="#">获取验证码</a>
+          <input type="tel" v-model="vCode" class="el_code" placeholder="验证码">
+          <a class="el_get_code" @click="getVerificationCode()"
+            :style="{backgroundColor: (forgetPhone ? '#1a6be4' : '#c8c9cb')}">
+            获取验证码
+          </a>
         </div>
         <div class="el_pw_input_box">
-          <input class="el_password" id="password" placeholder="输入新密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="password" v-model="newPwd" class="el_password" placeholder="输入新密码">
         </div>
         <div class="el_login_go_box">
           <a @click="forgetPwd()" class="el_login_go"
@@ -68,78 +71,133 @@
 </template>
 
 <script>
-  import $ from 'zepto'
-  import {api} from '../../util/service'
+import $ from 'zepto'
+import {api} from '../../util/service'
 
-  export default {
-    ready () {
-    },
-    data () {
-      return {
-        showTabs: 1,
-        userPhone: window.localStorage.getItem('localPhone') ? window.localStorage.getItem('localPhone') : '',
-        password: '',
-        loginSubmit: false,
-        forgetSubmit: false
+export default {
+  ready () {
+  },
+  data () {
+    return {
+      showTabs: 1,
+      userPhone: window.localStorage.getItem('localPhone') ? window.localStorage.getItem('localPhone') : '',
+      password: '',
+      loginSubmit: false,
+      forgetSubmit: false,
+      forgetPhone: null,
+      vCode: null,
+      newPwd: null
+    }
+  },
+  methods: {
+    /*
+     * 登录
+     */
+    login () {
+      window.localStorage.setItem('localPhone', this.userPhone)
+      if (!this.userPhone || !this.password) {
+        $.toast('请输入手机号或密码')
+        return
       }
-    },
-    methods: {
-      login () {
-        window.localStorage.setItem('localPhone', this.userPhone)
-        if (!this.userPhone || !this.password) {
-          $.toast('请输入手机号或密码')
-          return
-        }
-        $.showIndicator()
-        let spcarInfos = {
-          'uphone': this.userPhone,
-          'upass': this.password,
-          'code': '123'
-        }
-        // let postBody = JSON.stringify(spcarInfos)
-        this.$http.post(api.login, spcarInfos, {
-          emulateJSON: true
-        })
-        .then(({data: {code, msg, data}})=>{
-          if (code === 1) {
-            if (data) {
-              if (data.user.userStatus === 0) {
-                $.toast('账户禁用')
-              }
-              else if (data.user.userStatus === 1) {
-                window.localStorage.setItem('user', JSON.stringify(data.user))
-                window.localStorage.setItem('token', data.token)
-                window.localStorage.setItem('openid', data.openid)
-                this.$route.router.go({path: '/home', replace: true})
-              }
+      $.showIndicator()
+      let spcarInfos = {
+        'uphone': this.userPhone,
+        'upass': this.password,
+        'code': '123'
+      }
+      // let postBody = JSON.stringify(spcarInfos)
+      this.$http.post(api.login, spcarInfos, {
+        emulateJSON: true
+      })
+      .then(({data: {code, msg, data}})=>{
+        if (code === 1) {
+          if (data) {
+            if (data.user.userStatus === 0) {
+              $.toast('账户禁用')
             }
+            else if (data.user.userStatus === 1) {
+              window.localStorage.setItem('user', JSON.stringify(data.user))
+              window.localStorage.setItem('token', data.token)
+              window.localStorage.setItem('openid', data.openid)
+              this.$route.router.go({path: '/home', replace: true})
+            }
+          }
+        }
+        $.toast(msg)
+      }).catch((e)=>{
+        $.alert('服务器连接中断...')
+        console.error('无法连接服务器:' + e)
+      }).finally(()=>{
+        $.hideIndicator()
+      })
+    },
+    /*
+     * 忘记密码->获取验证码
+     */
+    getVerificationCode () {
+      if (this.forgetPhone) {
+        // 获取验证码
+        this.$http.post(api.getCheckCode, {
+          'uphone': this.forgetPhone
+        })
+        .then(({data: {code, msg}})=>{
+          if (code === 1) {
+            $.toast('验证码已发送至' + this.forgetPhone + ',请注意查收!')
           }
           $.toast(msg)
         }).catch((e)=>{
-          $.alert('服务器连接中断...')
-          console.error('无法连接服务器:' + e)
-        }).finally(()=>{
-          $.hideIndicator()
+          console.error('获取验证码失败:' + e)
         })
       }
+      else {
+        $.toast('请输入手机号码')
+      }
     },
-    watch: {
-      'userPhone': {
-        handler: function (newVal, oldVal) {
-          if (this.userPhone && this.password) {
-            this.loginSubmit = true
-          }
+    forgetPwd () {
+      if (!this.forgetPhone) {
+        $.toast('请填写手机号!')
+        return
+      }
+      if (!this.vCode) {
+        $.toast('请填写验证码!')
+        return
+      }
+      if (!this.newPwd) {
+        $.toast('请填写新密码!')
+        return
+      }
+      // 发送忘记密码请求
+      this.$http.post(api.findPwd, {
+        'uphone': this.forgetPhone,
+        'npass': this.newPwd,
+        'phoneCheckCode': this.vCode
+      })
+      .then(({data: {code, msg}})=>{
+        if (code === 1) {
+          this.forgetPhone = null
+          this.newPwd = null
+          this.vCode = null
+          this.showTabs = 1
         }
-      },
-      'password': {
-        handler: function (newVal, oldVal) {
-          if (this.userPhone && this.password) {
-            this.loginSubmit = true
-          }
-        }
+        $.toast(msg)
+      }).catch((e)=>{
+        console.error('找回密码失败:' + e)
+      })
+    }
+  },
+  watch: {
+    'userPhone,password': {
+      handler: function (newVal, oldVal) {
+        this.loginSubmit = this.userPhone && this.password
+      }
+    },
+    'forgetPhone,vCode,newPwd': {
+      handler: function (newVal, oldVal) {
+        this.forgetSubmit = this.forgetPhone && this.vCode && this.newPwd
       }
     }
   }
+}
 </script>
 
 <style scoped>
