@@ -47,9 +47,9 @@ export default function (router) {
         require(['./views/user/login'], resolve)
       }
     },
-    '/forget': {
+    '/register': {
       component (resolve) {
-        require(['./views/user/forget'], resolve)
+        require(['./views/user/register'], resolve)
       }
     },
     '/order': {

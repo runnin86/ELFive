@@ -5,9 +5,10 @@
   <div class="content" transition="pushtop">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/login', replace: true}">
+      <div class="el_return_btn"></div>
+      <!-- <a class="el_return_btn" v-link="{path: '/login', replace: true}">
         <img src="/img/11/return.png">
-      </a>
+      </a> -->
       <strong>注册</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
