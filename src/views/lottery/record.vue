@@ -16,21 +16,84 @@
     <table class="el_history_box"  width="100%" border="0" cellpadding="0"  cellspacing="0">
       <tr>
         <th width="26%">起始期数</th>
-        <th colspan="5">推荐号码</th>
+        <th colspan="6">推荐号码</th>
         <th width="26%">结果</th>
       </tr>
-      <tr align="center">
-        <td>16082602</td>
-        <td>02</td>
-        <td>03</td>
-        <td>04</td>
-        <td>05</td>
-        <td>06</td>
-        <td>26期命中</td>
+      <tr align="center" v-for="doc in docList">
+        <td>
+          {{doc.startperiods}}
+        </td>
+        <td>
+          {{doc.nums ? doc.nums.split(',')[0] : ''}}
+        </td>
+        <td>
+          {{doc.nums ? doc.nums.split(',')[1] : ''}}
+        </td>
+        <td>
+          {{doc.nums ? doc.nums.split(',')[2] : ''}}
+        </td>
+        <td>
+          {{doc.nums ? doc.nums.split(',')[3] : ''}}
+        </td>
+        <td>
+          {{doc.nums ? doc.nums.split(',')[4] : ''}}
+        </td>
+        <td>
+          {{doc.nums ? doc.nums.split(',')[5] : ''}}
+        </td>
+        <td>
+          {{doc.winnerperiods === null ? '未中' : (doc.winnerperiods + '期命中')}}
+        </td>
       </tr>
     </table>
   </div>
 </template>
+
+
+<script>
+  import {api} from '../../util/service'
+  import $ from 'zepto'
+
+  export default {
+    ready () {
+      $.init()
+      this.getHistoryList()
+    },
+    data () {
+      return {
+        docList: []
+      }
+    },
+    methods: {
+      /*
+       * 获取跟单选购列表(分页未完成)
+       */
+      getHistoryList () {
+        let token = window.localStorage.getItem('token')
+        // 获取跟单选购列表
+        this.$http.post(api.docHistory, {
+          'pagenum': 1,
+          'pagesize': 10
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.docList = data
+          }
+          else {
+            $.toast(msg)
+          }
+        }).catch((e)=>{
+          console.error('获取推荐历史失败:' + e)
+        })
+      }
+    }
+  }
+</script>
 
 <style scoped>
 body,ul{
