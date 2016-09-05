@@ -79,6 +79,10 @@
       <span class="el_code_tagging">二维码</span>
     </div>
 
+    <div class="el_exit">
+      <span @click="logout(this.$route.router)">退出登录</span>
+    </div>
+
   </div>
 
   <div class="el_code_eject"
@@ -123,6 +127,36 @@
       }
     },
     methods: {
+      /*
+       * 退出
+       */
+      logout (route) {
+        var buttons1 = [
+          {
+            text: '确定退出登录?',
+            label: true
+          },
+          {
+            text: '确定',
+            bold: true,
+            color: 'danger',
+            onClick: function () {
+              window.localStorage.removeItem('user')
+              window.localStorage.removeItem('token')
+              window.localStorage.removeItem('openid')
+              route.go({path: '/login', replace: true})
+            }
+          }
+        ]
+        var buttons2 = [
+          {
+            text: '取消'
+            // bg: 'danger'
+          }
+        ]
+        var groups = [buttons1, buttons2]
+        $.actions(groups)
+      },
       /*
        * 刷新
        */
@@ -451,5 +485,17 @@ ul,a,p{
 }
 .hide{
   display: none;
+}
+.el_exit{
+  width: 100%;
+  height: 2.5rem;
+  background-color: white;
+  margin-top: 0.5rem;
+}
+.el_exit span{
+  font-size: 0.7rem;
+  text-align: center;
+  display: block;
+  line-height: 2.5rem;
 }
 </style>
