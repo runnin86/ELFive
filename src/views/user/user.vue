@@ -74,7 +74,7 @@
     </div>
 
     <!-- 我的二维码 -->
-    <div class="el_mycode" @click="this.showTabs = 2">
+    <div class="el_mycode" @click="getQRCode()">
       <img src="/img/11/el_code_icon.png" class="el_code_icon">
       <span class="el_code_tagging">二维码</span>
     </div>
@@ -86,14 +86,15 @@
   </div>
 
   <div class="el_code_eject"
-    :class="this.showTabs===2?'el_code_eject':'hide'"
-    :class="this.showTabs===3?'el_code_eject':'hide'">
+    :class="this.showQRCode?'el_code_eject':'hide'">
     <div class="el_code_off"
-      @click="this.showTabs = 3">
+      @click="this.showQRCode = false">
       <img src="/img/11/el_code_off.png">
     </div>
     <div class="el_code_photo">
-      <img src="/img/11/code_photo.png">
+      <v-qrcode :val="QRData"
+        :size="QRsize" :bg-color="QRbgColor"
+        :fg-color="QRfgColor" level="L"></v-qrcode>
       <span>扫描二维码进行注册</span>
     </div>
     <div class="el_register_step" style="padding-top:0.5rem;">
@@ -110,6 +111,7 @@
 
 <script>
   import VLayer from '../../components/PullToRefreshLayer'
+  import VQrcode from '../../components/Qrcode'
   import {api} from '../../util/service'
   import $ from 'zepto'
 
@@ -123,13 +125,55 @@
     },
     data () {
       return {
-        showTabs: 1,
         user: JSON.parse(window.localStorage.getItem('user')),
         userAccount: '-',
-        userFrozeAccount: '-'
+        userFrozeAccount: '-',
+        showQRCode: false,
+        QRData: '',
+        QRbgColor: '#FFFFFF',
+        QRfgColor: '#000000',
+        QRsize: document.body.offsetWidth - 110
       }
     },
     methods: {
+      /*
+       * 刷新
+       */
+      refresh () {
+        if (this.user) {
+          $.showIndicator()
+          // 执行查询
+          setTimeout(function () {
+            // 获取账户信息
+            this.getUserAccount()
+            // 加载完毕需要重置
+            $.pullToRefreshDone('.pull-to-refresh-content')
+            $.hideIndicator()
+          }.bind(this), 800)
+        }
+      },
+      /*
+       * 获取账户本金
+       */
+      getUserAccount () {
+        let token = window.localStorage.getItem('token')
+        this.$http.get(api.userAccount, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          if (code === 1) {
+            this.userAccount = data.userAccount
+            this.userFrozeAccount = data.userFrozeAccount
+          }
+          else {
+            console.log('获取账户错误:' + msg)
+          }
+        }).catch((e)=>{
+          console.error('获取账户信息失败:' + e)
+        })
+      },
       /*
        * 退出
        */
@@ -175,38 +219,23 @@
         $.actions(groups)
       },
       /*
-       * 刷新
+       * 获取并展示二维码
        */
-      refresh () {
-        if (this.user) {
-          $.showIndicator()
-          // 执行查询
-          setTimeout(function () {
-            // 获取账户信息
-            this.getUserAccount()
-            // 加载完毕需要重置
-            $.pullToRefreshDone('.pull-to-refresh-content')
-            $.hideIndicator()
-          }.bind(this), 800)
-        }
-      },
-      /*
-       * 获取账户本金
-       */
-      getUserAccount () {
+      getQRCode () {
         let token = window.localStorage.getItem('token')
-        this.$http.get(api.userAccount, {}, {
+        this.$http.get(api.qrcode, {}, {
           headers: {
             'x-token': token
           }
         })
-        .then(({data: {code, data, msg}})=>{
+        .then(({data: {data, code, msg}})=>{
           if (code === 1) {
-            this.userAccount = data.userAccount
-            this.userFrozeAccount = data.userFrozeAccount
+            this.QRData = data
+            // this.QRData = 'http://h5.zqsml.com/reg?uid=2'
+            this.showQRCode = true
           }
           else {
-            console.log('获取账户错误:' + msg)
+            $.toast(msg)
           }
         }).catch((e)=>{
           console.error('获取账户信息失败:' + e)
@@ -214,7 +243,8 @@
       }
     },
     components: {
-      VLayer
+      VLayer,
+      VQrcode
     }
   }
 </script>
