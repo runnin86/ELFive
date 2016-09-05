@@ -59,9 +59,9 @@
         </li>
       </ul>
       <div class="el_payment_btn">
-        <span
-          @click="this.showTabs = 2">
-        付款</span>
+        <span @click="this.showPayButton=true">
+          付款
+        </span>
       </div>
   </div>
   <!-- 顶部操作栏 -->
@@ -99,18 +99,19 @@
 
   <!-- 弹出窗口 -->
   <div class="el_eject_window_box"
-    :class="this.showTabs===2?'el_eject_window_box':'hide'"
-    :class="this.showTabs===3?'el_eject_window_box':'hide'">
+    :class="this.showPayButton?'el_eject_window_box':'hide'">
     <div class="el_eject_window">
       <div class="el_confirm_info">
-        <span class="el_confirm_info_up">总计消费640.00元</span>
+        <span class="el_confirm_info_up">总计消费{{totalMoney | currency '¥'}}</span>
         <span class="el_confirm_info_lower">（博彩有风险，投注需谨慎）</span>
       </div>
       <div class="el_button">
-        <span class="el_button_left"
-          @click="this.showTabs = 3"
-        >取消</span>
-        <span class="el_button_right"  v-link="{path: '/choose', replace: true}">确定</span>
+        <span class="el_button_left" @click="this.showPayButton=false">
+          取消
+        </span>
+        <span class="el_button_right" @click="payOrder()">
+          确定
+        </span>
       </div>
     </div>
   </div>
@@ -120,6 +121,7 @@
 import $ from 'zepto'
 import Vue from 'vue'
 import {getOdds} from '../../util/util'
+import {api} from '../../util/service'
 
 Vue.filter('gameTypeFilter', function (gt) {
   // 计算时间差
@@ -143,12 +145,13 @@ export default {
   },
   data () {
     return {
-      showTabs: 1,
+      showPayButton: false,
       from: this.$route.params.from,
+      rid: this.$route.query.rid,
       gameType: this.$route.params.gameType,
       numberList: this.$route.params.number.split(','), // 截取数组
       currentPeriod: 78, // 当前期数(从服务器获取)
-      price: 2, // 单价(从上一页传递过来)
+      price: 2, // 单价(默认2元)
       followPeriod: 7,
       startMultiple: 1,
       expectProfit: 25,
@@ -207,6 +210,58 @@ export default {
       }
       // 总花费=showList的最后一条数据的累计投入
       this.totalMoney = this.showList[this.showList.length - 1].buy
+    },
+    /*
+     * 跟单支付
+     */
+    payOrder () {
+      let postBody = {}
+      let postUrl = ''
+      if (this.from === 'gd') {
+        // rid,startMultiple,totPeriods,ratePercent,openid
+        postUrl = api.payOrderByGD
+        postBody = {
+          rid: this.rid,
+          startMultiple: this.startMultiple,
+          totPeriods: this.followPeriod,
+          ratePercent: this.expectProfit,
+          totmount: this.totalMoney,
+          openid: '123'
+        }
+      }
+      else if (this.from === 'zx') {
+        // nums,unitPrice,multiple,totalPrice,gameType,startPeriods,openId
+        postUrl = api.payOrderByZX
+        postBody = {
+          nums: this.$route.params.number,
+          unitPrice: 2,
+          multiple: this.startMultiple,
+          totalPrice: this.totalMoney,
+          gameType: this.gameType,
+          startPeriods: this.followPeriod,
+          openid: '123'
+        }
+      }
+      if (postUrl) {
+        let token = window.localStorage.getItem('token')
+        this.$http.post(postUrl, postBody, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.showPayButton = false
+            setTimeout(() => {
+              this.$root.back()
+            }, 1500)
+          }
+          $.toast(msg)
+        }).catch((e)=>{
+          console.error(this.from + '跟单提交失败:' + e)
+        })
+      }
     }
   },
   watch: {

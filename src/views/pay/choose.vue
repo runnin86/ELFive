@@ -155,6 +155,9 @@
           // 跳转至模拟收益
           this.$route.router.go({
             name: 'payment',
+            query: {
+              rid: doc.rid
+            },
             params: {
               number: nums,
               gameType: 'R6',
