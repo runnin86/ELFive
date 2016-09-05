@@ -288,7 +288,7 @@
             }
           })
           .then(({data: {code, data, msg}})=>{
-            console.log(data)
+            // console.log(data)
             if (code === 1) {
               this.lastWinObj = data
             }
