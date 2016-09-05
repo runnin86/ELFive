@@ -42,11 +42,11 @@
       <div class="el_proposal">
         <span>{{doc.recinfo}}</span>
       </div>
-      <div class="el_button" :class="this.showTabs===2?'hide':''">
+      <div class="el_button">
         <span class="el_see_btn">
           付费查看
         </span>
-        <a class="el_documentary_btn" v-link="{path: '/payment', replace: true}">
+        <a class="el_documentary_btn" @click="doDocumentary()">
          跟单
        </a>
       </div>
@@ -65,11 +65,13 @@
     },
     data () {
       return {
-        showTabs: 1,
         docList: []
       }
     },
     methods: {
+      /*
+       * 获取跟单选购列表
+       */
       getDocList () {
         let token = window.localStorage.getItem('token')
         // 获取跟单选购列表
@@ -92,6 +94,13 @@
         }).catch((e)=>{
           console.error('获取跟单选购列表失败:' + e)
         })
+      },
+      /*
+       * 跟单事件
+       */
+      doDocumentary () {
+        console.log(3333)
+        // /payment
       }
     }
   }
