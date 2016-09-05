@@ -230,6 +230,9 @@
             }
             this.$route.router.go({
               name: 'payment',
+              query: {
+                price: this.bets * 2
+              },
               params: {
                 number: nums,
                 gameType: this.gameType,

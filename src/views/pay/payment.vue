@@ -146,12 +146,12 @@ export default {
   data () {
     return {
       showPayButton: false,
-      from: this.$route.params.from,
       rid: this.$route.query.rid,
+      from: this.$route.params.from,
       gameType: this.$route.params.gameType,
       numberList: this.$route.params.number.split(','), // 截取数组
       currentPeriod: 78, // 当前期数(从服务器获取)
-      price: 2, // 单价(默认2元)
+      price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)
       followPeriod: 7,
       startMultiple: 1,
       expectProfit: 25,
@@ -234,7 +234,7 @@ export default {
         postUrl = api.payOrderByZX
         postBody = {
           nums: this.$route.params.number,
-          unitPrice: 2,
+          unitPrice: this.price,
           multiple: this.startMultiple,
           totalPrice: this.totalMoney,
           gameType: this.gameType,
