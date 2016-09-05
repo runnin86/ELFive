@@ -18,17 +18,62 @@
         <th width="30%">期数</th>
         <th colspan="5">号码</th>
       </tr>
-      <tr align="center">
-        <td>16082602</td>
-        <td>02</td>
-        <td>03</td>
-        <td>04</td>
-        <td>05</td>
-        <td>06</td>
+      <tr align="center" v-for="item in list">
+        <td>{{item.periods}}</td>
+        <td>{{item.nums ? item.nums.split(',')[0] : ''}}</td>
+        <td>{{item.nums ? item.nums.split(',')[1] : ''}}</td>
+        <td>{{item.nums ? item.nums.split(',')[2] : ''}}</td>
+        <td>{{item.nums ? item.nums.split(',')[3] : ''}}</td>
+        <td>{{item.nums ? item.nums.split(',')[4] : ''}}</td>
       </tr>
     </table>
   </div>
 </template>
+
+<script>
+  import {api} from '../../util/service'
+  import $ from 'zepto'
+
+  export default {
+    ready () {
+      $.init()
+      this.getHistoryList()
+    },
+    data () {
+      return {
+        list: []
+      }
+    },
+    methods: {
+      /*
+       * 获取开奖号码的历史记录(分页未完成)
+       */
+      getHistoryList () {
+        let token = window.localStorage.getItem('token')
+        // 获取跟单选购列表
+        this.$http.post(api.winNumHistory, {
+          'pagenum': 1,
+          'pagesize': 30
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.list = data
+          }
+          else {
+            $.toast(msg)
+          }
+        }).catch((e)=>{
+          console.error('获取历史开奖号码失败:' + e)
+        })
+      }
+    }
+  }
+</script>
 
 <style scoped>
 body,ul{
