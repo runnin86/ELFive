@@ -166,6 +166,7 @@
     data () {
       return {
         bets: 0,
+        maxWinC: 0, // 多选情况下最多可能中奖的组合数
         numberList: new Set(), // 用户选中的号码
         showSelect: false, // 玩法选择
         gameType: 'R5', // 玩法类型
@@ -184,6 +185,9 @@
         this.showSelect = false
         // 清空已选号码
         this.numberList.clear()
+        // 重置注数和最多中奖可能数
+        this.bets = 0
+        this.maxWinC = 0
         // 清空已选号码样式
         $("[z-name='ball']").each((i)=>{
           let spanStyle = $("[z-name='ball']")[i].style
@@ -216,6 +220,10 @@
         // 计算多少注
         if (this.numberList.size >= this.minBall) {
           this.bets = getCombinationCount(this.numberList.size, this.minBall)
+          // 最多可能中奖的组合数
+          let m = this.numberList.size - 5
+          let n = this.numberList.size - this.minBall
+          this.maxWinC = getCombinationCount(m, n)
         }
       },
       /*
@@ -231,7 +239,8 @@
             this.$route.router.go({
               name: 'payment',
               query: {
-                price: this.bets * 2
+                price: this.bets * 2,
+                maxWinC: this.maxWinC
               },
               params: {
                 number: nums,

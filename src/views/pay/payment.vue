@@ -152,6 +152,7 @@ export default {
       numberList: this.$route.params.number.split(','), // 截取数组
       currentPeriod: 78, // 当前期数(从服务器获取)
       price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)
+      maxWinC: this.$route.query.maxWinC ? this.$route.query.maxWinC : 1, // 任六选六只有一种中奖可能性
       followPeriod: 7,
       startMultiple: 1,
       expectProfit: 25,
@@ -175,11 +176,13 @@ export default {
         if (p >= 78 * parseInt(p / 78, 0)) {
           p = p - 78 * parseInt(p / 78, 0) + 1
         }
+        // 组合某期的奖金(可能的组合数*每注2元*赔率*倍数)
+        let winMon = this.maxWinC * 2 * odds * startMul
         // 截止上一期累计投入
         let lastPeriodMoney = (i > 0 ? this.showList[i - 1].buy : 0)
         // 如果利润小于期望利润则要加倍
         let tempBuy = this.price * startMul + lastPeriodMoney
-        let tempMon = odds * this.price * startMul - tempBuy
+        let tempMon = winMon - tempBuy
         let tempRate = parseInt((tempMon / tempBuy) * 100, 0)
         while (tempRate < this.expectProfit) {
           if (startMul >= 999) {
@@ -190,7 +193,7 @@ export default {
           if (b > 999999) {
             break
           }
-          let m = odds * this.price * startMul - b
+          let m = winMon - b
           tempRate = parseInt((m / b) * 100, 0)
         }
         if (tempRate < this.expectProfit && i > 0) {
@@ -203,7 +206,7 @@ export default {
         obj.pid = p < 10 ? '0' + p : p // 期号
         obj.mul = startMul
         obj.buy = this.price * startMul + lastPeriodMoney
-        obj.mon = odds * this.price * startMul - obj.buy
+        obj.mon = winMon - obj.buy
         obj.rate = tempRate
         // 填充数据
         this.showList.push(obj)
