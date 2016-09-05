@@ -15,32 +15,32 @@
 
     <!-- 跟单票未购买状态 -->
     <div class="el_bill_box"
-      v-for="doc in docList | orderBy 'istoll'" track-by="$index">
+      v-for="doc in docList | orderBy 'numPayStatus' -1" track-by="$index">
       <div class="el_bill_title">
         <span>推荐号码</span>
       </div>
       <ul class="el_bill_number">
         <li>
-          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[0] : '*') : ''}}
+          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[0]) : ''}}
         </li>
         <li>
-          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[1] : '*') : ''}}
+          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[1]) : ''}}
         </li>
         <li>
-          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[2] : '*') : ''}}
+          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[2]) : ''}}
         </li>
         <li>
-          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[3] : '*') : ''}}
+          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[3]) : ''}}
         </li>
         <li>
-          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[4] : '*') : ''}}
+          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[4]) : ''}}
         </li>
         <li>
-          {{doc.nums ? (doc.istoll === 0 ? doc.nums.split(',')[5] : '*') : ''}}
+          {{doc.nums ? (doc.numPayStatus === 0 ? '*' : doc.nums.split(',')[5]) : ''}}
         </li>
       </ul>
       <div class="el_proposal">
-        <span>{{doc.recinfo}}</span>
+        <span>{{doc.recInfo}}</span>
       </div>
       <div class="el_button">
         <span class="el_see_btn">
@@ -75,10 +75,7 @@
       getDocList () {
         let token = window.localStorage.getItem('token')
         // 获取跟单选购列表
-        this.$http.post(api.canDocList, {
-          'pagenum': 1,
-          'pagesize': 20
-        }, {
+        this.$http.get(api.recRecord, {}, {
           headers: {
             'x-token': token
           }
