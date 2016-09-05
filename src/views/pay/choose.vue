@@ -47,10 +47,10 @@
           class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
           付费查看
         </span>
-        <a @click="doDocumentary()"
+        <a @click="doDocumentary(doc.isCanDoc, doc.isCanQuit, doc.nums)"
           class="el_documentary_btn"
           :style="{width: (doc.isToll===1 || doc.numPayStatus===1 ? '50%' : '100%')}">
-         跟单
+         {{doc.isCanQuit==='1' ? '取消跟单' : '跟单'}}
        </a>
       </div>
     </div>
@@ -113,7 +113,7 @@
        * 获取跟单选购列表
        */
       getDocList () {
-        // isCanDoc: "1"      -> 1 是可跟   0 是不可跟
+        // isCanDoc: "1"      -> 1 可跟   0 不可跟
         // isCanQuit: "0"     -> 1 可以取消  0 不能取消
         // numPayStatus: 0    -> 0 未付费查看   1 已付可看
         // isToll: 0          -> 0 免费      1收费
@@ -141,9 +141,25 @@
       /*
        * 跟单事件
        */
-      doDocumentary () {
-        console.log(3333)
-        // /payment
+      doDocumentary (isCanDoc, isCanQuit, nums) {
+        // isCanDoc: "1"      -> 1 可跟   0 不可跟
+        // isCanQuit: "0"     -> 1 可以取消  0 不能取消
+        if (isCanDoc === '1') {
+          // 跳转至模拟收益
+          // this.$route.router.go({path: '/payment', replace: false})
+          this.$route.router.go({
+            name: 'optional_payment',
+            params: {
+              number: nums,
+              gameType: 'R6'
+            },
+            replace: false
+          })
+        }
+        else if (isCanQuit === '1') {
+          // 发送请求取消跟单
+          console.log('取消跟单')
+        }
       },
       /*
        * 付费查看支付
