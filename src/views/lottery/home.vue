@@ -47,7 +47,9 @@
         </td>
         <td>
           <p>已进行</p>
-          <p>26</p>
+          <p>
+            {{alreadyper}}
+          </p>
         </td>
         <td>
           <p>本期利润</p>
@@ -163,7 +165,8 @@
         minBall: 5,
         recommendBalls: null,
         recommendStatus: null,
-        totperiods: null
+        totperiods: null,
+        alreadyper: null
       }
     },
     methods: {
@@ -203,6 +206,9 @@
           nums.push(item)
         }
       },
+      /*
+       * 选中购买
+       */
       buy () {
         if (this.numberList.size >= this.minBall) {
           if (window.localStorage.getItem('user')) {
@@ -228,6 +234,9 @@
           $.toast('本玩法至少选择' + this.minBall + '个号码')
         }
       },
+      /*
+       * 用户中心跳转
+       */
       targetUserCenter () {
         if (window.localStorage.getItem('user')) {
           this.$route.router.go({path: '/user', replace: true})
@@ -249,12 +258,13 @@
             }
           })
           .then(({data: {code, data, msg}})=>{
-            console.log(data)
-            // if (code === 1) {
-            //   this.recommendBalls = data.nums
-            //   this.totperiods = data.totperiods
-            //   this.recommendStatus = data.processtatus
-            // }
+            // console.log(data)
+            if (code === 1) {
+              this.recommendBalls = data.nums
+              this.totperiods = data.totperiods
+              this.alreadyper = data.alreadyper
+              this.recommendStatus = data.processtatus
+            }
           }).catch((e)=>{
             console.error('获取推荐号码失败:' + e)
           })

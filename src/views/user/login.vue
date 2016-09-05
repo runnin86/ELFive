@@ -103,7 +103,7 @@
                 window.localStorage.setItem('user', JSON.stringify(data.user))
                 window.localStorage.setItem('token', data.token)
                 window.localStorage.setItem('openid', data.openid)
-                this.$route.router.go({path: '/user', replace: true})
+                this.$route.router.go({path: '/home', replace: true})
               }
             }
           }
