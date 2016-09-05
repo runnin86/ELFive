@@ -151,7 +151,8 @@
             name: 'optional_payment',
             params: {
               number: nums,
-              gameType: 'R6'
+              gameType: 'R6',
+              from: 'gd'
             },
             replace: false
           })

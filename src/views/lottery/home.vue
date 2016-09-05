@@ -226,7 +226,8 @@
               name: 'optional_payment',
               params: {
                 number: nums,
-                gameType: this.gameType
+                gameType: this.gameType,
+                from: 'zx'
               },
               replace: false
             })
