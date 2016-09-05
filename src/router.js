@@ -93,9 +93,6 @@ export default function (router) {
     if (fromPath === '/home') {
       router.app.planScrolltop = $('.content').scrollTop()
     }
-    // else if (fromPath === '/happyPurchase') {
-    //   router.app.hpScrolltop = $('.content').scrollTop()
-    // }
     next()
   })
 

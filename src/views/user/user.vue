@@ -80,7 +80,7 @@
     </div>
 
     <div class="el_exit">
-      <span @click="logout(this.$route.router)">退出登录</span>
+      <span @click="logout(this.$route.router, this.$http)">退出登录</span>
     </div>
 
   </div>
@@ -133,7 +133,7 @@
       /*
        * 退出
        */
-      logout (route) {
+      logout (route, http) {
         var buttons1 = [
           {
             text: '确定退出登录?',
@@ -144,10 +144,24 @@
             bold: true,
             color: 'danger',
             onClick: function () {
-              window.localStorage.removeItem('user')
-              window.localStorage.removeItem('token')
-              window.localStorage.removeItem('openid')
-              route.go({path: '/login', replace: true})
+              let token = window.localStorage.getItem('token')
+              http.delete(api.logout, {}, {
+                headers: {
+                  'x-token': token
+                },
+                emulateJSON: true
+              })
+              .then(({data: {code, msg}})=>{
+                if (code === 1) {
+                  window.localStorage.removeItem('user')
+                  window.localStorage.removeItem('token')
+                  window.localStorage.removeItem('openid')
+                  route.go({path: '/login', replace: true})
+                }
+                $.toast(msg)
+              }).catch((e)=>{
+                console.error('用户退出失败:' + e)
+              })
             }
           }
         ]
