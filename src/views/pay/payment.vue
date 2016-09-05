@@ -82,7 +82,7 @@
     <table width="100%" class="recommendation_number_box">
       <tr align="center">
         <!-- 数组带入并根据数组数量自动循环 -->
-        <td v-for="n in numberList">
+        <td v-for="n in numberList" track-by="$index">
           {{n}}
         </td>
       </tr>
@@ -122,7 +122,6 @@ import Vue from 'vue'
 import {getOdds} from '../../util/util'
 
 Vue.filter('gameTypeFilter', function (gt) {
-  console.log(gt)
   // 计算时间差
   let name = ''
   if (gt === 'R5') {

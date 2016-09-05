@@ -3,7 +3,7 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="bounce">
+  <div class="content" transition="">
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <a class="el_return_btn" v-link="{path: '/home', replace: true}">
@@ -47,7 +47,7 @@
           class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
           付费查看
         </span>
-        <a @click="doDocumentary(doc.isCanDoc, doc.isCanQuit, doc.nums)"
+        <a @click="doDocumentary(doc)"
           class="el_documentary_btn"
           :style="{width: (doc.isToll===1 || doc.numPayStatus===1 ? '50%' : '100%')}">
          {{doc.isCanQuit==='1' ? '取消跟单' : '跟单'}}
@@ -141,10 +141,17 @@
       /*
        * 跟单事件
        */
-      doDocumentary (isCanDoc, isCanQuit, nums) {
+      doDocumentary (doc) {
         // isCanDoc: "1"      -> 1 可跟   0 不可跟
         // isCanQuit: "0"     -> 1 可以取消  0 不能取消
-        if (isCanDoc === '1') {
+        // numPayStatus: 0    -> 0 未付费查看   1 已付可看
+        // isToll: 0          -> 0 免费      1收费
+        let nums = doc.nums
+        if (doc.isToll === 1 || doc.numPayStatus === 1) {
+          // 需要隐藏号码
+          nums = '*,*,*,*,*,*'
+        }
+        if (doc.isCanDoc === '1') {
           // 跳转至模拟收益
           this.$route.router.go({
             name: 'payment',
@@ -156,7 +163,7 @@
             replace: false
           })
         }
-        else if (isCanQuit === '1') {
+        else if (doc.isCanQuit === '1') {
           // 发送请求取消跟单
           console.log('取消跟单')
         }
