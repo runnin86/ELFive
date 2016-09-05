@@ -116,7 +116,10 @@
   export default {
     ready () {
       $.init()
-      this.refresh()
+      if (this.user) {
+        // 获取账户信息
+        this.getUserAccount()
+      }
     },
     data () {
       return {
@@ -165,23 +168,19 @@
           $.showIndicator()
           // 执行查询
           setTimeout(function () {
-            let token = window.localStorage.getItem('token')
             // 获取账户信息
-            this.getUserAccount(token)
+            this.getUserAccount()
             // 加载完毕需要重置
             $.pullToRefreshDone('.pull-to-refresh-content')
             $.hideIndicator()
           }.bind(this), 800)
         }
-        else {
-          // 加载完毕需要重置
-          $.pullToRefreshDone('.pull-to-refresh-content')
-        }
       },
       /*
        * 获取账户本金
        */
-      getUserAccount (token) {
+      getUserAccount () {
+        let token = window.localStorage.getItem('token')
         this.$http.get(api.userAccount, {}, {
           headers: {
             'x-token': token

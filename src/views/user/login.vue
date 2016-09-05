@@ -83,6 +83,7 @@
           $.toast('请输入手机号或密码')
           return
         }
+        $.showIndicator()
         let spcarInfos = {
           'uphone': this.userPhone,
           'upass': this.password,
@@ -110,6 +111,8 @@
         }).catch((e)=>{
           $.alert('服务器连接中断...')
           console.error('无法连接服务器:' + e)
+        }).finally(()=>{
+          $.hideIndicator()
         })
       }
     },
