@@ -11,7 +11,7 @@
         <img src="/img/11/return.png">
       </a>
       <strong class="el_balance_title">账户余额</strong>
-      <div class="el_placeholder">&nbsp</div>
+      <strong class="el_placeholder" v-link="{path: '/rule', replace: true}">规则</strong>
       <strong class="el_balance">2880.28</strong>
     </div>
 
@@ -30,7 +30,6 @@
       </div>
       <div class="el_prompt">
         <span>请您认真核对支付宝账号是否正确后再进行提现</span>
-      </div>
     </div>
 
     <!-- 弹出窗口 -->
@@ -69,7 +68,7 @@ ul,a,p{
 }
 .el_return_btn{
   display: block;
-  width:10%;
+  width:15%;
   height:2.5rem;
   float: left;
 }
@@ -79,13 +78,21 @@ ul,a,p{
   margin:0.85rem auto;
 }
 .el_balance_title{
-  width: 80%;
+  width: 70%;
   text-align: center;
   display: block;
   line-height: 2.5rem;
   float: left;
   color: white;
   font-size: 0.7rem;
+}
+.el_placeholder{
+  width: 15%;
+  float: left;
+  line-height: 2.5rem;
+  font-size: 0.7rem;
+  color: white;
+
 }
 .el_balance{
   width: 100%;
@@ -196,10 +203,11 @@ ul,a,p{
 .el_button_left{
   border-right: 0.05rem #f0f0f0 solid;
 }
-.el_prompt{
+.el_prompt,.el_rule{
   width: 100%;
 }
 .el_prompt span{
+  margin-bottom: 3rem;
   width: 100%;
   text-align: center;
   line-height: 3rem;
