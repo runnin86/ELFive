@@ -5,9 +5,10 @@
   <div class="content" transition="pushtop">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/home', replace: true}">
+      <div class="el_return_btn"></div>
+      <!-- <a class="el_return_btn" v-link="{path: '/home', replace: true}">
         <img src="/img/11/return.png">
-      </a>
+      </a> -->
       <strong>登录</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
@@ -36,7 +37,9 @@
         </div>
         <div class="el_login_go_box">
           <a @click="login()" class="el_login_go"
-            :style="{backgroundColor: (submit ? '#1a6be4' : '#c8c9cb')}">登录</a>
+            :style="{backgroundColor: (loginSubmit ? '#1a6be4' : '#c8c9cb')}">
+            登录
+          </a>
         </div>
       </div>
 
@@ -54,7 +57,10 @@
           <input class="el_password" id="password" placeholder="输入新密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
         <div class="el_login_go_box">
-          <a v-link="{path: '/user', replace: true}" class="el_login_go">确定</a>
+          <a @click="forgetPwd()" class="el_login_go"
+            :style="{backgroundColor: (forgetSubmit ? '#1a6be4' : '#c8c9cb')}">
+            确定
+          </a>
         </div>
       </div>
     </div>
@@ -73,7 +79,8 @@
         showTabs: 1,
         userPhone: window.localStorage.getItem('localPhone') ? window.localStorage.getItem('localPhone') : '',
         password: '',
-        submit: false
+        loginSubmit: false,
+        forgetSubmit: false
       }
     },
     methods: {
@@ -120,14 +127,14 @@
       'userPhone': {
         handler: function (newVal, oldVal) {
           if (this.userPhone && this.password) {
-            this.submit = true
+            this.loginSubmit = true
           }
         }
       },
       'password': {
         handler: function (newVal, oldVal) {
           if (this.userPhone && this.password) {
-            this.submit = true
+            this.loginSubmit = true
           }
         }
       }
