@@ -52,8 +52,8 @@
           </p>
         </td>
         <td>
-          <p>本期利润</p>
-          <p>73%</p>
+          <p>最低利润</p>
+          <p>25%</p>
         </td>
         <td>
           <p>状态</p>
@@ -85,7 +85,10 @@
     <!-- 最新开奖号码 -->
     <div class="el_news" v-link="{ path: '/history', replace: true}">
       <img src="/img/11/horn.png" class="el_horn">
-      <span>第28687期中奖号码&nbsp&nbsp01&nbsp&nbsp02&nbsp&nbsp08&nbsp&nbsp09&nbsp&nbsp10</span>
+      <span v-if="lastWinObj">
+        第&nbsp{{lastWinObj.periods}}&nbsp期中奖号码
+        &nbsp{{lastWinObj.nums.split(',').join('&nbsp&nbsp')}}
+      </span>
     </div>
 
     <!-- 自主选号区 -->
@@ -155,18 +158,21 @@
       if (window.localStorage.getItem('user')) {
         // 登录获取推荐号码
         this.getRecommendNum()
+        // 获取上期中奖号码
+        this.getLatelyNum()
       }
     },
     data () {
       return {
-        numberList: new Set(),
-        showSelect: false,
-        gameType: 'R5',
-        minBall: 5,
-        recommendBalls: null,
-        recommendStatus: null,
-        totperiods: null,
-        alreadyper: null
+        numberList: new Set(), // 用户选中的号码
+        showSelect: false, // 玩法选择
+        gameType: 'R5', // 玩法类型
+        minBall: 5, // 玩法最少选择多少球
+        recommendBalls: null, // 推荐号码
+        recommendStatus: null, // 推荐号码的状态
+        totperiods: null, // 推荐号码的总期数
+        alreadyper: null, // 推荐号码已进行期数
+        lastWinObj: null // 上期中奖对象
       }
     },
     methods: {
@@ -267,6 +273,27 @@
             }
           }).catch((e)=>{
             console.error('获取推荐号码失败:' + e)
+          })
+        }
+      },
+      /*
+       * 获取上期中奖号码
+       */
+      getLatelyNum () {
+        let token = window.localStorage.getItem('token')
+        if (token) {
+          this.$http.get(api.lastWinNum, {}, {
+            headers: {
+              'x-token': token
+            }
+          })
+          .then(({data: {code, data, msg}})=>{
+            console.log(data)
+            if (code === 1) {
+              this.lastWinObj = data
+            }
+          }).catch((e)=>{
+            console.error('获取上一期中奖号码失败:' + e)
           })
         }
       }

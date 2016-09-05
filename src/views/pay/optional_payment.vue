@@ -28,7 +28,6 @@
   <!-- 付款窗口 -->
   <div class="el_payment_box">
       <div class="el_payment_proposal">
-        <span>奖金&nbsp&nbsp元</span>
         <span>需&nbsp{{totalMoney}}&nbsp元</span>
       </div>
       <ul class="el_condition_input">
