@@ -20,60 +20,110 @@
       </div>
       <div class="el_sign_up_box">
         <div class="el_phone_input_box">
-          <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="tel" v-model="uphone" class="el_phone" placeholder="输入手机号">
         </div>
         <div class="el_code_input_box">
-          <input class="el_code" id="code" placeholder="支付宝账号" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" v-model="alipayid" class="el_code" placeholder="支付宝账号">
         </div>
         <div class="el_code_input_box">
-          <input class="el_code" id="code" placeholder="姓名（需与支付宝一致）" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="text" v-model="uname" class="el_code" placeholder="姓名（需与支付宝一致）">
         </div>
         <div class="el_pw_input_box">
-          <input class="el_password" id="password" placeholder="输入密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+          <input type="password" v-model="upass" class="el_password" placeholder="输入密码">
         </div>
         <div class="el_login_go_box">
-          <a v-link="{path: '/login', replace: true}" class="el_login_go">注册</a>
+          <a class="el_login_go" @click="register()"
+            :style="{backgroundColor: (submitBtn ? '#1a6be4' : '#c8c9cb')}">
+            注册
+          </a>
         </div>
       </div>
     </div>
   </div>
+</template>
 
-    <!-- 弹出窗口 -->
-    <div class="el_eject_window_box"
-      :class="this.showTabs===2?'el_eject_window_box':'hide'"
-      :class="this.showTabs===3?'el_eject_window_box':'hide'">
-      <div class="el_eject_window">
-        <div class="el_confirm_info">
-          <span class="el_confirm_info_up">恭喜您，修改成功</span>
-        </div>
-        <div class="el_button">
-          <span class="el_button_left"
-            @click="this.showTabs = 3"
-          >取消</span>
-          <span class="el_button_right" v-link="{path: '/login', replace: true}">确定</span>
-        </div>
-      </div>
-    </div>
-  </template>
+<script>
+import $ from 'zepto'
+import {api} from '../../util/service'
 
-  <script>
-  import $ from 'zepto'
-
-  export default {
-    ready () {
-      $.init()
-      console.log(this.uid)
-    },
-    data () {
-      return {
-        showTabs: 1,
-        uid: this.$route.query.uid
+export default {
+  ready () {
+    $.init()
+  },
+  data () {
+    return {
+      uid: this.$route.query.uid,
+      uphone: null,
+      uname: null,
+      upass: null,
+      alipayid: null,
+      submitBtn: false
+    }
+  },
+  methods: {
+    /*
+     * 注册
+     */
+    register () {
+      if (!this.uphone) {
+        $.toast('请输入手机号')
+        return
       }
-    },
-    methods: {
+      if (!this.uname) {
+        $.toast('请输入姓名')
+        return
+      }
+      if (!this.upass) {
+        $.toast('请输入密码')
+        return
+      }
+      if (!this.alipayid) {
+        $.toast('请输入支付宝账号')
+        return
+      }
+      this.submitBtn = false
+      // 提交注册
+      this.$http.post(api.register, {
+        uname: this.uname,
+        upass: this.upass,
+        uphone: this.uphone,
+        alipayid: this.alipayid,
+        uid: this.uid
+      })
+      .then(({data: {code, msg}})=>{
+        $.toast(msg)
+        setTimeout(() => {
+          if (code === 1) {
+            this.$route.router.go({path: '/login', replace: true})
+          }
+          else {
+            this.submitBtn = true
+          }
+        }, 1500)
+      }).catch((e)=>{
+        console.error(this.from + '用户注册失败:' + e)
+      })
+    }
+  },
+  watch: {
+    '[uphone,alipayid,uname,upass]': {
+      handler: function (newVal, oldVal) {
+        let flag = true
+        newVal.map((v, k)=>{
+          if (v === null || v === '') {
+            flag = false
+            return
+          }
+        })
+        // 注册按钮是否灰化
+        this.submitBtn = flag
+        // console.log(flag)
+      }
     }
   }
-  </script>
+}
+</script>
+
 <style scoped>
 body,ul{
   margin: 0;
@@ -170,65 +220,6 @@ ul,a,p{
   margin-left: 3%;
   border-radius: 0;
   float: left;
-}
-.el_get_code{
-  margin-top: 0.475rem;
-  text-align: center;
-  width: 30%;
-  line-height: 2.4rem;
-  display: block;
-  float: left;
-  font-size: 0.6rem;
-  border:0.05rem solid #f5f5f5;
-}
-.el_eject_window_box{
-  display: block;
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  top:0;
-  background-image: url(/img/11/el_black_bg.png);
-}
-.el_eject_window{
-  width: 80%;
-  background-color: white;
-  height: 7.5rem;
-  margin: 50% 10%;
-}
-.el_confirm_info{
-  width:100%;
-  height:5rem;
-  border-bottom:solid 0.05rem #f0f0f0;
-  overflow: hidden;
-}
-.el_confirm_info_up,.el_confirm_info_lower{
-  text-align: center;
-  line-height:1.5rem;
-  display: block;
-}
-.el_confirm_info_up{
-  font-size: 0.8rem;
-  margin-top: 1.8rem;
-}
-.el_confirm_info_lower{
-  font-size: 0.6rem;
-}
-.el_button{
-  width:100%;
-  height:2.5rem;
-  overflow: hidden;
-}
-.el_button_left,.el_button_right{
-  width: 50%;
-  line-height: 2.5rem;
-  text-align: center;
-  font-size: 0.7rem;
-  display: block;
-  float: left;
-}
-.el_button_left{
-  border-right: 0.05rem #f0f0f0 solid;
 }
 .el_login_go_box{
   border-top: 0.05rem solid #f0f0f0;
