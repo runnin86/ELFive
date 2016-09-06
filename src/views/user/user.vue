@@ -91,13 +91,15 @@
       @click="this.showQRCode = false">
       <img src="/img/11/el_code_off.png">
     </div>
-    <div class="el_code_photo">
-      <v-qrcode :val="QRData"
-        :size="QRsize" :bg-color="QRbgColor"
-        :fg-color="QRfgColor" level="L"></v-qrcode>
+    <div class="invite-card qr_code" v-if="QRData">
+      <div class="invite-card-content" align="center">
+        <v-qrcode :val="QRData"
+          :size="QRsize" :bg-color="QRbgColor"
+          :fg-color="QRfgColor"level="L"></v-qrcode>
+      </div>
       <span>扫描二维码进行注册</span>
     </div>
-    <div class="el_register_step" style="padding-top:0.5rem;">
+    <div class="el_register_step">
       <span><font class="number_one">1</font>输入手机号<span>
     </div>
     <div class="el_register_step">
@@ -132,7 +134,7 @@
         QRData: '',
         QRbgColor: '#FFFFFF',
         QRfgColor: '#000000',
-        QRsize: document.body.offsetWidth - 110
+        QRsize: document.body.offsetWidth - 160
       }
     },
     methods: {
@@ -230,7 +232,7 @@
         })
         .then(({data: {data, code, msg}})=>{
           if (code === 1) {
-            this.QRData = data
+            this.$set('QRData', data)
             // this.QRData = 'http://h5.zqsml.com/reg?uid=2'
             this.showQRCode = true
           }
@@ -467,6 +469,21 @@ ul,a,p{
   overflow: hidden;
   border-bottom: 0.05rem solid #f6f6f6;
 }
+.qr_code{
+  width: 70%;
+  background-color: white;
+  margin-left: 15%;
+  margin-right: 15%;
+  padding-top: 1rem;
+  padding-bottom: 0.4rem;
+}
+.qr_code span{
+  width: 100%;
+  display: block;
+  line-height: 2rem;
+  text-align: center;
+  font-size: 0.7rem;
+}
 .el_code_off img{
   display: block;
   width: 0.5rem;
@@ -474,27 +491,6 @@ ul,a,p{
   margin-top: 0.6rem;
   margin-left: auto;
   margin-right: auto;
-}
-.el_code_photo{
-  background-color: white;
-  width: 70%;
-  margin-left: 15%;
-  margin-right: 15%;
-  overflow: hidden;
-}
-.el_code_photo img{
-  display: block;
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 1.4rem;
-}
-.el_code_photo span{
-  width: 100%;
-  text-align: center;
-  display: block;
-  line-height: 2.6rem;
-  font-size: 0.8rem;
 }
 .el_register_step{
   background-color: #f6f8f7;
@@ -507,7 +503,7 @@ ul,a,p{
   width:80%;
   text-align: left;
   display: block;
-  line-height: 2rem;
+  line-height: 2.5rem;
   font-size: 0.6rem;
   margin-left: 10%;
   margin-right: 10%;
@@ -520,7 +516,7 @@ ul,a,p{
   width: 1rem;
   display: block;
   float: left;
-  margin-top: 0.5rem;
+  margin-top: 0.7rem;
   text-align: center;
   line-height: 1rem;
   color: white;
