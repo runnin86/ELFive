@@ -113,20 +113,87 @@
 </template>
 
 <script>
-  import $ from 'zepto'
+import $ from 'zepto'
+import {api} from '../../util/service'
 
-  export default {
-    ready () {
-      $.init()
+export default {
+  ready () {
+    $.init()
+    // 默认查询跟单
+    this.getUserOrderGD()
+  },
+  data () {
+    return {
+      showTabs: 1,
+      gdList: [],
+      zxList: []
+    }
+  },
+  methods: {
+    /*
+     * 跟单订单查询
+     */
+    getUserOrderGD () {
+      let token = window.localStorage.getItem('token')
+      // 获取跟单选购列表
+      this.$http.get(api.userOrderGD, {}, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        console.log(data)
+        if (code === 1) {
+          this.gdList = data
+        }
+        else {
+          $.toast(msg)
+        }
+      }).catch((e)=>{
+        console.error('获取我的订单(跟单)失败:' + e)
+      })
     },
-    data () {
-      return {
-        showTabs: 1
+    /*
+     * 自选订单查询
+     */
+    getUserOrderZX () {
+      let token = window.localStorage.getItem('token')
+      // 获取跟单选购列表
+      this.$http.get(api.userORderZX, {
+        pagenum: 1,
+        pagesize: 10
+      }, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        console.log(data)
+        // if (code === 1) {
+        //   this.zxList = data
+        // }
+        // else {
+        //   $.toast(msg)
+        // }
+      }).catch((e)=>{
+        console.error('获取我的订单(自选)失败:' + e)
+      })
+    }
+  },
+  watch: {
+    'showTabs': {
+      handler: function (newVal, oldVal) {
+        if (newVal === 1) {
+          console.log('查询跟单')
+        }
+        else if (newVal === 2) {
+          // 查询自选跟单
+          this.getUserOrderZX()
+        }
       }
-    },
-    methods: {
     }
   }
+}
 </script>
 
 <style scoped>
