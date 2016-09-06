@@ -100,20 +100,47 @@
 </template>
 
 <script>
-  import $ from 'zepto'
+import {api} from '../../util/service'
+import $ from 'zepto'
 
-  export default {
-    ready () {
-      $.init()
-    },
-    data () {
-      return {
-        showTabs: 1
-      }
-    },
-    methods: {
+export default {
+  ready () {
+    $.init()
+    this.getBill()
+  },
+  data () {
+    return {
+      showTabs: 1,
+      bonusList: [],
+      purchaseList: [],
+      withdrawList: []
+    }
+  },
+  methods: {
+    getBill () {
+      let token = window.localStorage.getItem('token')
+      // 获取跟单选购列表
+      this.$http.get(api.userBill, {}, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        console.log(data)
+        if (code === 1) {
+          this.bonusList = data.bonus
+          this.purchaseList = data.purchase
+          this.withdrawList = data.withdraw
+        }
+        else {
+          $.toast(msg)
+        }
+      }).catch((e)=>{
+        console.error('获取我的账单失败:' + e)
+      })
     }
   }
+}
 </script>
 
 <style scoped>
