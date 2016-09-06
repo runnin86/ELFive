@@ -22,9 +22,9 @@
       自选</strong>
     </div>
 
-    <!-- 跟单 -->
+    <!-- 自选 -->
     <div class="el_bill_box"
-      :class="this.showTabs===1?'el_bill_box':'hide'">
+      :class="this.showTabs===2?'el_bill_box':'hide'">
       <div class="ul_bill_type">
         <span>多期订单</span>
       </div>
@@ -40,8 +40,8 @@
         <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
       </div>
       <div class="el_state_box">
-            <span class="el_state">状态&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
-            <span class="el_process">已跟&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
+            <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
+            <span class="el_process">已进行&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
       </div>
       <div class="el_state_box">
             <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="el_bill_box"
-      :class="this.showTabs===1?'el_bill_box':'hide'">
+      :class="this.showTabs===2?'el_bill_box':'hide'">
       <div class="ul_bill_type">
         <span>单期订单</span>
       </div>
@@ -76,9 +76,12 @@
       </div>
     </div>
 
-    <!-- 自选 -->
+    <!-- 跟单 -->
     <div class="el_bill_box"
-      :class="this.showTabs===2?'el_bill_box':'hide'">
+      :class="this.showTabs===1?'el_bill_box':'hide'">
+      <div class="ul_bill_type">
+        <span>跟单</span>
+      </div>
       <table width="100%" class="el_bill_number_table">
         <tr>
         <td>01</td>

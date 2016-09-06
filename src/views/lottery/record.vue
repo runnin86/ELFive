@@ -8,7 +8,7 @@
       <a class="el_return_btn" v-link="{path: '/home', replace: true}">
         <img src="/img/11/return.png">
       </a>
-      <strong>历史号码</strong>
+      <strong>推荐记录</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
 

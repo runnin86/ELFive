@@ -48,12 +48,12 @@
         <td>
           <p>已进行</p>
           <p>
-            {{alreadyper}}
+            {{alreadyper === null ? '-':alreadyper}}
           </p>
         </td>
         <td>
           <p>最低利润</p>
-          <p>25%</p>
+          <p>{{alreadyper === null ? '-' : '25%'}}</p>
         </td>
         <td>
           <p>状态</p>

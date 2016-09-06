@@ -69,7 +69,7 @@
       :class="this.showTabs===2?'el_bonus_box':'hide'">
       <tr>
         <th>期数</th>
-        <th>彩种</th>
+        <th>玩法</th>
         <th>号码</th>
         <th>奖金</th>
       </tr>

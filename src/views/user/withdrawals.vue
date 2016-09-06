@@ -193,8 +193,8 @@ ul,a,p{
   font-size: 0.7rem;
 }
 .el_withdrawals_alipay_notes,.el_withdrawals_balance_notes{
-  width: 3rem;
-  margin-left: 0.5rem;
+  width: 16%;
+  margin-left: 0.8rem;
 }
 .el_withdrawals_alipay_username{
   color: #999999;
@@ -209,6 +209,7 @@ ul,a,p{
   padding: 0;
   border: none;
   font-size: 0.7rem;
+  width: 80%;
 }
 .el_withdrawals_btn_box{
   width: 100%;

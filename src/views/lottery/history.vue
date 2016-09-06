@@ -15,7 +15,7 @@
     <!-- 历史号码 -->
     <table class="el_history_box"  width="100%" border="0" cellpadding="0"  cellspacing="0">
       <tr>
-        <th width="30%">期数</th>
+        <th width="30%">期号</th>
         <th colspan="5">号码</th>
       </tr>
       <tr align="center" v-for="item in list">
