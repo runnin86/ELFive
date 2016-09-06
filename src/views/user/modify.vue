@@ -2,7 +2,7 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="pushtop">
+  <div class="content" transition="bounce">
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <a class="el_return_btn" v-link="{path: '/user', replace: true}">
@@ -17,22 +17,110 @@
       <div class="el_title_box">
         <strong class="el_title">修改密码</strong>
       </div>
-      <div class="el_phone_input_box">
-        <input class="el_phone" maxlength="11" id="phone" placeholder="输入手机号" type="text" name="el_phone" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-      </div>
-      <div class="el_code_input_box">
-        <input class="el_code" id="code" placeholder="验证码" type="text" name="el_code" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
-        <a class="el_get_code" href="#">获取验证码</a>
+      <div class="el_pw_input_box">
+        <input type="password" v-model="opass" class="el_password" placeholder="原密码">
       </div>
       <div class="el_pw_input_box">
-        <input class="el_password" id="password" placeholder="输入新密码" type="text" name="el_password" class="el_profit_input" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        <input type="password" v-model="npass" class="el_password" placeholder="输入新密码">
+      </div>
+      <div class="el_pw_input_box">
+        <input type="password" v-model="cpass" class="el_password" placeholder="确认新密码">
       </div>
       <div class="el_true_go_box">
-        <a v-link="{path: '/login', replace: true}" class="el_login_go">确定</a>
+        <a @click="changePwd()" class="el_login_go"
+          :style="{backgroundColor: (submitBtn ? '#1a6be4' : '#c8c9cb')}">确定</a>
       </div>
     </div>
   </div>
 </template>
+
+
+<script>
+import $ from 'zepto'
+import {api} from '../../util/service'
+
+export default {
+  ready () {
+    $.init()
+  },
+  data () {
+    return {
+      uphone: window.localStorage.getItem('localPhone'),
+      opass: null,
+      npass: null,
+      cpass: null,
+      submitBtn: false
+    }
+  },
+  methods: {
+    /*
+     * 修改密码
+     */
+    changePwd () {
+      if (!this.opass) {
+        $.toast('请输入原密码')
+        return
+      }
+      if (!this.npass) {
+        $.toast('请输入新密码')
+        return
+      }
+      if (!this.cpass) {
+        $.toast('请确认新密码')
+        return
+      }
+      if (this.npass !== this.cpass) {
+        $.toast('新密码输入不一致')
+        return
+      }
+      this.submitBtn = false
+      let token = window.localStorage.getItem('token')
+      // 提交修改
+      this.$http.post(api.changePwd, {
+        uphone: this.uphone,
+        opass: this.opass,
+        npass: this.npass
+      }, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, msg}})=>{
+        $.toast(msg)
+        setTimeout(() => {
+          if (code === 1) {
+            this.opass = null
+            this.npass = null
+            this.cpass = null
+            this.$route.router.go({path: '/login', replace: true})
+          }
+          else {
+            this.submitBtn = true
+          }
+        }, 1000)
+      }).catch((e)=>{
+        console.error(this.from + '修改密码失败:' + e)
+      })
+    }
+  },
+  watch: {
+    '[opass,npass,cpass]': {
+      handler: function (newVal, oldVal) {
+        let flag = true
+        newVal.map((v, k)=>{
+          if (v === null || v === '') {
+            flag = false
+            return
+          }
+        })
+        // 注册按钮是否灰化
+        this.submitBtn = flag
+        // console.log(flag)
+      }
+    }
+  }
+}
+</script>
 
 <style scoped>
 body,ul{
@@ -93,8 +181,7 @@ ul,a,p{
   float: left;
   font-size: 0.7rem;
 }
-
-.el_phone_input_box,.el_pw_input_box,.el_true_go_box,.el_code_input_box{
+.el_pw_input_box,.el_true_go_box{
   width: 100%;
   background-color: white;
   height: 3.45rem;
@@ -120,27 +207,4 @@ ul,a,p{
   text-align: center;
   line-height: 2.5rem;
 }
-.el_code{
-  padding-left: 0.5rem;
-  font-size: 0.7rem;
-  width: 64%;
-  border: none;
-  background-color: #f5f5f5;
-  height: 2.5rem;
-  margin-top: 0.475rem;
-  margin-left: 3%;
-  border-radius: 0;
-  float: left;
-}
-.el_get_code{
-  margin-top: 0.475rem;
-  text-align: center;
-  width: 30%;
-  line-height: 2.4rem;
-  display: block;
-  float: left;
-  font-size: 0.6rem;
-  border:0.05rem solid #f5f5f5;
-}
-
 </style>
