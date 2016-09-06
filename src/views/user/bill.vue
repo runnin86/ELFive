@@ -89,10 +89,13 @@
         <th>金额</th>
         <th>状态</th>
       </tr>
-      <tr align="center">
-        <td>08.24<br>11:20</td>
-        <td>200.00</td>
-        <td>拒绝<br>支付宝未实名认证</td>
+      <tr align="center"
+        v-for="w in withdrawList | orderBy 'withdraw_date' -1" track-by="$index">
+        <td>{{w.withdraw_date}}</td>
+        <td>{{w.withdraw_money | currency '¥'}}</td>
+        <td>
+          {{w.withdraw_status===0?'审核中':(w.withdraw_status===1?'成功':'失败')}}
+        </td>
       </tr>
     </table>
 
