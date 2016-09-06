@@ -142,6 +142,7 @@ export default {
   ready () {
     $.init()
     this.calculateProfit()
+    this.getCurrentPeriod()
   },
   data () {
     return {
@@ -272,6 +273,22 @@ export default {
           console.error(this.from + '跟单提交失败:' + e)
         })
       }
+    },
+    getCurrentPeriod () {
+      let token = window.localStorage.getItem('token')
+      this.$http.get(api.currentPeriod, {}, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        if (code === 1 && data) {
+          this.currentPeriod = data
+        }
+      }).catch((e)=>{
+        console.error('获取最新期失败:' + e)
+      }).finally(()=>{
+      })
     }
   },
   watch: {
