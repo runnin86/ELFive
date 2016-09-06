@@ -141,7 +141,6 @@ Vue.filter('gameTypeFilter', function (gt) {
 export default {
   ready () {
     $.init()
-    this.calculateProfit()
     this.getCurrentPeriod()
   },
   data () {
@@ -174,7 +173,7 @@ export default {
       for (let i = 0; i < this.followPeriod; i++) {
         let obj = {}
         // 期号大于78时变更
-        let p = this.currentPeriod + i
+        let p = this.currentPeriod + i - 1
         if (p >= 78 * parseInt(p / 78, 0)) {
           p = p - 78 * parseInt(p / 78, 0) + 1
         }
@@ -274,6 +273,9 @@ export default {
         })
       }
     },
+    /*
+     * 获取当前期
+     */
     getCurrentPeriod () {
       let token = window.localStorage.getItem('token')
       this.$http.get(api.currentPeriod, {}, {
@@ -283,11 +285,12 @@ export default {
       })
       .then(({data: {code, data, msg}})=>{
         if (code === 1 && data) {
-          this.currentPeriod = data
+          this.currentPeriod = parseInt(data.periodnum.substr(8, 2), 0)
         }
       }).catch((e)=>{
         console.error('获取最新期失败:' + e)
       }).finally(()=>{
+        this.calculateProfit()
       })
     }
   },
