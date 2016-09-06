@@ -23,59 +23,58 @@
     </div>
 
     <!-- 自选 -->
-    <div class="el_bill_box"
-      :class="this.showTabs===2?'el_bill_box':'hide'">
-      <div class="ul_bill_type">
-        <span>多期订单</span>
+    <div v-for="z in zxList | orderBy 'orderperiod' -1" track-by="$index">
+      <div class="el_bill_box" v-if="z.docperiod > 0"
+        :class="this.showTabs===2?'el_bill_box':'hide'">
+        <div class="ul_bill_type">
+          <span>多期订单</span>
+        </div>
+        <ul class="el_bill_number">
+          <li v-for="n in z.nums.split(',')">{{n}}</li>
+        </ul>
+        <div class="el_bill_title">
+          <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
+        </div>
+        <div class="el_state_box">
+          <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
+          <span class="el_process">已进行&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
+        </div>
+        <div class="el_state_box">
+          <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
+          <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
+        </div>
+        <div class="el_button">
+          <span class="el_stop_btn">
+            {{z.bonus > 0 ? '中奖/' : '未中奖/'}}
+            奖金{{z.bonus | currency '¥'}}
+          </span>
+        </div>
       </div>
-      <ul class="el_bill_number">
-        <li>01</li>
-        <li>02</li>
-        <li>03</li>
-        <li>04</li>
-        <li>05</li>
-        <li>06</li>
-      </ul>
-      <div class="el_bill_title">
-        <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
-      </div>
-      <div class="el_state_box">
-            <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
-            <span class="el_process">已进行&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
-      </div>
-      <div class="el_state_box">
-            <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
-            <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
-      </div>
-      <div class="el_button">
-        <span class="el_stop_btn">未中奖/奖金200.00</span>
+
+      <div class="el_bill_box" v-if="z.docperiod === 1"
+        :class="this.showTabs===2?'el_bill_box':'hide'">
+        <div class="ul_bill_type">
+          <span>单期订单</span>
+        </div>
+        <ul class="el_bill_number">
+          <li v-for="n in z.nums.split(',')">{{n}}</li>
+        </ul>
+        <div class="el_bill_title">
+          <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
+        </div>
+        <div class="el_button">
+          <span class="el_stop_btn">
+            花费&nbsp<font color="#42c1b1">{{z.totalprice | currency '¥'}}</font>元
+          </span>
+        </div>
+        <div class="el_button">
+          <span class="el_stop_btn">
+            {{z.bonus > 0 ? '中奖/' : '未中奖/'}}
+            奖金{{z.bonus | currency '¥'}}
+          </span>
+        </div>
       </div>
     </div>
-
-    <div class="el_bill_box"
-      :class="this.showTabs===2?'el_bill_box':'hide'">
-      <div class="ul_bill_type">
-        <span>单期订单</span>
-      </div>
-      <ul class="el_bill_number">
-        <li>01</li>
-        <li>02</li>
-        <li>03</li>
-        <li>04</li>
-        <li>05</li>
-        <li>06</li>
-      </ul>
-      <div class="el_bill_title">
-        <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
-      </div>
-      <div class="el_button">
-        <span class="el_stop_btn">花费&nbsp<font color="#42c1b1">2.00</font>元</span>
-      </div>
-      <div class="el_button">
-        <span class="el_stop_btn">未中奖/奖金200.00</span>
-      </div>
-    </div>
-
     <!-- 跟单 -->
     <div class="el_bill_box"
       :class="this.showTabs===1?'el_bill_box':'hide'">
@@ -169,12 +168,12 @@ export default {
       })
       .then(({data: {code, data, msg}})=>{
         console.log(data)
-        // if (code === 1) {
-        //   this.zxList = data
-        // }
-        // else {
-        //   $.toast(msg)
-        // }
+        if (code === 1) {
+          this.zxList = data
+        }
+        else {
+          $.toast(msg)
+        }
       }).catch((e)=>{
         console.error('获取我的订单(自选)失败:' + e)
       })
@@ -184,10 +183,11 @@ export default {
     'showTabs': {
       handler: function (newVal, oldVal) {
         if (newVal === 1) {
-          console.log('查询跟单')
+          // 查询跟单订单
+          this.getUserOrderGD()
         }
         else if (newVal === 2) {
-          // 查询自选跟单
+          // 查询自选订单
           this.getUserOrderZX()
         }
       }
