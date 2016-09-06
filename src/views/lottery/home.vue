@@ -133,195 +133,219 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import {api} from '../../util/service'
-  import {getCombinationCount} from '../../util/util'
-  import $ from 'zepto'
+import Vue from 'vue'
+import {api} from '../../util/service'
+import {getCombinationCount} from '../../util/util'
+import $ from 'zepto'
 
-  Vue.filter('gameTypeFilter', function (gt) {
-    // 计算时间差
-    let name = ''
-    if (gt === 'R5') {
-      name = '玩法-任选五'
-    }
-    else if (gt === 'R6') {
-      name = '玩法-任选六'
-    }
-    else if (gt === 'R7') {
-      name = '玩法-任选七'
-    }
-    return name
-  })
-
-  export default {
-    ready () {
-      $.init()
-      if (window.localStorage.getItem('user')) {
-        // 登录获取推荐号码
+Vue.filter('gameTypeFilter', function (gt) {
+  // 计算时间差
+  let name = ''
+  if (gt === 'R5') {
+    name = '玩法-任选五'
+  }
+  else if (gt === 'R6') {
+    name = '玩法-任选六'
+  }
+  else if (gt === 'R7') {
+    name = '玩法-任选七'
+  }
+  return name
+})
+var refreshMsg
+export default {
+  ready () {
+    $.init()
+    if (window.localStorage.getItem('user')) {
+      // 登录获取推荐号码
+      this.getRecommendNum()
+      // 获取上期中奖号码
+      this.getLatelyNum()
+      refreshMsg = setInterval(function () {
         this.getRecommendNum()
-        // 获取上期中奖号码
-        this.getLatelyNum()
+      }.bind(this), 15000)
+    }
+  },
+  destroyed () {
+    window.clearInterval(refreshMsg)
+  },
+  data () {
+    return {
+      serviceTime: '',
+      bets: 0,
+      maxWinC: 0, // 多选情况下最多可能中奖的组合数
+      numberList: new Set(), // 用户选中的号码
+      showSelect: false, // 玩法选择
+      gameType: 'R5', // 玩法类型
+      minBall: 5, // 玩法最少选择多少球
+      recommendBalls: null, // 推荐号码
+      recommendStatus: null, // 推荐号码的状态
+      totperiods: null, // 推荐号码的总期数
+      alreadyper: null, // 推荐号码已进行期数
+      lastWinObj: null // 上期中奖对象
+    }
+  },
+  methods: {
+    selectGameType (t, min) {
+      this.gameType = t
+      this.minBall = min
+      this.showSelect = false
+      // 清空已选号码
+      this.numberList.clear()
+      // 重置注数和最多中奖可能数
+      this.bets = 0
+      this.maxWinC = 0
+      // 清空已选号码样式
+      $("[z-name='ball']").each((i)=>{
+        let spanStyle = $("[z-name='ball']")[i].style
+        spanStyle.backgroundColor = ''
+        spanStyle.color = ''
+        spanStyle.border = ''
+      })
+    },
+    choseNumber (num, e) {
+      // 判断是否已选
+      if (this.numberList.has(num)) {
+        // 包含则删除
+        this.numberList.delete(num)
+        e.target.style.backgroundColor = ''
+        e.target.style.color = ''
+        e.target.style.border = ''
+      }
+      else {
+        // 不包含则新增
+        this.numberList.add(num)
+        e.target.style.backgroundColor = '#42c1b1'
+        e.target.style.color = 'white'
+        e.target.style.border = 'none'
+      }
+      // 数据转换
+      let nums = []
+      for (let item of this.numberList.keys()) {
+        nums.push(item)
+      }
+      // 计算多少注
+      if (this.numberList.size >= this.minBall) {
+        this.bets = getCombinationCount(this.numberList.size, this.minBall)
+        // 最多可能中奖的组合数
+        let m = this.numberList.size - 5
+        let n = this.numberList.size - this.minBall
+        this.maxWinC = getCombinationCount(m, n)
+      }
+      else {
+        this.$set('bets', 0)
       }
     },
-    data () {
-      return {
-        bets: 0,
-        maxWinC: 0, // 多选情况下最多可能中奖的组合数
-        numberList: new Set(), // 用户选中的号码
-        showSelect: false, // 玩法选择
-        gameType: 'R5', // 玩法类型
-        minBall: 5, // 玩法最少选择多少球
-        recommendBalls: null, // 推荐号码
-        recommendStatus: null, // 推荐号码的状态
-        totperiods: null, // 推荐号码的总期数
-        alreadyper: null, // 推荐号码已进行期数
-        lastWinObj: null // 上期中奖对象
-      }
-    },
-    methods: {
-      selectGameType (t, min) {
-        this.gameType = t
-        this.minBall = min
-        this.showSelect = false
-        // 清空已选号码
-        this.numberList.clear()
-        // 重置注数和最多中奖可能数
-        this.bets = 0
-        this.maxWinC = 0
-        // 清空已选号码样式
-        $("[z-name='ball']").each((i)=>{
-          let spanStyle = $("[z-name='ball']")[i].style
-          spanStyle.backgroundColor = ''
-          spanStyle.color = ''
-          spanStyle.border = ''
-        })
-      },
-      choseNumber (num, e) {
-        // 判断是否已选
-        if (this.numberList.has(num)) {
-          // 包含则删除
-          this.numberList.delete(num)
-          e.target.style.backgroundColor = ''
-          e.target.style.color = ''
-          e.target.style.border = ''
-        }
-        else {
-          // 不包含则新增
-          this.numberList.add(num)
-          e.target.style.backgroundColor = '#42c1b1'
-          e.target.style.color = 'white'
-          e.target.style.border = 'none'
-        }
-        // 数据转换
-        let nums = []
-        for (let item of this.numberList.keys()) {
-          nums.push(item)
-        }
-        // 计算多少注
-        if (this.numberList.size >= this.minBall) {
-          this.bets = getCombinationCount(this.numberList.size, this.minBall)
-          // 最多可能中奖的组合数
-          let m = this.numberList.size - 5
-          let n = this.numberList.size - this.minBall
-          this.maxWinC = getCombinationCount(m, n)
-        }
-        else {
-          this.$set('bets', 0)
-        }
-      },
-      /*
-       * 选中购买
-       */
-      buy () {
-        if (this.numberList.size >= this.minBall) {
-          if (window.localStorage.getItem('user')) {
-            let nums = []
-            for (let item of this.numberList.keys()) {
-              nums.push(item)
-            }
-            this.$route.router.go({
-              name: 'payment',
-              query: {
-                price: this.bets * 2,
-                maxWinC: this.maxWinC
-              },
-              params: {
-                number: nums,
-                gameType: this.gameType,
-                from: 'zx'
-              },
-              replace: false
-            })
-          }
-          else {
-            $.toast('你尚未登录')
-            this.$route.router.go({path: '/login', replace: false})
-          }
-        }
-        else {
-          $.toast('本玩法至少选择' + this.minBall + '个号码')
-        }
-      },
-      /*
-       * 用户中心跳转
-       */
-      targetUserCenter () {
+    /*
+     * 选中购买
+     */
+    buy () {
+      if (this.numberList.size >= this.minBall) {
         if (window.localStorage.getItem('user')) {
-          this.$route.router.go({path: '/user', replace: true})
+          let nums = []
+          for (let item of this.numberList.keys()) {
+            nums.push(item)
+          }
+          this.$route.router.go({
+            name: 'payment',
+            query: {
+              price: this.bets * 2,
+              maxWinC: this.maxWinC
+            },
+            params: {
+              number: nums,
+              gameType: this.gameType,
+              from: 'zx'
+            },
+            replace: false
+          })
         }
         else {
           $.toast('你尚未登录')
           this.$route.router.go({path: '/login', replace: false})
         }
-      },
-      /*
-       * 获取推荐号码
-       */
-      getRecommendNum () {
-        let token = window.localStorage.getItem('token')
-        if (token) {
-          this.$http.get(api.recommendNum, {}, {
-            headers: {
-              'x-token': token
-            }
-          })
-          .then(({data: {code, data, msg}})=>{
-            // console.log(data)
-            if (code === 1) {
-              this.recommendBalls = data.nums
-              this.totperiods = data.totperiods
-              this.alreadyper = data.alreadyper
-              this.recommendStatus = data.processtatus
-            }
-          }).catch((e)=>{
-            console.error('获取推荐号码失败:' + e)
-          })
-        }
-      },
-      /*
-       * 获取上期中奖号码
-       */
-      getLatelyNum () {
-        let token = window.localStorage.getItem('token')
-        if (token) {
-          this.$http.get(api.lastWinNum, {}, {
-            headers: {
-              'x-token': token
-            }
-          })
-          .then(({data: {code, data, msg}})=>{
-            // console.log(data)
-            if (code === 1) {
-              this.lastWinObj = data
-            }
-          }).catch((e)=>{
-            console.error('获取上一期中奖号码失败:' + e)
-          })
-        }
       }
+      else {
+        $.toast('本玩法至少选择' + this.minBall + '个号码')
+      }
+    },
+    /*
+     * 用户中心跳转
+     */
+    targetUserCenter () {
+      if (window.localStorage.getItem('user')) {
+        this.$route.router.go({path: '/user', replace: true})
+      }
+      else {
+        $.toast('你尚未登录')
+        this.$route.router.go({path: '/login', replace: false})
+      }
+    },
+    /*
+     * 获取推荐号码
+     */
+    getRecommendNum () {
+      let token = window.localStorage.getItem('token')
+      if (token) {
+        this.$http.get(api.recommendNum, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.recommendBalls = data.nums
+            this.totperiods = data.totperiods
+            this.alreadyper = data.alreadyper
+            this.recommendStatus = data.processtatus
+          }
+        }).catch((e)=>{
+          console.error('获取推荐号码失败:' + e)
+        })
+      }
+    },
+    /*
+     * 获取上期中奖号码
+     */
+    getLatelyNum () {
+      let token = window.localStorage.getItem('token')
+      if (token) {
+        this.$http.get(api.lastWinNum, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.lastWinObj = data
+          }
+        }).catch((e)=>{
+          console.error('获取上一期中奖号码失败:' + e)
+        })
+      }
+    },
+    /*
+     * 获取服务器时间
+     */
+    getServiceTime () {
+      this.$http.post(api.serviceTime, {}, {
+        headers: {
+          'x-token': window.localStorage.getItem('token')
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        if (code === 1) {
+          this.serviceTime = data
+        }
+      }).catch(()=>{
+        console.error('无法连接服务器-获取时间')
+      }).finally(()=>{
+      })
     }
   }
-
+}
 </script>
 
 <style scoped>
