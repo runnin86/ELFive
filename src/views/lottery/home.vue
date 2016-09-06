@@ -225,6 +225,9 @@
           let n = this.numberList.size - this.minBall
           this.maxWinC = getCombinationCount(m, n)
         }
+        else {
+          this.$set('bets', 0)
+        }
       },
       /*
        * 选中购买
