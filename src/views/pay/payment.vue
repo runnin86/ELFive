@@ -168,6 +168,7 @@ export default {
       let odds = getOdds(this.gameType)
       this.showList = []
       let startMul = this.startMultiple
+      let maxRate = 0
       // 默认生成追号7期
       for (let i = 0; i < this.followPeriod; i++) {
         let obj = {}
@@ -184,15 +185,21 @@ export default {
         let tempBuy = this.price * startMul + lastPeriodMoney
         let tempMon = winMon - tempBuy
         let tempRate = parseInt((tempMon / tempBuy) * 100, 0)
+        if (i === 0) {
+          // 第一个即为最高利润率
+          maxRate = tempRate
+        }
         while (tempRate < this.expectProfit) {
+          if (tempRate >= maxRate) {
+            // 大于等于最高利润率则停止加倍
+            break
+          }
           if (startMul >= 999) {
             break
           }
           startMul++
           let b = this.price * startMul + lastPeriodMoney
-          if (b > 999999) {
-            break
-          }
+          winMon = this.maxWinC * 2 * odds * startMul
           let m = winMon - b
           tempRate = parseInt((m / b) * 100, 0)
         }
