@@ -62,10 +62,12 @@
   export default {
     ready () {
       $.init()
+      console.log(this.uid)
     },
     data () {
       return {
-        showTabs: 1
+        showTabs: 1,
+        uid: this.$route.query.uid
       }
     },
     methods: {

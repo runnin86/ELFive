@@ -42,7 +42,7 @@ export default function (router) {
         require(['./views/user/login'], resolve)
       }
     },
-    '/register': {
+    '/reg': {
       component (resolve) {
         require(['./views/user/register'], resolve)
       }
