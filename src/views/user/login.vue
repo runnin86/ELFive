@@ -144,7 +144,9 @@ export default {
           if (code === 1) {
             $.toast('验证码已发送至' + this.forgetPhone + ',请注意查收!')
           }
-          $.toast(msg)
+          else {
+            $.toast(msg)
+          }
         }).catch((e)=>{
           console.error('获取验证码失败:' + e)
         })
