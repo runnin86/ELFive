@@ -3,7 +3,7 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="bounce">
+  <div class="content" transition="pushtop">
 
     <!-- 成功提示 -->
     <div class="el_complete_box">
@@ -16,7 +16,7 @@
       <div class="el_complete_info">
         <div class="el_complete_money">
           <span>提现金额</span>
-          <span>200.00</span>
+          <span>{{money | currency '¥'}}</span>
         </div>
         <div class="el_complete_alipay">
           <span>提现渠道</span>
@@ -24,11 +24,11 @@
         </div>
         <div class="el_complete_username">
           <span>账户名称</span>
-          <span>stonecoolpapa@163.com</span>
+          <span>{{user.userAlipayId}}</span>
         </div>
         <div class="el_complete_time">
           <span>提现日期</span>
-          <span>2016.08.29&nbsp20:20</span>
+          <span>{{withDrawDate}}</span>
         </div>
       </div>
       <div class="el_withdrawals_notes">
@@ -43,6 +43,26 @@
 
   </div>
 </template>
+
+<script>
+import $ from 'zepto'
+import {dateFormat} from '../../util/util'
+
+export default {
+  ready () {
+    $.init()
+  },
+  data () {
+    return {
+      money: this.$route.query.m,
+      user: JSON.parse(window.localStorage.getItem('user')),
+      withDrawDate: dateFormat(new Date(), 'yyyy-MM-dd HH:mm')
+    }
+  },
+  methods: {
+  }
+}
+</script>
 
 <style scoped>
 body,ul{

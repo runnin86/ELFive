@@ -12,42 +12,112 @@
       </a>
       <strong class="el_balance_title">账户余额</strong>
       <strong class="el_placeholder" v-link="{path: '/rule', replace: true}">规则</strong>
-      <strong class="el_balance">2880.28</strong>
+      <strong class="el_balance">{{userAccount}}</strong>
     </div>
 
     <!-- 提现操作窗口 -->
     <div class="el_withdrawals_window_box">
       <div class="el_withdrawals_alipay_box">
         <span class="el_withdrawals_alipay_notes">支付宝</span>
-        <span class="el_withdrawals_alipay_username">stonecoolpapa@163.com</span>
+        <span class="el_withdrawals_alipay_username">{{user.userAlipayId}}</span>
       </div>
       <div class="el_withdrawals_balance_box">
         <span class="el_withdrawals_balance_notes">提现金额</span>
-        <input type="text" maxlength="11" placeholder="输入提现金额" id="withdrawals_balance" class="el_withdrawals_balance_input"  name="withdrawals_balance" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')">
+        <input v-model="withdrawMoney" class="el_withdrawals_balance_input"
+          placeholder="输入提现金额" type="number" min=10 max={{userAccount}}
+          onKeyPress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+          onKeyUp="this.value=this.value.replace(/\D/g,'')"/>
       </div>
       <div class="el_withdrawals_btn_box">
-        <strong class="el_withdrawals_btn"  v-link="{path: '/withdrawals_complete', replace: true}">确定</strong>
+        <strong class="el_withdrawals_btn" @click="submitWithdraw()">确定</strong>
       </div>
       <div class="el_prompt">
         <span>请您认真核对支付宝账号是否正确后再进行提现</span>
     </div>
-
-    <!-- 弹出窗口 -->
-    <!-- <div class="el_eject_window_box">
-      <div class="el_eject_window">
-        <div class="el_confirm_info">
-          <span class="el_confirm_info_up">提现640.00元</span>
-          <span class="el_confirm_info_lower">（提现申请将于3个工作日内完成）</span>
-        </div>
-        <div class="el_button">
-          <span class="el_button_left">取消</span>
-          <span class="el_button_right">确定</span>
-        </div>
-      </div>
-    </div> -->
-
   </div>
 </template>
+
+<script>
+  import {api} from '../../util/service'
+  import $ from 'zepto'
+
+  export default {
+    ready () {
+      $.init()
+      if (this.user) {
+        // 获取账户信息
+        this.getUserAccount()
+      }
+    },
+    data () {
+      return {
+        user: JSON.parse(window.localStorage.getItem('user')),
+        userAccount: '-',
+        withdrawMoney: null
+      }
+    },
+    methods: {
+      /*
+       * 获取账户
+       */
+      getUserAccount () {
+        let token = window.localStorage.getItem('token')
+        this.$http.get(api.userAccount, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          if (code === 1) {
+            this.userAccount = data.userAccount
+          }
+          else {
+            console.log('获取账户错误:' + msg)
+          }
+        }).catch((e)=>{
+          console.error('获取账户信息失败:' + e)
+        })
+      },
+      /*
+       * 提交提现
+       */
+      submitWithdraw () {
+        if (!this.user.userAlipayId) {
+          $.toast('账户支付宝账户为空,无法提现!')
+          return
+        }
+        if (this.withdrawMoney < 10) {
+          $.toast('提现金额必须大于10元!')
+          this.withdrawMoney = null
+          return
+        }
+        if (this.withdrawMoney > this.userAccount) {
+          $.toast('提现金额大于账户余额!')
+          this.withdrawMoney = null
+          return
+        }
+        let token = window.localStorage.getItem('token')
+        this.$http.post(api.withdraw, {
+          wamount: this.withdrawMoney
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, msg}})=>{
+          if (code === 1) {
+            this.$route.router.go({path: '/withdrawals_complete?m=' + this.withdrawMoney, replace: true})
+          }
+          else {
+            $.toast(msg)
+          }
+        }).catch((e)=>{
+          console.error('提现失败:' + e)
+        })
+      }
+    }
+  }
+</script>
 
 <style scoped>
 body,ul{
