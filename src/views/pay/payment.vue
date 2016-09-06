@@ -240,16 +240,22 @@ export default {
         }
       }
       else if (this.from === 'zx') {
-        // nums,unitPrice,multiple,totalPrice,gameType,startPeriods,openId
-        postUrl = api.payOrderByZX
-        postBody = {
-          nums: this.$route.params.number,
-          unitPrice: this.price,
-          multiple: this.startMultiple,
-          totalPrice: this.totalMoney,
-          gameType: this.gameType,
-          startPeriods: this.followPeriod,
-          openid: '123'
+        if (this.followPeriod === 1) {
+          // nums,unitPrice,multiple,totalPrice,gameType,startPeriods,openId
+          postUrl = api.payOrderByZX
+          postBody = {
+            nums: this.$route.params.number,
+            unitPrice: this.price,
+            multiple: this.startMultiple,
+            totalPrice: this.totalMoney,
+            gameType: this.gameType,
+            startPeriods: this.followPeriod,
+            openid: '123'
+          }
+          console.log('自选只买一期')
+        }
+        else if (this.followPeriod > 1) {
+          console.log('自选多期跟单')
         }
       }
       if (postUrl) {
