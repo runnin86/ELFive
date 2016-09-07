@@ -129,6 +129,8 @@
         .then(({data: {code, data, msg}})=>{
           // console.log(data)
           if (code === 1) {
+            // // 模拟可取消
+            // data[0].isCanQuit = '1'
             this.docList = data
           }
           else {
@@ -147,11 +149,11 @@
         // numPayStatus: 0    -> 0 未付费查看   1 已付可看
         // isToll: 0          -> 0 免费      1收费
         let nums = doc.nums
-        if (doc.isToll === 1 || doc.numPayStatus === 1) {
+        if (doc.isToll === 1 && doc.numPayStatus === 0) {
           // 需要隐藏号码
           nums = '*,*,*,*,*,*'
         }
-        if (doc.isCanDoc === '1') {
+        if (doc.isCanDoc === '1' && doc.isCanQuit === '0') {
           // 跳转至模拟收益
           this.$route.router.go({
             name: 'payment',
@@ -166,9 +168,24 @@
             replace: false
           })
         }
-        else if (doc.isCanQuit === '1') {
-          // 发送请求取消跟单
-          console.log('取消跟单')
+        if (doc.isCanQuit === '1') {
+          // 发送取消跟单
+          let token = window.localStorage.getItem('elToken')
+          this.$http.post(api.cancelOrderByGD, {
+            'did': doc.rid
+          }, {
+            headers: {
+              'x-token': token
+            }
+          })
+          .then(({data: {code, msg}})=>{
+            if (code === 1) {
+              this.getDocList()
+            }
+            $.toast(msg)
+          }).catch((e)=>{
+            console.error('取消跟单失败:' + e)
+          })
         }
       },
       /*
