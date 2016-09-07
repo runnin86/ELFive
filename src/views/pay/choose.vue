@@ -43,13 +43,13 @@
         <span>{{doc.recInfo}}</span>
       </div>
       <div class="el_button">
-        <span v-if="doc.isToll===1 || doc.numPayStatus===1"
+        <span v-if="doc.isToll===1 && doc.numPayStatus===0"
           class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
           付费查看
         </span>
         <a @click="doDocumentary(doc)"
           class="el_documentary_btn"
-          :style="{width: (doc.isToll===1 || doc.numPayStatus===1 ? '50%' : '100%')}">
+          :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
          {{doc.isCanQuit==='1' ? '取消跟单' : '跟单'}}
        </a>
       </div>
@@ -81,7 +81,7 @@
 
   Vue.filter('numberFilter', function (value, isFree, isPay, index) {
     // isFree: 0 免费  1收费
-    // numPayStatus: 0 未付费不能查看   1 已付可看
+    // isPay: 0 未付费   1 已付
     let num = '*'
     if (isFree === 0) {
       // 免费的直接可看
