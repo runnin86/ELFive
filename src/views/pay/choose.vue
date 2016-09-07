@@ -169,22 +169,26 @@
           })
         }
         if (doc.isCanQuit === '1') {
-          // 发送取消跟单
-          let token = window.localStorage.getItem('elToken')
-          this.$http.post(api.cancelOrderByGD, {
-            'did': doc.rid
-          }, {
-            headers: {
-              'x-token': token
-            }
-          })
-          .then(({data: {code, msg}})=>{
-            if (code === 1) {
-              this.getDocList()
-            }
-            $.toast(msg)
-          }).catch((e)=>{
-            console.error('取消跟单失败:' + e)
+          $.confirm('确认取消跟单?', '提示', ()=>{
+            // 发送取消跟单
+            let token = window.localStorage.getItem('elToken')
+            this.$http.post(api.cancelOrderByGD, {
+              'did': doc.rid
+            }, {
+              headers: {
+                'x-token': token
+              }
+            })
+            .then(({data: {code, msg}})=>{
+              if (code === 1) {
+                this.getDocList()
+              }
+              $.toast(msg)
+            }).catch((e)=>{
+              console.error('取消跟单失败:' + e)
+            })
+          }, ()=>{
+            // confirm取消
           })
         }
       },
