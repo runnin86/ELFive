@@ -142,12 +142,12 @@ export default {
       })
       .then(({data: {code, data, msg}})=>{
         console.log(data)
-        if (code === 1) {
-          this.gdList = data
-        }
-        else {
-          $.toast(msg)
-        }
+        // if (code === 1) {
+        //   this.gdList = data
+        // }
+        // else {
+        //   $.toast(msg)
+        // }
       }).catch((e)=>{
         console.error('获取我的订单(跟单)失败:' + e)
       })

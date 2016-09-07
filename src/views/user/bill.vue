@@ -56,11 +56,12 @@
         <th>号码</th>
         <th>消费</th>
       </tr>
-      <tr align="center">
-        <td>16082801</td>
-        <td>跟单任6</td>
-        <td>01 02 03<br>04 05 06</td>
-        <td>12.00</td>
+      <tr align="center"
+        v-for="p in purchaseList | orderBy 'orderPeriod' -1" track-by="$index">
+        <td>{{p.orderPeriod}}</td>
+        <td>{{p.gameType}}</td>
+        <td>{{p.nums}}</td>
+        <td>{{p.totalPrice | currency '¥'}}</td>
       </tr>
     </table>
 
@@ -73,11 +74,12 @@
         <th>号码</th>
         <th>奖金</th>
       </tr>
-      <tr align="center">
-        <td>16082602</td>
-        <td>跟单任6</td>
-        <td>01 02 03<br>04 05 06</td>
-        <td>1200.00</td>
+      <tr align="center"
+        v-for="b in bonusList | orderBy 'orderPeriod' -1" track-by="$index">
+        <td>{{b.orderPeriod}}</td>
+        <td>{{b.gameType}}</td>
+        <td>{{b.nums}}<br>04 05 06</td>
+        <td>{{b.bonus | currency '¥'}}</td>
       </tr>
     </table>
 
@@ -129,7 +131,7 @@ export default {
         }
       })
       .then(({data: {code, data, msg}})=>{
-        console.log(data)
+        // console.log(data)
         if (code === 1) {
           this.bonusList = data.bonus
           this.purchaseList = data.purchase
