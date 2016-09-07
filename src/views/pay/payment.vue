@@ -232,7 +232,7 @@ export default {
         /*
          * 自选号码跟单(一期和多期)
          */
-        if (this.followPeriod === 1) {
+        if (parseInt(this.followPeriod, 0) === 1) {
           console.log('自选只买一期')
           // nums,unitPrice,multiple,totalPrice,gameType,startPeriods,openId
           postUrl = api.payOrderByZXOne
@@ -246,7 +246,7 @@ export default {
             openid: '123'
           }
         }
-        else if (this.followPeriod > 1) {
+        else if (parseInt(this.followPeriod, 0) > 1) {
           console.log('自选多期跟单')
           postUrl = api.payOrderByZXMore
           postBody = {
@@ -268,17 +268,20 @@ export default {
             'x-token': token
           }
         })
-        .then(({data: data})=>{
+        .then(({data: {code, data, msg}})=>{
           console.log(data)
-          // if (code === 1) {
-          //   this.showPayButton = false
-          //   setTimeout(() => {
-          //     this.$root.back()
-          //   }, 1500)
-          // }
-          // $.toast(msg)
+          if (code === 1) {
+            if (data.paytype === 'wx_pub') {
+              console.log(data.charge)
+            }
+            this.showPayButton = false
+            setTimeout(() => {
+              this.$root.back()
+            }, 1500)
+          }
+          $.toast(msg)
         }).catch((e)=>{
-          console.error(this.from + '跟单提交失败:' + e)
+          console.error(this.from + '付款提交失败:' + e)
         })
       }
     },
