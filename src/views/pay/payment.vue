@@ -208,12 +208,15 @@ export default {
       this.totalMoney = this.showList[this.showList.length - 1].buy
     },
     /*
-     * 跟单支付
+     * 支付
      */
     payOrder () {
       let postBody = {}
       let postUrl = ''
       if (this.from === 'gd') {
+        /*
+         * 推荐号码跟单
+         */
         // rid,startMultiple,totPeriods,ratePercent,openid
         postUrl = api.payOrderByGD
         postBody = {
@@ -226,9 +229,13 @@ export default {
         }
       }
       else if (this.from === 'zx') {
+        /*
+         * 自选号码跟单(一期和多期)
+         */
         if (this.followPeriod === 1) {
+          console.log('自选只买一期')
           // nums,unitPrice,multiple,totalPrice,gameType,startPeriods,openId
-          postUrl = api.payOrderByZX
+          postUrl = api.payOrderByZXOne
           postBody = {
             nums: this.$route.params.number,
             unitPrice: this.price,
@@ -238,10 +245,19 @@ export default {
             startPeriods: this.followPeriod,
             openid: '123'
           }
-          console.log('自选只买一期')
         }
         else if (this.followPeriod > 1) {
           console.log('自选多期跟单')
+          postUrl = api.payOrderByZXMore
+          postBody = {
+            nums: this.$route.params.number,
+            unitPrice: this.price,
+            multiple: this.startMultiple,
+            totalPrice: this.totalMoney,
+            gameType: this.gameType,
+            startPeriods: this.followPeriod,
+            openid: '123'
+          }
         }
       }
       if (postUrl) {
@@ -251,15 +267,15 @@ export default {
             'x-token': token
           }
         })
-        .then(({data: {code, data, msg}})=>{
-          // console.log(data)
-          if (code === 1) {
-            this.showPayButton = false
-            setTimeout(() => {
-              this.$root.back()
-            }, 1500)
-          }
-          $.toast(msg)
+        .then(({data: data})=>{
+          console.log(data)
+          // if (code === 1) {
+          //   this.showPayButton = false
+          //   setTimeout(() => {
+          //     this.$root.back()
+          //   }, 1500)
+          // }
+          // $.toast(msg)
         }).catch((e)=>{
           console.error(this.from + '跟单提交失败:' + e)
         })
