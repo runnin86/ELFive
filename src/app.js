@@ -50,6 +50,7 @@ Vue.http.interceptors.push({
 Vue.filter('date', filters.dateFilter)
 Vue.filter('split', filters.splitFilter)
 Vue.filter('getArray', filters.getArray)
+Vue.filter('getGameTypeName', filters.gameTypeFilterDesc)
 
 router.start(app, '#app')
 

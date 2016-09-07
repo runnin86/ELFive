@@ -95,7 +95,7 @@
     <div class="el_pick_box">
       <div class="el_pick"
         @click="this.showSelect?this.showSelect=false:this.showSelect=true">
-        <span>{{gameType | gameTypeFilter}}</span>
+        <span>{{gameType ? '玩法-' : ''}}{{gameType | getGameTypeName}}</span>
       </div>
       <div class="el_pick_all"
         :style="this.showSelect ? 'display:block' : 'display:none'">
@@ -127,31 +127,17 @@
 
     <!-- 购买按钮 -->
     <div class="el_documentary_btn">
-      <span @click="buy()">共{{bets}}注 {{bets*2}}元购买</span>
+      <span>共{{bets}}注 {{bets*2}}元</span>
+      <span @click="buy()">购买</span>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
 import {api} from '../../util/service'
 import {getCombinationCount} from '../../util/util'
 import $ from 'zepto'
 
-Vue.filter('gameTypeFilter', function (gt) {
-  // 计算时间差
-  let name = ''
-  if (gt === 'R5') {
-    name = '玩法-任选五'
-  }
-  else if (gt === 'R6') {
-    name = '玩法-任选六'
-  }
-  else if (gt === 'R7') {
-    name = '玩法-任选七'
-  }
-  return name
-})
 var refreshMsg
 export default {
   ready () {

@@ -48,3 +48,20 @@ export let splitFilter = (str, s) => {
 export let getArray = (arr, i) => {
   return arr[i]
 }
+
+/**
+ * 玩法转换为文字描述
+ */
+export let gameTypeFilterDesc = (gt) => {
+  let name = ''
+  if (gt === 'R5') {
+    name = '任选五'
+  }
+  else if (gt === 'R6') {
+    name = '任选六'
+  }
+  else if (gt === 'R7') {
+    name = '任选七'
+  }
+  return name
+}

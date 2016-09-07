@@ -73,11 +73,13 @@
     <div class="el_placeholder">&nbsp</div>
   </div>
 
-  <!-- 推荐号码 -->
+  <!-- 付款区 -->
   <div class="el_recommend_box">
     <div class="el_recommend">
         <span v-if="from === 'gd'">跟单号码</span>
-        <span v-else>{{gameType | gameTypeFilter}}</span>
+        <span v-else>
+          {{gameType ? '玩法-' : ''}}{{gameType | getGameTypeName}}
+        </span>
     </div>
     <table width="100%" class="recommendation_number_box">
       <tr align="center">
@@ -119,24 +121,8 @@
 
 <script>
 import $ from 'zepto'
-import Vue from 'vue'
 import {getOdds} from '../../util/util'
 import {api} from '../../util/service'
-
-Vue.filter('gameTypeFilter', function (gt) {
-  // 计算时间差
-  let name = ''
-  if (gt === 'R5') {
-    name = '玩法-任选五'
-  }
-  else if (gt === 'R6') {
-    name = '玩法-任选六'
-  }
-  else if (gt === 'R7') {
-    name = '玩法-任选七'
-  }
-  return name
-})
 
 export default {
   ready () {
