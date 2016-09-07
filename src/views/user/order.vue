@@ -77,35 +77,43 @@
     </div>
     <!-- 跟单 -->
     <div class="el_bill_box"
+      v-for="g in gdList | orderBy 'orderDate' -1" track-by="$index"
       :class="this.showTabs===1?'el_bill_box':'hide'">
       <div class="ul_bill_type">
         <span>跟单</span>
       </div>
       <table width="100%" class="el_bill_number_table">
         <tr>
-        <td>01</td>
-        <td>02</td>
-        <td>03</td>
-        <td>04</td>
-        <td>05</td>
-        <td>06</td>
-        <td>06</td>
-        <td>06</td>
+          <td v-for="n in g.nums | split ','">{{n}}</td>
         </tr>
       </table>
       <div class="el_bill_title">
-        <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
+        <span>{{g.orderDate}}&nbsp/&nbsp起始期&nbsp{{g.startPeriods}}</span>
       </div>
       <div class="el_state_box">
-            <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
-            <span class="el_process">已进行&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
+        <span class="el_state">
+          购买&nbsp<font color="#42c1b1">{{g.totPeriods}}</font>&nbsp期
+        </span>
+        <span class="el_process">
+          已进行&nbsp<font color="#42c1b1">{{g.alreadyPer}}</font>&nbsp期
+        </span>
       </div>
       <div class="el_state_box">
-            <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
-            <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
+        <span class="el_state">
+          冻结金额&nbsp
+          <font color="#42c1b1">{{g.frozeAccount | currency '¥'}}</font>
+        </span>
+        <span class="el_process">
+          已使用金额&nbsp
+          <font color="#42c1b1">{{g.nowTotAmount | currency '¥'}}</font>
+        </span>
       </div>
       <div class="el_button">
-        <span class="el_stop_btn">未中奖/奖金200.00</span>
+        <span class="el_stop_btn">
+          {{g.bonus > 0 ? '中奖/' : '未中奖'}}
+          {{g.bonus > 0 ? '奖金' : ''}}
+          {{g.bonus | currency '¥'}}
+        </span>
       </div>
     </div>
   </div>
@@ -141,13 +149,13 @@ export default {
         }
       })
       .then(({data: {code, data, msg}})=>{
-        console.log(data)
-        // if (code === 1) {
-        //   this.gdList = data
-        // }
-        // else {
-        //   $.toast(msg)
-        // }
+        // console.log(data)
+        if (code === 1) {
+          this.gdList = data
+        }
+        else {
+          $.toast(msg)
+        }
       }).catch((e)=>{
         console.error('获取我的订单(跟单)失败:' + e)
       })
@@ -167,7 +175,7 @@ export default {
         }
       })
       .then(({data: {code, data, msg}})=>{
-        console.log(data)
+        // console.log(data)
         if (code === 1) {
           this.zxList = data
         }
