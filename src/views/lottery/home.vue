@@ -18,22 +18,22 @@
     </div>
     <div class="recommendation_number_box">
         <strong>
-          {{recommendBalls ? recommendBalls.split(',')[0] : ''}}
+          {{recommendBalls | split ','| getArray 0}}
         </strong>
         <strong>
-          {{recommendBalls ? recommendBalls.split(',')[1] : ''}}
+          {{recommendBalls | split ','| getArray 1}}
         </strong>
         <strong>
-          {{recommendBalls ? recommendBalls.split(',')[2] : ''}}
+          {{recommendBalls | split ','| getArray 2}}
         </strong>
         <strong>
-          {{recommendBalls ? recommendBalls.split(',')[3] : ''}}
+          {{recommendBalls | split ','| getArray 3}}
         </strong>
         <strong>
-          {{recommendBalls ? recommendBalls.split(',')[4] : ''}}
+          {{recommendBalls | split ','| getArray 4}}
         </strong>
         <strong>
-          {{recommendBalls ? recommendBalls.split(',')[5] : ''}}
+          {{recommendBalls | split ','| getArray 5}}
         </strong>
     </div>
     <!-- 推荐号码即时状态 -->

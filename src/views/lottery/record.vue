@@ -24,22 +24,22 @@
           {{doc.startperiods}}
         </td>
         <td>
-          {{doc.nums ? doc.nums.split(',')[0] : ''}}
+          {{doc.nums | split ','| getArray 0}}
         </td>
         <td>
-          {{doc.nums ? doc.nums.split(',')[1] : ''}}
+          {{doc.nums | split ','| getArray 1}}
         </td>
         <td>
-          {{doc.nums ? doc.nums.split(',')[2] : ''}}
+          {{doc.nums | split ','| getArray 2}}
         </td>
         <td>
-          {{doc.nums ? doc.nums.split(',')[3] : ''}}
+          {{doc.nums | split ','| getArray 3}}
         </td>
         <td>
-          {{doc.nums ? doc.nums.split(',')[4] : ''}}
+          {{doc.nums | split ','| getArray 4}}
         </td>
         <td>
-          {{doc.nums ? doc.nums.split(',')[5] : ''}}
+          {{doc.nums | split ','| getArray 5}}
         </td>
         <td>
           {{doc.winnerperiods === null ? '未中' : (doc.winnerperiods + '期命中')}}

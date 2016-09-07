@@ -20,11 +20,11 @@
       </tr>
       <tr align="center" v-for="item in list">
         <td>{{item.periods}}</td>
-        <td>{{item.nums ? item.nums.split(',')[0] : ''}}</td>
-        <td>{{item.nums ? item.nums.split(',')[1] : ''}}</td>
-        <td>{{item.nums ? item.nums.split(',')[2] : ''}}</td>
-        <td>{{item.nums ? item.nums.split(',')[3] : ''}}</td>
-        <td>{{item.nums ? item.nums.split(',')[4] : ''}}</td>
+        <td>{{item.nums | split ','| getArray 0}}</td>
+        <td>{{item.nums | split ','| getArray 1}}</td>
+        <td>{{item.nums | split ','| getArray 2}}</td>
+        <td>{{item.nums | split ','| getArray 3}}</td>
+        <td>{{item.nums | split ','| getArray 4}}</td>
       </tr>
     </table>
   </div>
