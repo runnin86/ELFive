@@ -19,11 +19,13 @@
         <strong class="el_login_btn el_click_blue"
           @click="this.showTabs = 1"
           :class="this.showTabs===1?'el_click_blue':''">
-        登录</strong>
+          登录
+        </strong>
         <strong class="el_sign_up_btn"
           @click="this.showTabs = 2"
           :class="this.showTabs===2?'el_click_blue':''">
-        忘记密码</strong>
+          忘记密码
+        </strong>
       </div>
 
       <!-- 登录盒子 -->
