@@ -47,7 +47,7 @@
         <strong  v-link="{path: '/withdrawals', replace: true}">提现</strong>
       </div>
       <div class="el_recharge_btn">
-        <strong>充值</strong>
+        <strong @click="recharge()">充值</strong>
       </div>
     </div>
 
@@ -242,6 +242,9 @@
         }).catch((e)=>{
           console.error('获取账户信息失败:' + e)
         })
+      },
+      recharge () {
+        $.toast('敬请期待!')
       }
     },
     components: {
