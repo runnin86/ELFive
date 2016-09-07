@@ -52,7 +52,7 @@
       :class="this.showTabs===1?'el_recharge_box':'hide'">
       <tr>
         <th>期数</th>
-        <th>彩种</th>
+        <th>玩法</th>
         <th>号码</th>
         <th>消费</th>
       </tr>

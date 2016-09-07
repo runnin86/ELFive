@@ -76,12 +76,13 @@ ul,a,p{
   background-color: white;
   height: 100%;
   overflow: hidden;
+  padding-top:0.4rem;
 }
 .el_rule_content span{
   display: block;
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 86%;
+  margin-left: 7%;
+  margin-right: 7%;
   margin-top: 0.5rem;
   font-size: 0.7rem;
   line-height: 1.2rem;

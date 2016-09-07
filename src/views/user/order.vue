@@ -20,6 +20,10 @@
         @click="this.showTabs = 2"
         :class="this.showTabs===2?'el_click_white':''">
       自选</strong>
+      <strong class="el_optional_single_btn"
+        @click="this.showTabs = 3"
+        :class="this.showTabs===3?'el_click_white':''">
+      自选单注</strong>
     </div>
 
     <!-- 自选 -->
@@ -27,7 +31,7 @@
       <div class="el_bill_box" v-if="z.docperiod > 0"
         :class="this.showTabs===2?'el_bill_box':'hide'">
         <div class="ul_bill_type">
-          <span>多期订单</span>
+          <span>任选七</span>
         </div>
         <ul class="el_bill_number">
           <li v-for="n in z.nums.split(',')">{{n}}</li>
@@ -52,9 +56,9 @@
       </div>
 
       <div class="el_bill_box" v-if="z.docperiod === 1"
-        :class="this.showTabs===2?'el_bill_box':'hide'">
+        :class="this.showTabs===3?'el_bill_box':'hide'">
         <div class="ul_bill_type">
-          <span>单期订单</span>
+          <span>任选六</span>
         </div>
         <ul class="el_bill_number">
           <li v-for="n in z.nums.split(',')">{{n}}</li>
@@ -341,8 +345,16 @@ ul,a,p{
   height:2.5rem;
   background-color: #282828;
 }
-.el_documentary_btn,.el_optional_btn{
-  width:50%;
+.el_documentary_btn{
+  width: 33%;
+}
+.el_optional_btn{
+  width: 34%;
+}
+.el_optional_single_btn{
+  width: 33%;
+}
+.el_documentary_btn,.el_optional_btn,.el_optional_single_btn{
   text-align: center;
   line-height: 2.5rem;
   display: block;

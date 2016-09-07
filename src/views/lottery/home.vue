@@ -126,9 +126,9 @@
     </table>
 
     <!-- 购买按钮 -->
-    <div class="el_documentary_btn">
-      <span>共{{bets}}注 {{bets*2}}元</span>
-      <span @click="buy()">购买</span>
+    <div class="el_documentary_box">
+      <span class="el_documentary_amount">共{{bets}}注 {{bets*2}}元</span>
+      <span class="el_optional_btn" @click="buy()">购买</span>
     </div>
   </div>
 </template>
@@ -412,19 +412,27 @@ body,ul{
   width:100%;
   text-align: center;
 }
-.el_documentary_btn{
+.el_documentary_box{
   width:100%;
-  height:2.5rem;
   background-color: #fff;
   border-top:solid 0.05rem #f0f0f0;
 }
-.el_documentary_btn span{
+.el_documentary_amount{
+  display: block;
+  font-size: 0.6rem;
+  width:100%;
+  text-align: center;
+  line-height: 1.2rem;
+}
+.el_documentary_btn,.el_optional_btn{
   display: block;
   font-size: 0.7rem;
   width:100%;
   text-align: center;
   line-height: 2.5rem;
   color: #42c1b1;
+  background-color: white;
+  border-top: 0.05rem #f0f0f0 solid;
 }
 .el_history_record_box{
   width:100%;
