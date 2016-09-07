@@ -250,12 +250,13 @@ export default {
           console.log('自选多期跟单')
           postUrl = api.payOrderByZXMore
           postBody = {
-            nums: this.$route.params.number,
-            unitPrice: this.price,
-            multiple: this.startMultiple,
-            totalPrice: this.totalMoney,
-            gameType: this.gameType,
-            startPeriods: this.followPeriod,
+            startMultiple: this.startMultiple, // 初始倍数
+            nums: this.$route.params.number, // 初始号码
+            unitPrice: this.price, // 单价
+            ratePercent: this.expectProfit, // 利润率
+            totPeriods: this.followPeriod, //  自定义追单期数
+            totalPrice: this.totalMoney, // 总价
+            gameType: this.gameType, // 玩法
             openid: '123'
           }
         }
