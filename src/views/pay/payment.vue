@@ -261,7 +261,7 @@ export default {
         }
       }
       if (postUrl) {
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         this.$http.post(postUrl, postBody, {
           headers: {
             'x-token': token
@@ -285,7 +285,7 @@ export default {
      * 获取当前期
      */
     getCurrentPeriod () {
-      let token = window.localStorage.getItem('token')
+      let token = window.localStorage.getItem('elToken')
       this.$http.get(api.currentPeriod, {}, {
         headers: {
           'x-token': token

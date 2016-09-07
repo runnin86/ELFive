@@ -142,7 +142,7 @@ var refreshMsg
 export default {
   ready () {
     $.init()
-    if (window.localStorage.getItem('user')) {
+    if (window.localStorage.getItem('elUser')) {
       // 登录获取推荐号码
       this.getRecommendNum()
       // 获取上期中奖号码
@@ -227,7 +227,7 @@ export default {
      */
     buy () {
       if (this.numberList.size >= this.minBall) {
-        if (window.localStorage.getItem('user')) {
+        if (window.localStorage.getItem('elUser')) {
           let nums = []
           for (let item of this.numberList.keys()) {
             nums.push(item)
@@ -259,7 +259,7 @@ export default {
      * 用户中心跳转
      */
     targetUserCenter () {
-      if (window.localStorage.getItem('user')) {
+      if (window.localStorage.getItem('elUser')) {
         this.$route.router.go({path: '/user', replace: true})
       }
       else {
@@ -271,7 +271,7 @@ export default {
      * 获取推荐号码
      */
     getRecommendNum () {
-      let token = window.localStorage.getItem('token')
+      let token = window.localStorage.getItem('elToken')
       if (token) {
         this.$http.get(api.recommendNum, {}, {
           headers: {
@@ -295,7 +295,7 @@ export default {
      * 获取上期中奖号码
      */
     getLatelyNum () {
-      let token = window.localStorage.getItem('token')
+      let token = window.localStorage.getItem('elToken')
       if (token) {
         this.$http.get(api.lastWinNum, {}, {
           headers: {
@@ -318,7 +318,7 @@ export default {
     getServiceTime () {
       this.$http.get(api.serviceTime, {}, {
         headers: {
-          'x-token': window.localStorage.getItem('token')
+          'x-token': window.localStorage.getItem('elToken')
         }
       })
       .then(({data: {code, data, msg}})=>{

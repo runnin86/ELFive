@@ -51,7 +51,7 @@
     },
     data () {
       return {
-        user: JSON.parse(window.localStorage.getItem('user')),
+        user: JSON.parse(window.localStorage.getItem('elUser')),
         userAccount: '-',
         withdrawMoney: null
       }
@@ -61,7 +61,7 @@
        * 获取账户
        */
       getUserAccount () {
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         this.$http.get(api.userAccount, {}, {
           headers: {
             'x-token': token
@@ -96,7 +96,7 @@
           this.withdrawMoney = null
           return
         }
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         this.$http.post(api.withdraw, {
           wamount: this.withdrawMoney
         }, {

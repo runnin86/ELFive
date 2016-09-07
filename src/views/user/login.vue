@@ -118,9 +118,9 @@ export default {
               $.toast('账户禁用')
             }
             else if (data.user.userStatus === 1) {
-              window.localStorage.setItem('user', JSON.stringify(data.user))
-              window.localStorage.setItem('token', data.token)
-              window.localStorage.setItem('openid', data.openid)
+              window.localStorage.setItem('elUser', JSON.stringify(data.user))
+              window.localStorage.setItem('elToken', data.token)
+              window.localStorage.setItem('elOpenid', data.openid)
               this.$route.router.go({path: '/home', replace: true})
             }
           }

@@ -55,7 +55,7 @@ export default {
   data () {
     return {
       money: this.$route.query.m,
-      user: JSON.parse(window.localStorage.getItem('user')),
+      user: JSON.parse(window.localStorage.getItem('elUser')),
       withDrawDate: dateFormat(new Date(), 'yyyy-MM-dd HH:mm')
     }
   },

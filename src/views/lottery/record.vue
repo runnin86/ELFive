@@ -69,7 +69,7 @@
        * 获取跟单选购列表(分页未完成)
        */
       getHistoryList () {
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         // 获取跟单选购列表
         this.$http.post(api.docHistory, {
           'pagenum': 1,

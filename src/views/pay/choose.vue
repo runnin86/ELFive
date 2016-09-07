@@ -119,7 +119,7 @@
         // isToll: 0          -> 0 免费      1收费
         // nums: "01,03,04,06,07,08"
         // recInfo: "推荐期号2016090540-2016090662(100期)"
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         // 获取跟单选购列表
         this.$http.get(api.recRecord, {}, {
           headers: {
@@ -177,7 +177,7 @@
       buyViewRec () {
         if (this.payRid) {
           // 付费查看
-          let token = window.localStorage.getItem('token')
+          let token = window.localStorage.getItem('elToken')
           this.$http.post(api.payViewRec, {
             'rid': this.payRid,
             'price': 500,

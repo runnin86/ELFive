@@ -145,7 +145,7 @@ export default {
      * 跟单订单查询
      */
     getUserOrderGD () {
-      let token = window.localStorage.getItem('token')
+      let token = window.localStorage.getItem('elToken')
       // 获取跟单选购列表
       this.$http.get(api.userOrderGD, {}, {
         headers: {
@@ -168,7 +168,7 @@ export default {
      * 自选订单查询
      */
     getUserOrderZX () {
-      let token = window.localStorage.getItem('token')
+      let token = window.localStorage.getItem('elToken')
       // 获取跟单选购列表
       this.$http.get(api.userORderZX, {
         pagenum: 1,

@@ -64,7 +64,7 @@ export default {
           },
           {
             headers: {
-              'x-token': window.localStorage.getItem('token')
+              'x-token': window.localStorage.getItem('elToken')
             },
             emulateJSON: true
           })

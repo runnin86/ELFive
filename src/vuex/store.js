@@ -62,7 +62,7 @@ const mutations = {
     // 获取滚动消息(方案)
     Vue.http.get(planApi.rank, {}, {
       headers: {
-        'x-token': window.localStorage.getItem('token')
+        'x-token': window.localStorage.getItem('elToken')
       },
       emulateJSON: true
     })
@@ -101,7 +101,7 @@ const mutations = {
     // 获取方案
     Vue.http.get(planApi.plan, {}, {
       headers: {
-        'x-token': window.localStorage.getItem('token')
+        'x-token': window.localStorage.getItem('elToken')
       },
       emulateJSON: true
     })
@@ -244,7 +244,7 @@ const mutations = {
    */
   userUnreadMsg () {
     // console.log('获取用户消息列表!')
-    let token = window.localStorage.getItem('token')
+    let token = window.localStorage.getItem('elToken')
     Vue.http.get(userApi.newMsgTotal, {}, {
       headers: {
         'x-token': token
@@ -267,7 +267,7 @@ const mutations = {
    */
   notice () {
     // console.log('获取系统公告!')
-    let token = window.localStorage.getItem('token')
+    let token = window.localStorage.getItem('elToken')
     Vue.http.get(userApi.notice, {}, {
       headers: {
         'x-token': token

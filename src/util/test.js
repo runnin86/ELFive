@@ -10,8 +10,8 @@ this.$http.post(userApi.login,
     }
     else if (info.user.user_status === 1) {
       $.toast('登录成功')
-      window.localStorage.setItem('user', JSON.stringify(info.user))
-      window.localStorage.setItem('token', info.token)
+      window.localStorage.setItem('elUser', JSON.stringify(info.user))
+      window.localStorage.setItem('elToken', info.token)
       window.localStorage.setItem('imageSwitch', true)
       // 调用公告处理
       this.$root.loadNotice()

@@ -74,7 +74,7 @@ export default {
         return
       }
       this.submitBtn = false
-      let token = window.localStorage.getItem('token')
+      let token = window.localStorage.getItem('elToken')
       // 提交修改
       this.$http.post(api.changePwd, {
         uphone: this.uphone,

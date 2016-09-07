@@ -15,7 +15,7 @@
 export default {
   ready () {
     setTimeout(()=>{
-      if (JSON.parse(window.localStorage.getItem('user'))) {
+      if (JSON.parse(window.localStorage.getItem('elUser'))) {
         this.$route.router.go({path: '/home', replace: true})
       }
       else {

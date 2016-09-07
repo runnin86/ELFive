@@ -127,7 +127,7 @@
     },
     data () {
       return {
-        user: JSON.parse(window.localStorage.getItem('user')),
+        user: JSON.parse(window.localStorage.getItem('elUser')),
         userAccount: '-',
         userFrozeAccount: '-',
         showQRCode: false,
@@ -158,7 +158,7 @@
        * 获取账户本金
        */
       getUserAccount () {
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         this.$http.get(api.userAccount, {}, {
           headers: {
             'x-token': token
@@ -190,7 +190,7 @@
             bold: true,
             color: 'danger',
             onClick: function () {
-              let token = window.localStorage.getItem('token')
+              let token = window.localStorage.getItem('elToken')
               http.delete(api.logout, {}, {
                 headers: {
                   'x-token': token
@@ -199,9 +199,9 @@
               })
               .then(({data: {code, msg}})=>{
                 if (code === 1) {
-                  window.localStorage.removeItem('user')
-                  window.localStorage.removeItem('token')
-                  window.localStorage.removeItem('openid')
+                  window.localStorage.removeItem('elUser')
+                  window.localStorage.removeItem('elToken')
+                  window.localStorage.removeItem('elOpenid')
                   route.go({path: '/login', replace: true})
                 }
                 $.toast(msg)
@@ -224,7 +224,7 @@
        * 获取并展示二维码
        */
       getQRCode () {
-        let token = window.localStorage.getItem('token')
+        let token = window.localStorage.getItem('elToken')
         this.$http.get(api.qrcode, {}, {
           headers: {
             'x-token': token

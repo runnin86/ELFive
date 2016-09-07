@@ -55,7 +55,7 @@ export default {
     // this.loadScrollMsgForHP()
     // this.loadHpList()
     // this.loadHpList10()
-    // if (window.localStorage.getItem('user')) {
+    // if (window.localStorage.getItem('elUser')) {
     //   this.loadBannerForPlan()
     //   this.loadScrollMsgForPlan()
     //   this.loadRangeList()
