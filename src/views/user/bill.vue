@@ -60,7 +60,19 @@
         v-for="p in purchaseList | orderBy 'orderPeriod' -1" track-by="$index">
         <td>{{p.orderPeriod}}</td>
         <td>{{p.gameType}}</td>
-        <td>{{p.nums}}</td>
+        <td>
+          {{p.nums | split ','| getArray 0}}
+          {{p.nums | split ','| getArray 1}}
+          {{p.nums | split ','| getArray 2}}
+          {{p.nums | split ','| getArray 3}}
+          {{p.nums | split ','| getArray 4}}
+          {{p.nums | split ','| getArray 5}}
+          {{p.nums | split ','| getArray 6}}
+          {{p.nums | split ','| getArray 7}}
+          {{p.nums | split ','| getArray 8}}
+          {{p.nums | split ','| getArray 9}}
+          {{p.nums | split ','| getArray 10}}
+        </td>
         <td>{{p.totalPrice | currency '¥'}}</td>
       </tr>
     </table>
@@ -78,7 +90,19 @@
         v-for="b in bonusList | orderBy 'orderPeriod' -1" track-by="$index">
         <td>{{b.orderPeriod}}</td>
         <td>{{b.gameType}}</td>
-        <td>{{b.nums}}<br>04 05 06</td>
+        <td>
+          {{b.nums | split ','| getArray 0}}
+          {{b.nums | split ','| getArray 1}}
+          {{b.nums | split ','| getArray 2}}
+          {{b.nums | split ','| getArray 3}}
+          {{b.nums | split ','| getArray 4}}
+          {{b.nums | split ','| getArray 5}}
+          {{b.nums | split ','| getArray 6}}
+          {{b.nums | split ','| getArray 7}}
+          {{b.nums | split ','| getArray 8}}
+          {{b.nums | split ','| getArray 9}}
+          {{b.nums | split ','| getArray 10}}
+        </td>
         <td>{{b.bonus | currency '¥'}}</td>
       </tr>
     </table>
