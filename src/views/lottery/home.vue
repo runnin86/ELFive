@@ -316,7 +316,7 @@ export default {
      * 获取服务器时间
      */
     getServiceTime () {
-      this.$http.post(api.serviceTime, {}, {
+      this.$http.get(api.serviceTime, {}, {
         headers: {
           'x-token': window.localStorage.getItem('token')
         }
