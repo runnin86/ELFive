@@ -107,16 +107,16 @@ export default {
       let spcarInfos = {
         'uphone': this.userPhone,
         'upass': this.password,
-        'code': this.code
+        'code': this.code ? this.code : '123'
       }
       // let postBody = JSON.stringify(spcarInfos)
       this.$http.post(api.login, spcarInfos, {
         emulateJSON: true
       })
       .then(({data: {code, msg, data}})=>{
-        alert(data.openid)
         if (code === 1) {
           if (data) {
+            alert(data.openid)
             if (data.user.userStatus === 0) {
               $.toast('账户禁用')
             }
