@@ -12,6 +12,11 @@ export default function (router) {
         require(['./views/welcome'], resolve)
       }
     },
+    '/oauth': {
+      component (resolve) {
+        require(['./views/oauthWechat'], resolve)
+      }
+    },
     '/home': {
       component (resolve) {
         require(['./views/lottery/home'], resolve)

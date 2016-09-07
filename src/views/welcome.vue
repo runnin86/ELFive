@@ -14,14 +14,25 @@
 <script>
 export default {
   ready () {
+    // alert(this.code)
+    // alert(this.state)
     setTimeout(()=>{
       if (JSON.parse(window.localStorage.getItem('elUser'))) {
         this.$route.router.go({path: '/home', replace: true})
       }
       else {
-        this.$route.router.go({path: '/login', replace: true})
+        this.$route.router.go({path: '/login', query: {
+          code: this.code,
+          maxWinC: this.state
+        }, replace: true})
       }
     }, 800)
+  },
+  data () {
+    return {
+      code: this.$route.query.code,
+      state: this.$route.query.state
+    }
   }
 }
 </script>

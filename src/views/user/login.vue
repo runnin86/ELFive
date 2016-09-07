@@ -88,7 +88,9 @@ export default {
       forgetSubmit: false,
       forgetPhone: null,
       vCode: null,
-      newPwd: null
+      newPwd: null,
+      code: this.$route.query.code,
+      state: this.$route.query.state
     }
   },
   methods: {
@@ -105,13 +107,14 @@ export default {
       let spcarInfos = {
         'uphone': this.userPhone,
         'upass': this.password,
-        'code': '123'
+        'code': this.code
       }
       // let postBody = JSON.stringify(spcarInfos)
       this.$http.post(api.login, spcarInfos, {
         emulateJSON: true
       })
       .then(({data: {code, msg, data}})=>{
+        alert(data.openid)
         if (code === 1) {
           if (data) {
             if (data.user.userStatus === 0) {
