@@ -27,8 +27,8 @@
     </div>
 
     <!-- 自选 -->
-    <div v-for="z in zxList | orderBy 'orderperiod' -1" track-by="$index">
-      <div class="el_bill_box" v-if="z.docperiod > 0"
+    <div>
+      <div class="el_bill_box" v-for="z in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
         :class="this.showTabs===2?'el_bill_box':'hide'">
         <div class="ul_bill_type">
           <span>任选七</span>
@@ -58,27 +58,36 @@
         </div>
       </div>
 
-      <div class="el_bill_box" v-if="z.docperiod === 1"
+      <div class="el_bill_box"
+        v-for="o in zxListOne | orderBy 'orderperiod' -1" track-by="$index"
         :class="this.showTabs===3?'el_bill_box':'hide'">
         <div class="ul_bill_type">
-          <span>任选六</span>
+          <span>
+            {{o.gametype | getGameTypeName}}
+          </span>
         </div>
-        <ul class="el_bill_number">
-          <li v-for="n in z.nums.split(',')">{{n}}</li>
-        </ul>
+        <table width="100%" class="el_bill_number_table">
+          <tr>
+            <td v-for="n in o.nums | split ','">{{n}}</td>
+          </tr>
+        </table>
         <div class="el_bill_title">
           <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
         </div>
         <div class="el_button">
           <span class="el_stop_btn">
-            花费&nbsp<font color="#42c1b1">{{z.totalprice | currency '¥'}}</font>元
+            花费&nbsp<font color="#42c1b1">{{o.totalprice | currency '¥'}}</font>元
           </span>
         </div>
         <div class="el_order_status_box">
-          <span class="el_order_status">
-            {{z.bonus > 0 ? '中奖/' : '未中奖/'}}
-            奖金{{z.bonus | currency '¥'}}
+          <span v-if="o.bonus != null && o.bonus >= 0" class="el_order_status">
+            {{o.bonus > 0 ? '中奖/' : '未中奖'}}
+            {{o.bonus > 0 ? '奖金' : ''}}
+            {{o.bonus > 0 | currency '¥'}}
           </span>
+          <span v-else class="el_order_status">
+            进行中
+          <span>
         </div>
       </div>
     </div>
@@ -144,7 +153,8 @@ export default {
     return {
       showTabs: 1,
       gdList: [],
-      zxList: []
+      zxListOne: [],
+      zxListMore: []
     }
   },
   methods: {
@@ -172,12 +182,12 @@ export default {
       })
     },
     /*
-     * 自选订单查询
+     * 自选订单查询(单注)
      */
-    getUserOrderZX () {
+    getUserOrderZXOne () {
       let token = window.localStorage.getItem('elToken')
       // 获取跟单选购列表
-      this.$http.get(api.userORderZX, {
+      this.$http.get(api.userORderZXOne, {
         pagenum: 1,
         pagesize: 10
       }, {
@@ -188,13 +198,39 @@ export default {
       .then(({data: {code, data, msg}})=>{
         // console.log(data)
         if (code === 1) {
-          this.zxList = data
+          this.zxListOne = data
         }
         else {
           $.toast(msg)
         }
       }).catch((e)=>{
-        console.error('获取我的订单(自选)失败:' + e)
+        console.error('获取我的订单(自选单注)失败:' + e)
+      })
+    },
+    /*
+     * 自选订单查询(跟单)
+     */
+    getUserOrderZXMore () {
+      let token = window.localStorage.getItem('elToken')
+      // 获取跟单选购列表
+      this.$http.get(api.userORderZXMore, {
+        pagenum: 1,
+        pagesize: 10
+      }, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        console.log(data)
+        // if (code === 1) {
+        //   this.zxListMore = data
+        // }
+        // else {
+        //   $.toast(msg)
+        // }
+      }).catch((e)=>{
+        console.error('获取我的订单(自选跟单)失败:' + e)
       })
     }
   },
@@ -206,8 +242,12 @@ export default {
           this.getUserOrderGD()
         }
         else if (newVal === 2) {
-          // 查询自选订单
-          this.getUserOrderZX()
+          // 查询自选订单(跟单)
+          this.getUserOrderZXMore()
+        }
+        else if (newVal === 3) {
+          // 查询自选订单(单注)
+          this.getUserOrderZXOne()
         }
       }
     }
