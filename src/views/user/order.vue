@@ -82,6 +82,7 @@
         </div>
       </div>
     </div>
+
     <!-- 跟单 -->
     <div class="el_bill_box"
       v-for="g in gdList | orderBy 'orderDate' -1" track-by="$index"
@@ -116,11 +117,14 @@
         </span>
       </div>
       <div class="el_order_status_box">
-        <span class="el_order_status">
+        <span v-if="g.bonus >= 0" class="el_order_status">
           {{g.bonus > 0 ? '中奖/' : '未中奖'}}
           {{g.bonus > 0 ? '奖金' : ''}}
-          {{g.bonus | currency '¥'}}
+          {{g.bonus > 0 | currency '¥'}}
         </span>
+        <span v-else class="el_order_status">
+          进行中
+        <span>
       </div>
     </div>
   </div>
