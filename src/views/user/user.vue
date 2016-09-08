@@ -35,7 +35,7 @@
         <div class="el_user_info_right">
           <span>冻结金额</span>
           <span class="el_balance">
-            {{userFrozeAccount}}
+            {{userFrozeAccount?userFrozeAccount:0}}
           </span>
         </div>
       </div>
