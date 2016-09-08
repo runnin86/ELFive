@@ -301,6 +301,9 @@ export default {
             }
             else {
               // 账户金额支付
+              $.toast(msg)
+              this.showPayButton = false
+              this.$root.back()
             }
           }
           $.toast(msg)

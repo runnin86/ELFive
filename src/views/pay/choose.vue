@@ -78,6 +78,7 @@
   import {api} from '../../util/service'
   import Vue from 'vue'
   import $ from 'zepto'
+  import pingpp from 'pingpp-js'
 
   Vue.filter('numberFilter', function (value, isFree, isPay, index) {
     // isFree: 0 免费  1收费
@@ -198,11 +199,12 @@
       buyViewRec () {
         if (this.payRid) {
           // 付费查看
+          let openid = window.localStorage.getItem('elOpenid')
           let token = window.localStorage.getItem('elToken')
           this.$http.post(api.payViewRec, {
             'rid': this.payRid,
             'price': 500,
-            'openid': '123'
+            'openid': openid
           }, {
             headers: {
               'x-token': token
@@ -210,11 +212,34 @@
           })
           .then(({data: {data, code, msg}})=>{
             // console.log(data)
-            if (code === 1) {
+            if (data.paytype === 'wx_pub') {
+              pingpp.createPayment(data.charge, function (result, err) {
+                if (result === 'success') {
+                  // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                  $.toast('支付成功!')
+                  setTimeout(function () {
+                    this.getDocList()
+                  }.bind(this), 1200)
+                }
+                else if (result === 'fail') {
+                  // charge 不正确或者微信公众账号支付失败时会在此处返回
+                  $.toast('支付失败!')
+                }
+                else if (result === 'cancel') {
+                  // 微信公众账号支付取消支付
+                  $.toast('支付取消!')
+                }
+                setTimeout(function () {
+                  this.showPayWindow = false
+                }.bind(this), 1000)
+              })
+            }
+            else {
+              // 账户金额支付
+              $.toast(msg)
               this.showPayWindow = false
               this.getDocList()
             }
-            $.toast(msg)
           }).catch((e)=>{
             console.error('付费查看失败:' + e)
           }).finally(()=>{
