@@ -29,7 +29,7 @@
         <div class="el_user_info_left">
           <span>可用余额</span>
           <span class="el_balance">
-            {{userAccount}}
+            {{userAccount?userAccount:0}}
           </span>
         </div>
         <div class="el_user_info_right">
