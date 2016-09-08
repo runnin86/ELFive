@@ -47,11 +47,14 @@
           <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
           <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
         </div>
-        <div class="el_button">
-          <span class="el_stop_btn">
+        <div class="el_order_status_box">
+          <span class="el_order_status">
             {{z.bonus > 0 ? '中奖/' : '未中奖/'}}
             奖金{{z.bonus | currency '¥'}}
           </span>
+        </div>
+        <div class="el_button">
+          <span class="el_stop_btn">终止跟单</span>
         </div>
       </div>
 
@@ -71,8 +74,8 @@
             花费&nbsp<font color="#42c1b1">{{z.totalprice | currency '¥'}}</font>元
           </span>
         </div>
-        <div class="el_button">
-          <span class="el_stop_btn">
+        <div class="el_order_status_box">
+          <span class="el_order_status">
             {{z.bonus > 0 ? '中奖/' : '未中奖/'}}
             奖金{{z.bonus | currency '¥'}}
           </span>
@@ -112,8 +115,8 @@
           <font color="#42c1b1">{{g.nowTotAmount | currency '¥'}}</font>
         </span>
       </div>
-      <div class="el_button">
-        <span class="el_stop_btn">
+      <div class="el_order_status_box">
+        <span class="el_order_status">
           {{g.bonus > 0 ? '中奖/' : '未中奖'}}
           {{g.bonus > 0 ? '奖金' : ''}}
           {{g.bonus | currency '¥'}}
@@ -322,6 +325,12 @@ ul,a,p{
   border-top: 0.05rem solid #f0f0f0;
   background-color: #fff;
 }
+.el_order_status_box{
+  width:100%;
+  height:2.5rem;
+  border-top: 0.05rem solid #f0f0f0;
+  background-color: #fff;
+}
 .el_see_btn,.el_documentary_btn{
   font-size: 0.7rem;
   width: 50%;
@@ -333,7 +342,7 @@ ul,a,p{
 .el_see_btn{
   border-right: 0.05rem solid #f0f0f0;
 }
-.el_stop_btn{
+.el_stop_btn,.el_order_status{
   font-size: 0.7rem;
   width: 100%;
   line-height: 2.5rem;

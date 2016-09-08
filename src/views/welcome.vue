@@ -21,10 +21,7 @@ export default {
         this.$route.router.go({path: '/home', replace: true})
       }
       else {
-        this.$route.router.go({path: '/login', query: {
-          code: this.code,
-          maxWinC: this.state
-        }, replace: true})
+        this.$route.router.go({path: '/oauth', replace: true})
       }
     }, 800)
   },

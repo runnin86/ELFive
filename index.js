@@ -9,7 +9,7 @@ app.use('/img', express.static(path.join(__dirname, './src/assets/img')))
 
 app.use(favicon(path.join(__dirname, './favicon.ico')))
 
-app.get(['/', '/reg', '/recharge/:state', '/user', '/plan'], function (req, res) {
+app.get(['/', '/reg', '/recharge/:state', '/login', '/oauth'], function (req, res) {
   res.sendFile('index.html', { root: path.join(__dirname, './dist') })
 })
 

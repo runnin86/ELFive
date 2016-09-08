@@ -121,6 +121,7 @@
 
 <script>
 import $ from 'zepto'
+import pingpp from 'pingpp-js'
 import {getOdds} from '../../util/util'
 import {api} from '../../util/service'
 
@@ -213,6 +214,8 @@ export default {
     payOrder () {
       let postBody = {}
       let postUrl = ''
+      let openid = window.localStorage.getItem('elOpenid')
+      $.toast(openid)
       if (this.from === 'gd') {
         /*
          * 推荐号码跟单
@@ -225,7 +228,7 @@ export default {
           totPeriods: this.followPeriod,
           ratePercent: this.expectProfit,
           totmount: this.totalMoney,
-          openid: '123'
+          openid: openid
         }
       }
       else if (this.from === 'zx') {
@@ -243,7 +246,7 @@ export default {
             totalPrice: this.totalMoney,
             gameType: this.gameType,
             startPeriods: this.followPeriod,
-            openid: '123'
+            openid: openid
           }
         }
         else if (parseInt(this.followPeriod, 0) > 1) {
@@ -257,7 +260,7 @@ export default {
             totPeriods: this.followPeriod, //  自定义追单期数
             totalPrice: this.totalMoney, // 总价
             gameType: this.gameType, // 玩法
-            openid: '123'
+            openid: openid
           }
         }
       }
@@ -273,11 +276,32 @@ export default {
           if (code === 1) {
             if (data.paytype === 'wx_pub') {
               console.log(data.charge)
+              pingpp.createPayment(data.charge, function (result, err) {
+                if (result === 'success') {
+                  // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                  $.toast('支付成功!')
+                  setTimeout(function () {
+                    this.showPayButton = false
+                    this.$root.back()
+                  }.bind(this), 1500)
+                }
+                else if (result === 'fail') {
+                  // charge 不正确或者微信公众账号支付失败时会在此处返回
+                  $.toast('支付失败!')
+                  setTimeout(function () {
+                    this.showPayButton = false
+                  }.bind(this), 1500)
+                }
+                else if (result === 'cancel') {
+                  // 微信公众账号支付取消支付
+                  $.toast('支付取消!')
+                  this.showPayButton = false
+                }
+              })
             }
-            this.showPayButton = false
-            setTimeout(() => {
-              this.$root.back()
-            }, 1500)
+            else {
+              // 账户金额支付
+            }
           }
           $.toast(msg)
         }).catch((e)=>{

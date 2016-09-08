@@ -202,7 +202,7 @@
                   window.localStorage.removeItem('elUser')
                   window.localStorage.removeItem('elToken')
                   window.localStorage.removeItem('elOpenid')
-                  route.go({path: '/login', replace: true})
+                  route.go({path: '/oauth', replace: true})
                 }
                 $.toast(msg)
               }).catch((e)=>{
