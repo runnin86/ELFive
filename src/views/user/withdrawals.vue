@@ -53,7 +53,8 @@
       return {
         user: JSON.parse(window.localStorage.getItem('elUser')),
         userAccount: '-',
-        withdrawMoney: null
+        withdrawMoney: null,
+        poundage: null
       }
     },
     methods: {
@@ -96,24 +97,44 @@
           this.withdrawMoney = null
           return
         }
-        let token = window.localStorage.getItem('elToken')
-        this.$http.post(api.withdraw, {
-          wamount: this.withdrawMoney
-        }, {
-          headers: {
-            'x-token': token
-          }
+        let money = this.withdrawMoney - this.poundage
+        $.confirm('本次提现需扣除￥' + this.poundage + '手续费', '提示', ()=>{
+          let token = window.localStorage.getItem('elToken')
+          this.$http.post(api.withdraw, {
+            wamount: money,
+            fee: this.poundage
+          }, {
+            headers: {
+              'x-token': token
+            }
+          })
+          .then(({data: {code, msg}})=>{
+            if (code === 1) {
+              this.$route.router.go({path: '/withdrawals_complete?m=' + (this.withdrawMoney - this.poundage), replace: true})
+            }
+            else {
+              $.toast(msg)
+            }
+          }).catch((e)=>{
+            console.error('提现失败:' + e)
+          })
+        }, ()=>{
+          // 取消事件
         })
-        .then(({data: {code, msg}})=>{
-          if (code === 1) {
-            this.$route.router.go({path: '/withdrawals_complete?m=' + this.withdrawMoney, replace: true})
+      }
+    },
+    watch: {
+      'withdrawMoney': {
+        handler: function (newVal, oldVal) {
+          if (newVal * 0.03 < 1) {
+            this.poundage = 1
           }
           else {
-            $.toast(msg)
+            this.poundage = newVal * 0.03
+            // 手续费向上取整
+            this.poundage = Math.ceil(this.poundage)
           }
-        }).catch((e)=>{
-          console.error('提现失败:' + e)
-        })
+        }
       }
     }
   }
