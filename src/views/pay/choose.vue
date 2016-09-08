@@ -72,6 +72,23 @@
       </div>
     </div>
   </div>
+
+  <!-- 弹出窗口 -->
+  <div :class="this.showCancelWindow?'el_eject_window_box':'hide'">
+    <div class="el_eject_window">
+      <div class="el_confirm_info">
+        <span class="el_confirm_info_up">是否确认取消跟单?</span>
+      </div>
+      <div class="el_button">
+        <span class="el_button_left" @click="this.showCancelWindow = false">
+          取消
+        </span>
+        <span class="el_button_right" @click="this.cancelRec()">
+          确定
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -106,7 +123,9 @@
       return {
         docList: [],
         showPayWindow: false,
-        payRid: null
+        showCancelWindow: false,
+        payRid: null,
+        cancelRid: null
       }
     },
     methods: {
@@ -170,27 +189,9 @@
           })
         }
         if (doc.isCanQuit === '1') {
-          $.confirm('确认取消跟单?', '提示', ()=>{
-            // 发送取消跟单
-            let token = window.localStorage.getItem('elToken')
-            this.$http.post(api.cancelOrderByGD, {
-              'did': doc.rid
-            }, {
-              headers: {
-                'x-token': token
-              }
-            })
-            .then(({data: {code, msg}})=>{
-              if (code === 1) {
-                this.getDocList()
-              }
-              $.toast(msg)
-            }).catch((e)=>{
-              console.error('取消跟单失败:' + e)
-            })
-          }, ()=>{
-            // confirm取消
-          })
+          // 取消跟单
+          this.cancelRid = doc.rid
+          this.showCancelWindow = true
         }
       },
       /*
@@ -244,6 +245,30 @@
             console.error('付费查看失败:' + e)
           }).finally(()=>{
             this.payRid = null
+          })
+        }
+      },
+      cancelRec () {
+        if (this.cancelRid) {
+          // 发送取消跟单
+          let token = window.localStorage.getItem('elToken')
+          this.$http.post(api.cancelOrderByGD, {
+            'did': this.cancelRid
+          }, {
+            headers: {
+              'x-token': token
+            }
+          })
+          .then(({data: {code, msg}})=>{
+            if (code === 1) {
+              this.getDocList()
+            }
+            $.toast(msg)
+          }).catch((e)=>{
+            console.error('取消跟单失败:' + e)
+          }).finally(()=>{
+            this.showCancelWindow = false
+            this.cancelRid = null
           })
         }
       }
