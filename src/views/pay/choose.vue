@@ -214,13 +214,12 @@
           .then(({data: {data, code, msg}})=>{
             // console.log(data)
             if (data.paytype === 'wx_pub') {
+              let payResult = false
               pingpp.createPayment(data.charge, function (result, err) {
                 if (result === 'success') {
                   // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
                   $.toast('支付成功!')
-                  setTimeout(function () {
-                    this.getDocList()
-                  }.bind(this), 1200)
+                  payResult = true
                 }
                 else if (result === 'fail') {
                   // charge 不正确或者微信公众账号支付失败时会在此处返回
@@ -230,10 +229,14 @@
                   // 微信公众账号支付取消支付
                   $.toast('支付取消!')
                 }
-                setTimeout(function () {
-                  this.showPayWindow = false
-                }.bind(this), 1000)
               })
+              // 在支付完成后做操作
+              setTimeout(function () {
+                this.showPayWindow = false
+                if (payResult) {
+                  this.getDocList()
+                }
+              }.bind(this), 1200)
             }
             else {
               // 账户金额支付
