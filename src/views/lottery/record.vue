@@ -17,7 +17,7 @@
         <tr class="el_record_number_box">
           <td class="el_record_number">
             <font color="#42c1b1">
-              NO.{{$index+1<10?''+$index+1:$index+1}}&nbsp&nbsp&nbsp/
+              NO.{{$index+1}}&nbsp&nbsp&nbsp/
             </font>
           </td>
           <th>

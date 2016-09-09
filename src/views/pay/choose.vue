@@ -14,61 +14,37 @@
     </div>
 
     <!-- 跟单票未购买状态 -->
-    <!-- <div class="el_bill_box"
+    <div class="el_record_box"
       v-for="doc in docList | orderBy 'numPayStatus' -1" track-by="$index">
-      <div class="el_bill_title">
-        <span>推荐号码</span>
-      </div>
-      <ul class="el_bill_number">
-        <li>
-          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 0}}
-        </li>
-        <li>
-          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 1}}
-        </li>
-        <li>
-          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 2}}
-        </li>
-        <li>
-          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 3}}
-        </li>
-        <li>
-          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 4}}
-        </li>
-        <li>
-          {{doc.nums | numberFilter doc.isToll doc.numPayStatus 5}}
-        </li>
-      </ul>
-      <div class="el_proposal">
-        <span>{{doc.recInfo}}</span>
-      </div>
-      <div class="el_button">
-        <span v-if="doc.isToll===1 && doc.numPayStatus===0"
-          class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
-          付费查看
-        </span>
-        <a @click="doDocumentary(doc)"
-          class="el_documentary_btn"
-          :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
-         {{doc.flag==='1' ? '跟单' : '取消跟单'}}
-       </a>
-      </div>
-    </div> -->
-
-    <div class="el_record_box">
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
-          <th>01</th>
-          <th>03</th>
-          <th>04</th>
-          <th>07</th>
-          <th>09</th>
-          <th>11</th>
+          <td class="el_record_number">
+            <font color="#42c1b1">
+              NO.{{$index+1}}&nbsp&nbsp&nbsp/
+            </font>
+          </td>
+          <th>
+            {{doc.nums | numberFilter doc.isToll doc.numPayStatus 0}}
+          </th>
+          <th>
+            {{doc.nums | numberFilter doc.isToll doc.numPayStatus 1}}
+          </th>
+          <th>
+            {{doc.nums | numberFilter doc.isToll doc.numPayStatus 2}}
+          </th>
+          <th>
+            {{doc.nums | numberFilter doc.isToll doc.numPayStatus 3}}
+          </th>
+          <th>
+            {{doc.nums | numberFilter doc.isToll doc.numPayStatus 4}}
+          </th>
+          <th>
+            {{doc.nums | numberFilter doc.isToll doc.numPayStatus 5}}
+          </th>
         </tr>
       </table>
       <div class="el_section_box">
-        <span>推荐追单2016090540-2016090662期</span>
+        <span>{{doc.recInfo}}</span>
       </div>
       <ul class="el_documentary_state">
         <li style="border-right:0.05rem solid #f0f0f0">
@@ -81,8 +57,16 @@
         </li>
       </ul>
       <div class="el_stop_btn">
-        <span class="el_see_btn">付费查看</span>
-        <span><font color="#42c1b1">跟单</font></span>
+        <span v-if="doc.isToll===1 && doc.numPayStatus===0"
+          class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
+          付费查看
+        </span>
+        <span @click="doDocumentary(doc)"
+          :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
+          <font color="#42c1b1">
+            {{doc.flag==='1' ? '跟单' : '取消跟单'}}
+          </font>
+        </span>
       </div>
     </div>
   </div>
