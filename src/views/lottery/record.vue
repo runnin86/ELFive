@@ -12,78 +12,67 @@
       <div class="el_placeholder">&nbsp</div>
     </div>
 
-    <!-- 历史号码 -->
-    <!-- <table class="el_history_box"  width="100%" border="0" cellpadding="0"  cellspacing="0">
-      <tr>
-        <th width="26%">起始期数</th>
-        <th colspan="6">推荐号码</th>
-        <th width="26%">结果</th>
-      </tr>
-      <tr align="center" v-for="doc in docList">
-        <td>
-          {{doc.startperiods?doc.startperiods.substr(2, 8):''}}
-        </td>
-        <td>
-          {{doc.nums | split ','| getArray 0}}
-        </td>
-        <td>
-          {{doc.nums | split ','| getArray 1}}
-        </td>
-        <td>
-          {{doc.nums | split ','| getArray 2}}
-        </td>
-        <td>
-          {{doc.nums | split ','| getArray 3}}
-        </td>
-        <td>
-          {{doc.nums | split ','| getArray 4}}
-        </td>
-        <td>
-          {{doc.nums | split ','| getArray 5}}
-        </td>
-        <td>
-          {{doc.winnerperiods === null ? '未中' : (doc.winnerperiods + '期命中')}}
-        </td>
-      </tr>
-    </table> -->
-    <div class="el_record_box">
+    <div class="el_record_box" v-for="doc in docList" track-by="$index">
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
-          <th>01</th>
-          <th>03</th>
-          <th>04</th>
-          <th>07</th>
-          <th>09</th>
-          <th>11</th>
+          <td class="el_record_number">
+            <font color="#42c1b1">
+              NO.{{$index+1<10?''+$index+1:$index+1}}&nbsp&nbsp&nbsp/
+            </font>
+          </td>
+          <th>
+            {{doc.nums | split ','| getArray 0}}
+          </th>
+          <th>
+            {{doc.nums | split ','| getArray 1}}
+          </th>
+          <th>
+            {{doc.nums | split ','| getArray 2}}
+          </th>
+          <th>
+            {{doc.nums | split ','| getArray 3}}
+          </th>
+          <th>
+            {{doc.nums | split ','| getArray 4}}
+          </th>
+          <th>
+            {{doc.nums | split ','| getArray 5}}
+          </th>
         </tr>
       </table>
       <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
-          <span>2016090926</span>
+          <span>{{doc.startperiods?doc.startperiods.substr(2, 8):''}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">终止</span>
-          <span>2016091048</span>
+          <span>{{doc.endPeriods?doc.endPeriods.substr(2, 8):''}}</span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">进行</span>
-          <span><font color="#42c1b1">11</font>/50期</span>
+          <span>
+            <font color="#42c1b1">
+              {{doc.alreadyPer}}
+            </font>
+            /{{doc.totPeriods}}期
+          </span>
         </li>
       </ul>
       <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">中奖金额</span>
-          <span><font color="#42c1b1">540.00</font></span>
+          <span><font color="#42c1b1">{{doc.winMount | currency '¥'}}</font></span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">已使用金额</span>
-          <span>80</span>
+          <span>
+            {{doc.useMount | currency '¥'}}
+          </span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">利润率</span>
-          <span>700%</span>
+          <span>{{doc.winRate}}%</span>
         </li>
       </ul>
     </div>

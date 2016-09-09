@@ -65,7 +65,7 @@
     </table>
 
     <div class="el_recommend_state">
-      <span>进行至&nbsp2016090926&nbsp期</span>
+      <span>进行至&nbsp{{currentPeriods}}&nbsp期</span>
       <span style="border-left: 0.05rem #f0f0f0 solid;">剩余时间&nbsp<font color="#c14242">08:20</font></span>
     </div>
 
@@ -93,12 +93,6 @@
       <span v-if="lastWinObj">
         第&nbsp{{lastWinObj.periods}}&nbsp期中奖号码
         &nbsp{{lastWinObj.nums.split(',').join('&nbsp&nbsp')}}
-      </span>
-    </div>
-
-    <div v-if="this.isShowTime().show" class="row" style="display: none;">
-      <span style="margin-top: -2rem;">
-        <v-count-down :countTime="this.isShowTime().time" :id="t_01"></v-count-down>
       </span>
     </div>
 
@@ -146,7 +140,6 @@
 
 <script>
 import {api} from '../../util/service'
-import VCountDown from '../../components/Countdown'
 import VLayer from '../../components/PullToRefreshLayer'
 import {getCombinationCount, getAllPeriodsOneDay} from '../../util/util'
 import $ from 'zepto'
@@ -173,6 +166,7 @@ export default {
   },
   data () {
     return {
+      currentPeriods: null,
       currentStopTime: null, // 当前期结束购买时间
       bets: 0,
       maxWinC: 0, // 多选情况下最多可能中奖的组合数
@@ -373,33 +367,18 @@ export default {
               break
             }
           }
-          window.localStorage.setItem('currentPeriods', currentPeriods)
           this.$set('currentStopTime', currentStopTime)
+          this.$set('currentPeriods', currentPeriods)
+          window.localStorage.setItem('currentPeriods', currentPeriods)
         }
       }).catch(()=>{
         console.error('无法连接服务器-获取时间')
       }).finally(()=>{
       })
-    },
-    /*
-     * 是否展示倒计时
-     */
-    isShowTime () {
-      let pubTime = new Date(this.currentStopTime)
-      let now = new Date()
-      if (now < pubTime) {
-        // 展示倒计时
-        return {show: true, time: pubTime}
-      }
-      else {
-        // 展示结果
-        return {show: false, time: pubTime}
-      }
     }
   },
   components: {
-    VLayer,
-    VCountDown
+    VLayer
   }
 }
 </script>
