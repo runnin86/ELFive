@@ -49,11 +49,13 @@
       <ul class="el_documentary_state">
         <li style="border-right:0.05rem solid #f0f0f0">
           <span style="margin-top:0.3rem;">进行期数</span>
-          <span><font color="#42c1b1">11</font>/50</span>
+          <span>
+            <font color="#42c1b1">-</font>/-
+          </span>
         </li>
         <li>
           <span style="margin-top:0.3rem;">最低利润率</span>
-          <span>25%</span>
+          <span>-%</span>
         </li>
       </ul>
       <div class="el_stop_btn">
@@ -476,12 +478,12 @@ ul,a,p{
 }
 .el_record_number_table{
   width: 100%;
-  overflow: hidden;
 }
 .el_record_box{
   width: 96%;
-  margin: 0.5rem 2%;
   background-color: white;
+  overflow: hidden;
+  margin:0.5rem 2%;
 }
 .el_record_box tr{
   height: 2.5rem;
