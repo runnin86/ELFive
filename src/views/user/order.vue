@@ -26,273 +26,133 @@
       自选单注</strong>
     </div>
 
-    <!-- 自选 -->
-    <!-- <div>
-      <div class="el_bill_box" v-for="more in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
-        :class="this.showTabs===2?'el_bill_box':'hide'">
-        <div class="ul_bill_type">
-          <span>
-            {{more.gameType | getGameTypeName}}
-          </span>
-        </div>
-        <ul class="el_bill_number">
-          <li v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</li>
-        </ul>
-        <div class="el_bill_title">
-          <span>
-            {{more.createTime}}&nbsp/&nbsp起始期&nbsp{{more.startPeriods}}
-          </span>
-        </div>
-        <div class="el_state_box">
-          <span class="el_state">
-            购买&nbsp
-            <font color="#42c1b1">{{more.totPeriods}}</font>
-            &nbsp期
-          </span>
-          <span class="el_process">
-            已进行&nbsp
-            <font color="#42c1b1">{{more.alreadyPer}}</font>
-            &nbsp期
-          </span>
-        </div>
-        <div class="el_state_box">
-          <span class="el_state">
-            冻结金额&nbsp
-            <font color="#42c1b1">{{more.frozeAccount | currency '¥'}}</font>
-            &nbsp
-          </span>
-          <span class="el_process">
-            已使用金额
-            &nbsp<font color="#42c1b1">{{more.nowTotAmount | currency '¥'}}
-            </font>
-            &nbsp
-          </span>
-        </div>
-        <div class="el_order_status_box">
-          <span v-if="more.bonus != null && more.bonus >= 0"
-            class="el_order_status">
-            {{more.bonus > 0 ? '中奖/' : '未中奖'}}
-            {{more.bonus > 0 ? '奖金' : ''}}
-            {{more.bonus > 0 | currency '¥'}}
-          </span>
-          <span v-else class="el_order_status">
-            进行中
-          <span>
-        </div>
-        <div class="el_button" v-if="more.docStatus==='1'">
-          <span class="el_stop_btn" @click="cancelZX(more.did)">终止跟单</span>
-        </div>
-      </div>
-
-      <div class="el_bill_box"
-        v-for="one in zxListOne | orderBy 'orderperiod' -1" track-by="$index"
-        :class="this.showTabs===3?'el_bill_box':'hide'">
-        <div class="ul_bill_type">
-          <span>
-            {{one.gametype | getGameTypeName}}
-          </span>
-        </div>
-        <table width="100%" class="el_bill_number_table">
-          <tr>
-            <td v-for="n in one.nums | split ','">{{n}}</td>
-          </tr>
-        </table>
-        <div class="el_bill_title">
-          <span>
-            {{one.createTime}}&nbsp/&nbsp购买期&nbsp{{one.orderperiod}}
-          </span>
-        </div>
-        <div class="el_button">
-          <span class="el_stop_btn">
-            花费&nbsp
-            <font color="#42c1b1">
-              {{one.totalprice | currency '¥'}}
-            </font>
-          </span>
-        </div>
-        <div class="el_order_status_box">
-          <span v-if="one.bonus != null && one.bonus >= 0" class="el_order_status">
-            {{one.bonus > 0 ? '中奖/' : '未中奖'}}
-            {{one.bonus > 0 ? '奖金' : ''}}
-            {{one.bonus > 0 | currency '¥'}}
-          </span>
-          <span v-else class="el_order_status">
-            进行中
-          <span>
-        </div>
-      </div>
-    </div> -->
-
     <!-- 跟单 -->
-    <!-- <div class="el_bill_box"
+    <div class="el_record_box"
       v-for="g in gdList | orderBy 'orderDate' -1" track-by="$index"
       :class="this.showTabs===1?'el_bill_box':'hide'">
-      <div class="ul_bill_type">
-        <span>跟单</span>
-      </div>
-      <table width="100%" class="el_bill_number_table">
-        <tr>
-          <td v-for="n in g.nums | split ','">
-            {{g.payStatus === 1 ? n : '*'}}
-          </td>
-        </tr>
-      </table>
-      <div class="el_bill_title">
-        <span>{{g.orderDate}}&nbsp/&nbsp起始期&nbsp{{g.startPeriods}}</span>
-      </div>
-      <div class="el_state_box">
-        <span class="el_state">
-          购买&nbsp<font color="#42c1b1">{{g.totPeriods}}</font>&nbsp期
-        </span>
-        <span class="el_process">
-          已进行&nbsp<font color="#42c1b1">{{g.alreadyPer}}</font>&nbsp期
-        </span>
-      </div>
-      <div class="el_state_box">
-        <span class="el_state">
-          冻结金额&nbsp
-          <font color="#42c1b1">{{g.frozeAccount | currency '¥'}}</font>
-        </span>
-        <span class="el_process">
-          已使用金额&nbsp
-          <font color="#42c1b1">{{g.nowTotAmount | currency '¥'}}</font>
-        </span>
-      </div>
-      <div class="el_order_status_box">
-        <span v-if="g.bonus >= 0" class="el_order_status">
-          {{g.bonus > 0 ? '中奖/' : '未中奖'}}
-          {{g.bonus > 0 ? '奖金' : ''}}
-          {{g.bonus > 0 | currency '¥'}}
-        </span>
-        <span v-else class="el_order_status">
-          进行中
-        <span>
-      </div>
-    </div> -->
-
-    <!-- 跟单 -->
-    <div class="el_record_box"
-      :class="this.showTabs===1?'el_bill_box':'hide'">
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
-          <th>01</th>
-          <th>03</th>
-          <th>04</th>
-          <th>07</th>
-          <th>09</th>
-          <th>11</th>
+          <td class="el_record_number">
+            <font color="#42c1b1">NO.{{$index+1}}&nbsp&nbsp&nbsp/</font>
+          </td>
+          <th v-for="n in g.nums | split ','">
+            {{g.payStatus === 1 ? n : '*'}}
+          </th>
         </tr>
       </table>
       <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
-          <span>2016090926</span>
+          <span>{{g.startPeriods}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">进行</span>
-          <span><font color="#42c1b1">11</font>/50期</span>
+          <span><font color="#42c1b1">{{g.alreadyPer}}</font>/{{g.totPeriods}}期</span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
-          <span><font color="#42c1b1">540.00</font></span>
+          <span>
+            <font color="#42c1b1">{{g.bonus | currency '¥'}}</font>
+          </span>
         </li>
       </ul>
       <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
-          <span>120.00</span>
+          <span>{{g.frozeAccount | currency '¥'}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">已使用金额</span>
-          <span>80</span>
+          <span>{{g.nowTotAmount | currency '¥'}}</span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">利润率</span>
-          <span>700%</span>
+          <span>-%</span>
         </li>
       </ul>
-      <div class="el_stop_btn">
-        <span>终止跟单</span>
-      </div>
     </div>
 
-    <!-- 自选 -->
+    <!-- 自选追号 -->
     <div class="el_record_box"
+      v-for="more in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
       :class="this.showTabs===2?'el_bill_box':'hide'">
       <div class="el_title_rule">
-        <span>玩法-任选六</span>
+        <span>{{more.gameType | getGameTypeName}}</span>
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
           <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
-          <th>01</th>
-          <th>03</th>
-          <th>04</th>
-          <th>07</th>
-          <th>09</th>
-          <th>11</th>
+          <th v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</th>
         </tr>
       </table>
       <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
-          <span>2016090926</span>
+          <span>{{more.startPeriods}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">进行</span>
-          <span><font color="#42c1b1">11</font>/50期</span>
+          <span>
+            <font color="#42c1b1">{{more.alreadyPer}}</font>/{{more.totPeriods}}期
+          </span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
-          <span><font color="#42c1b1">540.00</font></span>
+          <span>
+            <font color="#42c1b1">{{more.bonus | currency '¥'}}</font>
+          </span>
         </li>
       </ul>
       <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
-          <span>120.00</span>
+          <span>{{more.frozeAccount | currency '¥'}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">已使用金额</span>
-          <span>80</span>
+          <span>{{more.nowTotAmount | currency '¥'}}</span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">利润率</span>
-          <span>700%</span>
+          <span>{{more.ratePercent}}%</span>
         </li>
       </ul>
       <div class="el_stop_btn">
-        <span>终止追单</span>
+        <span v-if="more.docStatus==='1'" @click="cancelZX(more.did)">
+          终止追单
+        </span>
       </div>
     </div>
 
 
-    <!-- 自选 -->
+    <!-- 自选单注 -->
     <div class="el_record_box"
+      v-for="one in zxListOne | orderBy 'orderperiod' -1" track-by="$index"
       :class="this.showTabs===3?'el_bill_box':'hide'">
       <div class="el_title_rule">
-        <span>玩法-任选六</span>
+        <span>{{one.gametype | getGameTypeName}}</span>
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
-          <th>01</th>
-          <th>03</th>
-          <th>04</th>
-          <th>07</th>
-          <th>09</th>
-          <th>11</th>
+          <td class="el_record_number">
+            <font color="#42c1b1">NO.{{$index+1}}&nbsp&nbsp&nbsp/</font>
+          </td>
+          <th v-for="n in one.nums | split ','">{{n}}</th>
         </tr>
       </table>
       <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">期数</span>
-          <span>2016090938</span>
+          <span>{{one.orderperiod}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">中奖金额</span>
-          <span>进行中</span>
+          <span v-if="one.orderstatus === 1">
+            {{one.bonus | currency '¥'}}
+          </span>
+          <span v-else>
+            进行中
+          </span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">利润率</span>
