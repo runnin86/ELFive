@@ -28,62 +28,93 @@
 
     <!-- 自选 -->
     <div>
-      <div class="el_bill_box" v-for="z in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
+      <div class="el_bill_box" v-for="more in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
         :class="this.showTabs===2?'el_bill_box':'hide'">
         <div class="ul_bill_type">
-          <span>任选七</span>
-        </div>
-        <ul class="el_bill_number">
-          <li v-for="n in z.nums.split(',')">{{n}}</li>
-        </ul>
-        <div class="el_bill_title">
-          <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
-        </div>
-        <div class="el_state_box">
-          <span class="el_state">购买&nbsp<font color="#42c1b1">38</font>&nbsp期</span>
-          <span class="el_process">已进行&nbsp<font color="#42c1b1">28</font>&nbsp期</span>
-        </div>
-        <div class="el_state_box">
-          <span class="el_state">冻结金额&nbsp<font color="#42c1b1">640.00</font>&nbsp元</span>
-          <span class="el_process">已使用金额&nbsp<font color="#42c1b1">64.00</font>&nbsp元</span>
-        </div>
-        <div class="el_order_status_box">
-          <span class="el_order_status">
-            {{z.bonus > 0 ? '中奖/' : '未中奖/'}}
-            奖金{{z.bonus | currency '¥'}}
+          <span>
+            {{more.gameType | getGameTypeName}}
           </span>
         </div>
-        <div class="el_button">
-          <span class="el_stop_btn">终止跟单</span>
+        <ul class="el_bill_number">
+          <li v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</li>
+        </ul>
+        <div class="el_bill_title">
+          <span>
+            {{more.createTime}}&nbsp/&nbsp起始期&nbsp{{more.startPeriods}}
+          </span>
+        </div>
+        <div class="el_state_box">
+          <span class="el_state">
+            购买&nbsp
+            <font color="#42c1b1">{{more.totPeriods}}</font>
+            &nbsp期
+          </span>
+          <span class="el_process">
+            已进行&nbsp
+            <font color="#42c1b1">{{more.alreadyPer}}</font>
+            &nbsp期
+          </span>
+        </div>
+        <div class="el_state_box">
+          <span class="el_state">
+            冻结金额&nbsp
+            <font color="#42c1b1">{{more.frozeAccount | currency '¥'}}</font>
+            &nbsp
+          </span>
+          <span class="el_process">
+            已使用金额
+            &nbsp<font color="#42c1b1">{{more.nowTotAmount | currency '¥'}}
+            </font>
+            &nbsp
+          </span>
+        </div>
+        <div class="el_order_status_box">
+          <span v-if="more.bonus != null && more.bonus >= 0"
+            class="el_order_status">
+            {{more.bonus > 0 ? '中奖/' : '未中奖'}}
+            {{more.bonus > 0 ? '奖金' : ''}}
+            {{more.bonus > 0 | currency '¥'}}
+          </span>
+          <span v-else class="el_order_status">
+            进行中
+          <span>
+        </div>
+        <div class="el_button" v-if="more.docStatus==='1'">
+          <span class="el_stop_btn" @click="cancelZX(more.did)">终止跟单</span>
         </div>
       </div>
 
       <div class="el_bill_box"
-        v-for="o in zxListOne | orderBy 'orderperiod' -1" track-by="$index"
+        v-for="one in zxListOne | orderBy 'orderperiod' -1" track-by="$index"
         :class="this.showTabs===3?'el_bill_box':'hide'">
         <div class="ul_bill_type">
           <span>
-            {{o.gametype | getGameTypeName}}
+            {{one.gametype | getGameTypeName}}
           </span>
         </div>
         <table width="100%" class="el_bill_number_table">
           <tr>
-            <td v-for="n in o.nums | split ','">{{n}}</td>
+            <td v-for="n in one.nums | split ','">{{n}}</td>
           </tr>
         </table>
         <div class="el_bill_title">
-          <span>2016.08.28&nbsp&nbsp22:22&nbsp/&nbsp起始期&nbsp16082908</span>
+          <span>
+            {{one.createTime}}&nbsp/&nbsp购买期&nbsp{{one.orderperiod}}
+          </span>
         </div>
         <div class="el_button">
           <span class="el_stop_btn">
-            花费&nbsp<font color="#42c1b1">{{o.totalprice | currency '¥'}}</font>元
+            花费&nbsp
+            <font color="#42c1b1">
+              {{one.totalprice | currency '¥'}}
+            </font>
           </span>
         </div>
         <div class="el_order_status_box">
-          <span v-if="o.bonus != null && o.bonus >= 0" class="el_order_status">
-            {{o.bonus > 0 ? '中奖/' : '未中奖'}}
-            {{o.bonus > 0 ? '奖金' : ''}}
-            {{o.bonus > 0 | currency '¥'}}
+          <span v-if="one.bonus != null && one.bonus >= 0" class="el_order_status">
+            {{one.bonus > 0 ? '中奖/' : '未中奖'}}
+            {{one.bonus > 0 ? '奖金' : ''}}
+            {{one.bonus > 0 | currency '¥'}}
           </span>
           <span v-else class="el_order_status">
             进行中
@@ -224,15 +255,40 @@ export default {
         }
       })
       .then(({data: {code, data, msg}})=>{
-        console.log(data)
-        // if (code === 1) {
-        //   this.zxListMore = data
-        // }
-        // else {
-        //   $.toast(msg)
-        // }
+        // console.log(data)
+        if (code === 1) {
+          this.zxListMore = data
+        }
+        else {
+          $.toast(msg)
+        }
       }).catch((e)=>{
         console.error('获取我的订单(自选跟单)失败:' + e)
+      })
+    },
+    /*
+     * 自选跟单取消
+     */
+    cancelZX (did) {
+      $.confirm('是否终止跟单,终止后不可恢复?', '提示', ()=>{
+        let token = window.localStorage.getItem('elToken')
+        this.$http.post(api.cancelOrderByZX, {
+          did: did
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, msg}})=>{
+          if (code === 1) {
+            this.getUserOrderZXMore()
+          }
+          $.toast(msg)
+        }).catch((e)=>{
+          console.error('用户自选跟单取消失败:' + e)
+        })
+      }, ()=>{
+        // 取消事件
       })
     }
   },

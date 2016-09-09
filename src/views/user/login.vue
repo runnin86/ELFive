@@ -116,7 +116,6 @@ export default {
       .then(({data: {code, msg, data}})=>{
         if (code === 1) {
           if (data) {
-            alert(data.openid)
             if (data.user.userStatus === 0) {
               $.toast('账户禁用')
             }
