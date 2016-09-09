@@ -54,7 +54,7 @@
     </div>
 
     <!-- 账单 -->
-    <div class="el_bill_box" v-link="{path: '/bill', replace: true}">
+    <div class="el_bill_box" @click="goForward('/bill', 'fade', 'bounce')">
       <img src="/img/11/bill_icon.png" class="el_bill_icon">
       <span class="el_bill_tagging">账单</span>
       <div class="el_bill_remind">
@@ -64,13 +64,13 @@
     </div>
 
     <!-- 订单 -->
-    <div class="el_order_box" v-link="{path: '/order', replace: true}">
+    <div class="el_order_box" @click="goForward('/order', 'fade', 'bounce')">
       <img src="/img/11/order_icon.png" class="el_order_icon">
       <span class="el_order_tagging">订单</span>
     </div>
 
     <!-- 修改密码 -->
-    <div class="el_modify_pw" v-link="{path: '/modify', replace: true}" >
+    <div class="el_modify_pw" @click="goForward('/modify', 'fade', 'bounce')">
       <img src="/img/11/modify_pw.png" class="el_modify_icon">
       <span class="el_modify_pw_tagging">修改密码</span>
     </div>
