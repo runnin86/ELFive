@@ -91,6 +91,12 @@
       </span>
     </div>
 
+    <div v-if="this.isShowTime().show" class="row" style="display: none;">
+      <span style="margin-top: -2rem;">
+        <v-count-down :countTime="this.isShowTime().time" :id="t_01"></v-count-down>
+      </span>
+    </div>
+
     <!-- 自主选号区 -->
     <div class="el_pick_box">
       <div class="el_pick"
@@ -135,8 +141,9 @@
 
 <script>
 import {api} from '../../util/service'
-import {getCombinationCount, getAllPeriodsOneDay} from '../../util/util'
+import VCountDown from '../../components/Countdown'
 import VLayer from '../../components/PullToRefreshLayer'
+import {getCombinationCount, getAllPeriodsOneDay} from '../../util/util'
 import $ from 'zepto'
 
 var refreshMsg
@@ -368,10 +375,26 @@ export default {
         console.error('无法连接服务器-获取时间')
       }).finally(()=>{
       })
+    },
+    /*
+     * 是否展示倒计时
+     */
+    isShowTime () {
+      let pubTime = new Date(this.currentStopTime)
+      let now = new Date()
+      if (now < pubTime) {
+        // 展示倒计时
+        return {show: true, time: pubTime}
+      }
+      else {
+        // 展示结果
+        return {show: false, time: pubTime}
+      }
     }
   },
   components: {
-    VLayer
+    VLayer,
+    VCountDown
   }
 }
 </script>
