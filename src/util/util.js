@@ -1,6 +1,12 @@
 import $ from 'zepto'
 import wx from 'wx'
 
+const START_HOUR = 8
+const START_MINUTE = 55
+const END_HOUR = 21
+const END_MINUTE = 45
+const ADVANCE = 5
+
 // 计算时间差
 export let getDateDiff = (startTime, endTime, diffType) => {
   // 将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式
@@ -178,4 +184,38 @@ export let getCombinationCount = (m, n) => {
     a = a * m-- / i
   }
   return parseInt(a, 0)
+}
+
+// 生成一天能生成的期号和每期开始时间
+export let getAllPeriodsOneDay = (time) => {
+  let map = new Map()
+  let now = new Date(time)
+  now.setHours(START_HOUR)
+  now.setMinutes(START_MINUTE)
+  now.setSeconds(0)
+  let start = new Date(now)
+  now.setHours(END_HOUR)
+  now.setMinutes(END_MINUTE)
+  now.setSeconds(0)
+  let end = new Date(now)
+  // 设置提前量时间(分)
+  if (ADVANCE > 0) {
+    start.setMinutes(start.getMinutes() - ADVANCE)
+    end.setMinutes(end.getMinutes() - ADVANCE)
+  }
+  let dayNum = dateFormat(now, 'yyyyMMdd')
+  let i = 1
+  while (true) {
+    if (start.getTime() <= end.getTime()) {
+      let p = i < 10 ? '0' + i : '' + i
+      map.set(dateFormat(start, 'yyyy-MM-dd HH:mm:ss'), dayNum + p)
+      // console.log(dateFormat(start, 'yyyy-MM-dd HH:mm:ss') + '->' + dayNum + p)
+      i++
+      start.setMinutes(start.getMinutes() + 10)
+    }
+    else {
+      break
+    }
+  }
+  return map
 }
