@@ -19,7 +19,7 @@
         <th colspan="5">号码</th>
       </tr>
       <tr align="center" v-for="item in list">
-        <td>{{item.periods}}</td>
+        <td>{{item.periods?item.periods.substr(2, 8):''}}</td>
         <td>{{item.nums | split ','| getArray 0}}</td>
         <td>{{item.nums | split ','| getArray 1}}</td>
         <td>{{item.nums | split ','| getArray 2}}</td>

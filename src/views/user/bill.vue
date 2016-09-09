@@ -58,7 +58,7 @@
       </tr>
       <tr align="center"
         v-for="p in purchaseList | orderBy 'orderPeriod' -1" track-by="$index">
-        <td>{{p.orderPeriod}}</td>
+        <td>{{p.orderPeriod?p.orderPeriod.substr(2, 8):''}}</td>
         <td>{{p.gameType | getGameTypeName}}</td>
         <td>
           {{p.nums | split ','| getArray 0}}
@@ -88,7 +88,7 @@
       </tr>
       <tr align="center"
         v-for="b in bonusList | orderBy 'orderPeriod' -1" track-by="$index">
-        <td>{{b.orderPeriod}}</td>
+        <td>{{b.orderPeriod?b.orderPeriod.substr(2, 8):''}}</td>
         <td>{{b.gameType | getGameTypeName}}</td>
         <td>
           {{b.nums | split ','| getArray 0}}

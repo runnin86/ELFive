@@ -21,7 +21,7 @@
       </tr>
       <tr align="center" v-for="doc in docList">
         <td>
-          {{doc.startperiods}}
+          {{doc.startperiods?doc.startperiods.substr(2, 8):''}}
         </td>
         <td>
           {{doc.nums | split ','| getArray 0}}
