@@ -2,8 +2,8 @@
 <template>
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
-  <div class="content">
-
+  <div class="content" v-pull-to-refresh="refresh">
+    <v-layer></v-layer>
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <img src="/img/11/title.png" class="el_title">
@@ -136,6 +136,7 @@
 <script>
 import {api} from '../../util/service'
 import {getCombinationCount} from '../../util/util'
+import VLayer from '../../components/PullToRefreshLayer'
 import $ from 'zepto'
 
 var refreshMsg
@@ -147,9 +148,10 @@ export default {
       this.getRecommendNum()
       // 获取上期中奖号码
       this.getLatelyNum()
+      // 设置定时去获取最新开奖号码
       refreshMsg = setInterval(function () {
         this.getRecommendNum()
-      }.bind(this), 15000)
+      }.bind(this), 60000)
     }
   },
   destroyed () {
@@ -172,6 +174,24 @@ export default {
     }
   },
   methods: {
+    /*
+     * 刷新
+     */
+    refresh () {
+      $.showIndicator()
+      if (window.localStorage.getItem('elUser')) {
+        // 执行查询
+        setTimeout(function () {
+          // 登录获取推荐号码
+          this.getRecommendNum()
+          // 获取上期中奖号码
+          this.getLatelyNum()
+          // 加载完毕需要重置
+          $.pullToRefreshDone('.pull-to-refresh-content')
+          $.hideIndicator()
+        }.bind(this), 800)
+      }
+    },
     selectGameType (t, min) {
       this.gameType = t
       this.minBall = min
@@ -330,6 +350,9 @@ export default {
       }).finally(()=>{
       })
     }
+  },
+  components: {
+    VLayer
   }
 }
 </script>
