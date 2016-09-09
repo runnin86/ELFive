@@ -65,7 +65,7 @@
     </table>
 
     <div class="el_recommend_state">
-      <span>进行至&nbsp{{currentPeriods}}&nbsp期</span>
+      <span>进行至&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
       <span style="border-left: 0.05rem #f0f0f0 solid;">剩余时间&nbsp<font color="#c14242">08:20</font></span>
     </div>
 
@@ -367,9 +367,12 @@ export default {
               break
             }
           }
-          this.$set('currentStopTime', currentStopTime)
-          this.$set('currentPeriods', currentPeriods)
-          window.localStorage.setItem('currentPeriods', currentPeriods)
+          let t = currentPeriods / 100
+          if (t - parseInt(t, 0) > 0) {
+            this.$set('currentStopTime', currentStopTime)
+            this.$set('currentPeriods', currentPeriods)
+            window.localStorage.setItem('currentPeriods', currentPeriods)
+          }
         }
       }).catch(()=>{
         console.error('无法连接服务器-获取时间')

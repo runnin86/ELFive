@@ -28,7 +28,9 @@
   <!-- 付款窗口 -->
   <div class="el_payment_box">
       <div class="el_payment_proposal">
-        <span style="background-color:#444444; color:white;">当前期数&nbsp2016090938</span>
+        <span style="background-color:#444444; color:white;">
+          当前期数&nbsp{{showPeriods?showPeriods:'-'}}
+        </span>
       </div>
       <div class="el_payment_proposal">
         <span>需&nbsp{{totalMoney}}&nbsp元</span>
@@ -136,7 +138,7 @@ export default {
   },
   data () {
     let currentPeriods = window.localStorage.getItem('currentPeriods')
-    if (true) {
+    if (currentPeriods) {
       currentPeriods = parseInt(currentPeriods.substr(8, 2), 0)
     }
     return {
@@ -145,6 +147,7 @@ export default {
       from: this.$route.params.from,
       gameType: this.$route.params.gameType,
       numberList: this.$route.params.number.split(','), // 截取数组
+      showPeriods: window.localStorage.getItem('currentPeriods'),
       currentPeriods: currentPeriods ? currentPeriods : 78, // 获取不到默认78
       price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)
       maxWinC: this.$route.query.maxWinC ? this.$route.query.maxWinC : 1, // 任六选六只有一种中奖可能性
