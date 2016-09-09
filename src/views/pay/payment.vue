@@ -128,16 +128,21 @@ import {api} from '../../util/service'
 export default {
   ready () {
     $.init()
-    this.getCurrentPeriod()
+    // 模拟计算
+    this.calculateProfit()
   },
   data () {
+    let currentPeriods = window.localStorage.getItem('currentPeriods')
+    if (true) {
+      currentPeriods = parseInt(currentPeriods.substr(8, 2), 0)
+    }
     return {
       showPayButton: false,
       rid: this.$route.query.rid,
       from: this.$route.params.from,
       gameType: this.$route.params.gameType,
       numberList: this.$route.params.number.split(','), // 截取数组
-      currentPeriod: 78, // 当前期数(从服务器获取)
+      currentPeriods: currentPeriods ? currentPeriods : 78, // 获取不到默认78
       price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)
       maxWinC: this.$route.query.maxWinC ? this.$route.query.maxWinC : 1, // 任六选六只有一种中奖可能性
       followPeriod: 7,
@@ -160,7 +165,7 @@ export default {
       for (let i = 0; i < this.followPeriod; i++) {
         let obj = {}
         // 期号大于78时变更
-        let p = this.currentPeriod + i - 1
+        let p = this.currentPeriods + i
         if (p >= 78 * parseInt(p / 78, 0)) {
           p = p - 78 * parseInt(p / 78, 0) + 1
         }
@@ -310,26 +315,6 @@ export default {
           console.error(this.from + '付款提交失败:' + e)
         })
       }
-    },
-    /*
-     * 获取当前期
-     */
-    getCurrentPeriod () {
-      let token = window.localStorage.getItem('elToken')
-      this.$http.get(api.currentPeriod, {}, {
-        headers: {
-          'x-token': token
-        }
-      })
-      .then(({data: {code, data, msg}})=>{
-        if (code === 1 && data) {
-          this.currentPeriod = parseInt(data.periodnum.substr(8, 2), 0)
-        }
-      }).catch((e)=>{
-        console.error('获取最新期失败:' + e)
-      }).finally(()=>{
-        this.calculateProfit()
-      })
     }
   },
   watch: {

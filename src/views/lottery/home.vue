@@ -135,7 +135,7 @@
 
 <script>
 import {api} from '../../util/service'
-import {getCombinationCount} from '../../util/util'
+import {getCombinationCount, getAllPeriodsOneDay} from '../../util/util'
 import VLayer from '../../components/PullToRefreshLayer'
 import $ from 'zepto'
 
@@ -144,6 +144,8 @@ export default {
   ready () {
     $.init()
     if (window.localStorage.getItem('elUser')) {
+      // 根据服务器时间计算得出当前期和当前期的结束购买时间
+      this.getCurrentInfoByServiceTime()
       // 登录获取推荐号码
       this.getRecommendNum()
       // 获取上期中奖号码
@@ -159,7 +161,7 @@ export default {
   },
   data () {
     return {
-      serviceTime: '',
+      currentStopTime: null, // 当前期结束购买时间
       bets: 0,
       maxWinC: 0, // 多选情况下最多可能中奖的组合数
       numberList: new Set(), // 用户选中的号码
@@ -182,6 +184,8 @@ export default {
       if (window.localStorage.getItem('elUser')) {
         // 执行查询
         setTimeout(function () {
+          // 根据服务器时间计算得出当前期和当前期的结束购买时间
+          this.getCurrentInfoByServiceTime()
           // 登录获取推荐号码
           this.getRecommendNum()
           // 获取上期中奖号码
@@ -333,9 +337,9 @@ export default {
       }
     },
     /*
-     * 获取服务器时间
+     * 根据获得服务器时间,计算出当前期和当前期截止购买时间
      */
-    getServiceTime () {
+    getCurrentInfoByServiceTime () {
       this.$http.get(api.serviceTime, {}, {
         headers: {
           'x-token': window.localStorage.getItem('elToken')
@@ -343,7 +347,22 @@ export default {
       })
       .then(({data: {code, data, msg}})=>{
         if (code === 1) {
-          this.serviceTime = data
+          // 根据服务器时间计算出全天的所有期
+          let map = getAllPeriodsOneDay(data)
+          // console.log(map.size)
+          // 获取当前期
+          let currentPeriods = null
+          let currentStopTime = null
+          for (let [key, value] of map) {
+            if (new Date(key) > new Date(data)) {
+              // console.log(key, value)
+              currentStopTime = key
+              currentPeriods = value - 1
+              break
+            }
+          }
+          window.localStorage.setItem('currentPeriods', currentPeriods)
+          this.$set('currentStopTime', currentStopTime)
         }
       }).catch(()=>{
         console.error('无法连接服务器-获取时间')

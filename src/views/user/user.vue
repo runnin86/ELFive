@@ -205,6 +205,7 @@
                   window.localStorage.removeItem('elUser')
                   window.localStorage.removeItem('elToken')
                   window.localStorage.removeItem('elOpenid')
+                  window.localStorage.removeItem('currentPeriods')
                   route.go({path: '/oauth', replace: true})
                 }
                 $.toast(msg)

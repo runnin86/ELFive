@@ -13,6 +13,8 @@
 
 <script>
 import Bar from './components/Bar'
+import {api} from './util/service'
+import {getAllPeriodsOneDay} from './util/util'
 import BarItem from './components/BarItem'
 import {loadScrollMsgForPlan, loadBannerForPlan, loadRangeList, loadBannerForHP, loadScrollMsgForHP, loadHpList, loadHpList10, loadUserUnreadMsg, loadNotice, setShowImg} from './vuex/actions'
 import store from './vuex/store'
@@ -61,6 +63,8 @@ export default {
     //   this.loadRangeList()
     //   this.loadNotice()
     // }
+    // 保持和服务器的心跳
+    this.connectHeartbeat()
     // 微信配置参数
     $.sign = {
       appId: 'wxadccc645716a9348',
@@ -68,34 +72,6 @@ export default {
       nonceStr: this.randomString(32),
       signature: '{sign.signature}'
     }
-    // 获取签名要先获得access_tokeb
-    // let appSecret = 'eb188f8ac0cf975ab877848601542015'
-    // let tokenUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&secret=' +
-    //   appSecret + '&appid=' + $.sign.appId
-    // console.log(tokenUrl)
-    // this.$http.get(tokenUrl)
-    // .then(({data: {access_token, expires_in}})=>{
-    //   console.log(access_token + '->' + expires_in)
-    // }).catch((e)=>{
-    //   console.error('获取公众号token失败:' + e)
-    // })
-
-    // let urlw = 'https://ruby-china.org/api/v3/nodes.json'
-    // urlw = 'http://123.57.217.199:9587/api/v1/sml/oneBuyProject'
-    // // GET request
-    // this.$http({url: urlw, method: 'GET'}, {}, {
-    //   headers: {
-    //     // 'Origin': '*'
-    //   }
-    // }).then(function (response) {
-    //   console.log(response)
-    //   // success callback
-    // }, function (response) {
-    //   console.log(response)
-    //   // error callback
-    // })
-
-    // console.log($.sign)
 
     let wxJsApi = [
       'onMenuShareTimeline',
@@ -153,6 +129,61 @@ export default {
         pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
       }
       return pwd
+    },
+    /*
+     * 获取服务器时间
+     */
+    getServiceTime () {
+      let serviceTime = null
+      this.$http.get(api.serviceTime, {}, {
+        headers: {
+          'x-token': window.localStorage.getItem('elToken')
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        if (code === 1) {
+          serviceTime = data
+        }
+      }).catch(()=>{
+        console.error('无法连接服务器-获取时间')
+      }).finally(()=>{
+      })
+      console.log(serviceTime)
+    },
+    /*
+     * 保持和服务器之间的心跳
+     */
+    connectHeartbeat () {
+      let token = window.localStorage.getItem('elToken')
+      if (token) {
+        this.$http.get(api.serviceTime, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          if (code === 1) {
+            // 根据服务器时间计算出全天的所有期
+            let map = getAllPeriodsOneDay(data)
+            // console.log(map.size)
+            // 获取当前期
+            let current = null
+            let currentStopTime = null
+            for (let [key, value] of map) {
+              if (new Date(key) > new Date(data)) {
+                // console.log(key, value)
+                currentStopTime = key
+                current = value - 1
+                break
+              }
+            }
+            console.log('now', current, 'end', currentStopTime)
+          }
+        }).catch(()=>{
+          console.error('无法连接服务器-获取时间')
+        }).finally(()=>{
+        })
+      }
     }
   },
   components: {
