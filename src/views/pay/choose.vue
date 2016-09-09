@@ -50,7 +50,7 @@
         <a @click="doDocumentary(doc)"
           class="el_documentary_btn"
           :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
-         {{doc.isCanQuit==='1' ? '取消跟单' : '跟单'}}
+         {{doc.flag==='1' ? '跟单' : '取消跟单'}}
        </a>
       </div>
     </div>
@@ -125,7 +125,7 @@
         showPayWindow: false,
         showCancelWindow: false,
         payRid: null,
-        cancelRid: null
+        cancelDid: null
       }
     },
     methods: {
@@ -133,8 +133,6 @@
        * 获取跟单选购列表
        */
       getDocList () {
-        // isCanDoc: "1"      -> 1 可跟   0 不可跟
-        // isCanQuit: "0"     -> 1 可以取消  0 不能取消
         // numPayStatus: 0    -> 0 未付费查看   1 已付可看
         // isToll: 0          -> 0 免费      1收费
         // nums: "01,03,04,06,07,08"
@@ -149,8 +147,6 @@
         .then(({data: {code, data, msg}})=>{
           // console.log(data)
           if (code === 1) {
-            // // 模拟可取消
-            // data[0].isCanQuit = '1'
             this.docList = data
           }
           else {
@@ -164,16 +160,15 @@
        * 跟单事件
        */
       doDocumentary (doc) {
-        // isCanDoc: "1"      -> 1 可跟   0 不可跟
-        // isCanQuit: "0"     -> 1 可以取消  0 不能取消
-        // numPayStatus: 0    -> 0 未付费查看   1 已付可看
-        // isToll: 0          -> 0 免费      1收费
+        // flag: "0"          -> 1 为可跟单，不可取消;0为不可跟单，可取消
+        // numPayStatus: 0    -> 0 未付费查看;1 已付可看
+        // isToll: 0          -> 0 免费;1 收费
         let nums = doc.nums
         if (doc.isToll === 1 && doc.numPayStatus === 0) {
           // 需要隐藏号码
           nums = '*,*,*,*,*,*'
         }
-        if (doc.isCanDoc === '1' && doc.isCanQuit === '0') {
+        if (doc.flag === '1') {
           // 跳转至模拟收益
           this.$route.router.go({
             name: 'payment',
@@ -188,9 +183,9 @@
             replace: false
           })
         }
-        if (doc.isCanQuit === '1') {
+        else if (doc.flag === '0') {
           // 取消跟单
-          this.cancelRid = doc.rid
+          this.cancelDid = doc.did
           this.showCancelWindow = true
         }
       },
@@ -252,11 +247,11 @@
         }
       },
       cancelRec () {
-        if (this.cancelRid) {
+        if (this.cancelDid) {
           // 发送取消跟单
           let token = window.localStorage.getItem('elToken')
           this.$http.post(api.cancelOrderByGD, {
-            'did': this.cancelRid
+            'did': this.cancelDid
           }, {
             headers: {
               'x-token': token
@@ -271,7 +266,7 @@
             console.error('取消跟单失败:' + e)
           }).finally(()=>{
             this.showCancelWindow = false
-            this.cancelRid = null
+            this.cancelDid = null
           })
         }
       }
