@@ -21,11 +21,11 @@
       <strong class="el_purchase_btn"
         @click="this.showTabs = 1"
         :class="this.showTabs===1?'el_click_white':''">
-      购买</strong>
+      未结算</strong>
       <strong class="el_bonus_btn"
         @click="this.showTabs = 2"
         :class="this.showTabs===2?'el_click_white':''">
-      奖金</strong>
+      已结算</strong>
       <strong class="el_cash_btn"
         @click="this.showTabs = 3"
         :class="this.showTabs===3?'el_click_white':''">

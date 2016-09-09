@@ -64,6 +64,11 @@
       </tr>
     </table>
 
+    <div class="el_recommend_state">
+      <span>进行至&nbsp2016090926&nbsp期</span>
+      <span style="border-left: 0.05rem #f0f0f0 solid;">剩余时间&nbsp<font color="#c14242">08:20</font></span>
+    </div>
+
     <!-- 跟单按钮 -->
     <div class="el_documentary_btn"
       v-link="{path: '/choose', replace: true}">
@@ -408,7 +413,7 @@ body,ul{
 .el_head {
   width:100%;
   height:50px;
-  background-color: #282828;
+  background-color: #42c1b1;
   overflow:hidden;
   position: relative;
 }
@@ -431,7 +436,7 @@ body,ul{
 .el_recommend{
   width:100%;
   height:1rem;
-  background-color: #282828;
+  background-color: #42c1b1;
 }
 .el_recommend span{
   font-size:0.6rem;
@@ -444,7 +449,7 @@ body,ul{
 .recommendation_number_box{
   width:100%;
   height:3rem;
-  background-color: #282828;
+  background-color: #42c1b1;
 }
 .recommendation_number_box strong{
   color: #fff;
@@ -458,17 +463,18 @@ body,ul{
 .el_info{
   margin: 0;
   padding: 0;
-  width:100%;
-  background-color: #fff;
-  height:2.5rem;
+  width: 100%;
+  background-color: #79d5c9;
+  height: 2.5rem;
 }
 .el_info tr{
-  height:2.5rem;
+  height: 2.5rem;
 }
 
 .el_info tr td{
-    width:25%;
-    border-left:1px solid #f0f0f0;
+    width: 25%;
+    color: white;
+    height: 1rem;
 }
 
 .el_info tr td p{
@@ -612,5 +618,18 @@ body,ul{
   font-size: 0.7rem;
   background-color: red;
   color: white;
+}
+.el_recommend_state{
+  width: 100%;
+  height: 1.6rem;
+  background-color: white;
+}
+.el_recommend_state span{
+  width: 50%;
+  line-height: 1.6rem;
+  display: block;;
+  text-align: center;
+  font-size: 0.6rem;
+  float: left;
 }
 </style>

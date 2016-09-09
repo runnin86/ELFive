@@ -27,7 +27,7 @@
     </div>
 
     <!-- 自选 -->
-    <div>
+    <!-- <div>
       <div class="el_bill_box" v-for="more in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
         :class="this.showTabs===2?'el_bill_box':'hide'">
         <div class="ul_bill_type">
@@ -121,10 +121,10 @@
           <span>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 跟单 -->
-    <div class="el_bill_box"
+    <!-- <div class="el_bill_box"
       v-for="g in gdList | orderBy 'orderDate' -1" track-by="$index"
       :class="this.showTabs===1?'el_bill_box':'hide'">
       <div class="ul_bill_type">
@@ -168,6 +168,137 @@
           进行中
         <span>
       </div>
+    </div> -->
+
+    <!-- 跟单 -->
+    <div class="el_record_box"
+      :class="this.showTabs===1?'el_bill_box':'hide'">
+      <table class="el_record_number_table">
+        <tr class="el_record_number_box">
+          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
+          <th>01</th>
+          <th>03</th>
+          <th>04</th>
+          <th>07</th>
+          <th>09</th>
+          <th>11</th>
+        </tr>
+      </table>
+      <ul class="el_state_top_box">
+        <li class="el_state_top_1">
+          <span class="el_state_top_margin">起始期</span>
+          <span>2016090926</span>
+        </li>
+        <li class="el_state_top_2">
+          <span class="el_state_top_margin">进行</span>
+          <span><font color="#42c1b1">11</font>/50期</span>
+        </li>
+        <li class="el_state_top_3">
+          <span class="el_state_top_margin">中奖金额</span>
+          <span><font color="#42c1b1">540.00</font></span>
+        </li>
+      </ul>
+      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+        <li class="el_state_top_1">
+          <span class="el_state_top_margin">冻结金额</span>
+          <span>120.00</span>
+        </li>
+        <li class="el_state_top_2">
+          <span class="el_state_top_margin">已使用金额</span>
+          <span>80</span>
+        </li>
+        <li class="el_state_top_3">
+          <span class="el_state_top_margin">利润率</span>
+          <span>700%</span>
+        </li>
+      </ul>
+      <div class="el_stop_btn">
+        <span>终止跟单</span>
+      </div>
+    </div>
+
+    <!-- 自选 -->
+    <div class="el_record_box"
+      :class="this.showTabs===2?'el_bill_box':'hide'">
+      <div class="el_title_rule">
+        <span>玩法-任选六</span>
+      </div>
+      <table class="el_record_number_table">
+        <tr class="el_record_number_box">
+          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
+          <th>01</th>
+          <th>03</th>
+          <th>04</th>
+          <th>07</th>
+          <th>09</th>
+          <th>11</th>
+        </tr>
+      </table>
+      <ul class="el_state_top_box">
+        <li class="el_state_top_1">
+          <span class="el_state_top_margin">起始期</span>
+          <span>2016090926</span>
+        </li>
+        <li class="el_state_top_2">
+          <span class="el_state_top_margin">进行</span>
+          <span><font color="#42c1b1">11</font>/50期</span>
+        </li>
+        <li class="el_state_top_3">
+          <span class="el_state_top_margin">中奖金额</span>
+          <span><font color="#42c1b1">540.00</font></span>
+        </li>
+      </ul>
+      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+        <li class="el_state_top_1">
+          <span class="el_state_top_margin">冻结金额</span>
+          <span>120.00</span>
+        </li>
+        <li class="el_state_top_2">
+          <span class="el_state_top_margin">已使用金额</span>
+          <span>80</span>
+        </li>
+        <li class="el_state_top_3">
+          <span class="el_state_top_margin">利润率</span>
+          <span>700%</span>
+        </li>
+      </ul>
+      <div class="el_stop_btn">
+        <span>终止追单</span>
+      </div>
+    </div>
+
+
+    <!-- 自选 -->
+    <div class="el_record_box"
+      :class="this.showTabs===3?'el_bill_box':'hide'">
+      <div class="el_title_rule">
+        <span>玩法-任选六</span>
+      </div>
+      <table class="el_record_number_table">
+        <tr class="el_record_number_box">
+          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
+          <th>01</th>
+          <th>03</th>
+          <th>04</th>
+          <th>07</th>
+          <th>09</th>
+          <th>11</th>
+        </tr>
+      </table>
+      <ul class="el_state_top_box">
+        <li class="el_state_top_1">
+          <span class="el_state_top_margin">期数</span>
+          <span>2016090938</span>
+        </li>
+        <li class="el_state_top_2">
+          <span class="el_state_top_margin">中奖金额</span>
+          <span>进行中</span>
+        </li>
+        <li class="el_state_top_3">
+          <span class="el_state_top_margin">利润率</span>
+          <span>-</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -451,6 +582,9 @@ ul,a,p{
   text-align: center;
   display: block;
 }
+.el_stop_btn{
+  border-top:0.05rem solid #f0f0f0;
+}
 .el_choice_box{
   width: 100%;
   height:2.5rem;
@@ -490,5 +624,68 @@ ul,a,p{
   line-height: 1.8rem;
   text-align: center;
   display: block;
+}
+.el_record_number_table{
+  width: 100%;
+  overflow: hidden;
+}
+.el_record_box{
+  width: 96%;
+  margin: 0.5rem 2%;
+  background-color: white;
+}
+.el_record_box tr{
+  height: 2.5rem;
+}
+.el_record_box tr td{
+  line-height: 2.5rem;
+}
+.el_record_number_box{
+    border-bottom: 0.05rem solid #f0f0f0;
+}
+.el_record_number{
+  width: 30%;
+  text-align: center;
+}
+.el_state_top_box{
+  width: 100%;
+  height: 2.5rem;
+}
+.el_state_top_box li{
+  display: block;
+  float: left;
+}
+.el_state_top_box li span{
+  font-size: 0.6rem;
+  display: block;
+  text-align: center;
+}
+.el_state_top_1{
+  width: 33%;
+  border-right: solid #f0f0f0 0.05rem;
+  height: 2.5rem;
+}
+.el_state_top_3{
+  width: 33%;
+  border-left: solid #f0f0f0 0.05rem;
+  height: 2.5rem;
+}
+.el_state_top_2{
+  width: 34%;
+  height: 2.5rem;
+}
+.el_state_top_margin{
+  margin-top:0.3rem;
+}
+.el_title_rule{
+  width: 100%;
+  height: 1.6rem;
+  border-bottom: solid #f0f0f0 0.05rem;
+}
+.el_title_rule span{
+  display: block;
+  line-height: 1.6rem;
+  text-align: center;
+  font-size: 0.6rem;
 }
 </style>

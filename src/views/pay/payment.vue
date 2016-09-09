@@ -28,6 +28,9 @@
   <!-- 付款窗口 -->
   <div class="el_payment_box">
       <div class="el_payment_proposal">
+        <span style="background-color:#444444; color:white;">当前期数&nbsp2016090938</span>
+      </div>
+      <div class="el_payment_proposal">
         <span>需&nbsp{{totalMoney}}&nbsp元</span>
       </div>
       <ul class="el_condition_input">

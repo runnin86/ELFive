@@ -14,7 +14,7 @@
     </div>
 
     <!-- 跟单票未购买状态 -->
-    <div class="el_bill_box"
+    <!-- <div class="el_bill_box"
       v-for="doc in docList | orderBy 'numPayStatus' -1" track-by="$index">
       <div class="el_bill_title">
         <span>推荐号码</span>
@@ -52,6 +52,37 @@
           :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
          {{doc.flag==='1' ? '跟单' : '取消跟单'}}
        </a>
+      </div>
+    </div> -->
+
+    <div class="el_record_box">
+      <table class="el_record_number_table">
+        <tr class="el_record_number_box">
+          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
+          <th>01</th>
+          <th>03</th>
+          <th>04</th>
+          <th>07</th>
+          <th>09</th>
+          <th>11</th>
+        </tr>
+      </table>
+      <div class="el_section_box">
+        <span>推荐追单2016090540-2016090662期</span>
+      </div>
+      <ul class="el_documentary_state">
+        <li style="border-right:0.05rem solid #f0f0f0">
+          <span style="margin-top:0.3rem;">进行期数</span>
+          <span><font color="#42c1b1">11</font>/50</span>
+        </li>
+        <li>
+          <span style="margin-top:0.3rem;">最低利润率</span>
+          <span>25%</span>
+        </li>
+      </ul>
+      <div class="el_stop_btn">
+        <span class="el_see_btn">付费查看</span>
+        <span><font color="#42c1b1">跟单</font></span>
       </div>
     </div>
   </div>
@@ -398,9 +429,14 @@ ul,a,p{
 .el_stop_btn{
   font-size: 0.7rem;
   width: 100%;
+}
+.el_stop_btn span{
+  width: 50%;
   line-height: 2.5rem;
   text-align: center;
   display: block;
+  float: left;
+  background-color: white;
 }
 .hide{
   display: none;
@@ -453,5 +489,91 @@ ul,a,p{
 }
 .el_button_left{
   border-right: 0.05rem #f0f0f0 solid;
+}
+.el_record_number_table{
+  width: 100%;
+  overflow: hidden;
+}
+.el_record_box{
+  width: 96%;
+  margin: 0.5rem 2%;
+  background-color: white;
+}
+.el_record_box tr{
+  height: 2.5rem;
+}
+.el_record_box tr td{
+  line-height: 2.5rem;
+}
+.el_record_number_box{
+    border-bottom: 0.05rem solid #f0f0f0;
+}
+.el_record_number{
+  width: 30%;
+  text-align: center;
+}
+.el_state_top_box{
+  width: 100%;
+  height: 2.5rem;
+}
+.el_state_top_box li{
+  display: block;
+  float: left;
+}
+.el_state_top_box li span{
+  font-size: 0.6rem;
+  display: block;
+  margin-left: 0.6rem;
+}
+.el_state_top_1{
+  width: 33%;
+  border-right: solid #f0f0f0 0.05rem;
+  height: 2.5rem;
+}
+.el_state_top_3{
+  width: 33%;
+  border-left: solid #f0f0f0 0.05rem;
+  height: 2.5rem;
+}
+.el_state_top_2{
+  width: 34%;
+  height: 2.5rem;
+}
+.el_state_top_margin{
+  margin-top:0.3rem;
+}
+.el_see_btn{
+  border-left: 0.05rem solid #f0f0f0;
+}
+.el_section_box{
+  width: 100%;
+  height: 1.6rem;
+  background-color: white;
+  border-bottom: solid #f0f0f0 0.05rem;
+}
+.el_section_box span{
+  line-height: 1.6rem;
+  text-align: center;
+  display: block;
+  font-size: 0.6rem;
+}
+.el_documentary_state{
+  width: 100%;
+  height: 2.5rem;
+}
+.el_documentary_state{
+  border-bottom: #f0f0f0 solid 0.05rem;
+}
+.el_documentary_state li{
+  width: 50%;
+  display: block;
+  float: left;
+  height: 2.5rem;
+}
+.el_documentary_state li span{
+  font-size: 0.6rem;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 </style>
