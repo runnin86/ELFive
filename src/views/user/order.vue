@@ -101,7 +101,9 @@
       </div>
       <table width="100%" class="el_bill_number_table">
         <tr>
-          <td v-for="n in g.nums | split ','">{{n}}</td>
+          <td v-for="n in g.nums | split ','">
+            {{g.payStatus === 1 ? n : '*'}}
+          </td>
         </tr>
       </table>
       <div class="el_bill_title">
