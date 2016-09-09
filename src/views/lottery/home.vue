@@ -280,7 +280,7 @@ export default {
         })
         .then(({data: {code, data, msg}})=>{
           // console.log(data)
-          if (code === 1) {
+          if (code === 1 && data) {
             this.recommendBalls = data.nums
             this.totperiods = data.totperiods
             this.alreadyper = data.alreadyper
