@@ -42,7 +42,7 @@
         <td style="border-left:#fff;">
           <p>推荐期数</p>
           <p>
-            {{totperiods}}
+            {{totperiods === null ? '-':totperiods}}
           </p>
         </td>
         <td>
