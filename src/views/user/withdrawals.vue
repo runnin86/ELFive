@@ -3,15 +3,15 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="bounce">
+  <div class="content" :transition="pageTransition">
 
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/user', replace: true}">
+      <a class="el_return_btn" @click="goForward('/user', 'bounce', '')">
         <img src="/img/11/return.png">
       </a>
       <strong class="el_balance_title">账户余额</strong>
-      <strong class="el_placeholder" v-link="{path: '/rule', replace: true}">规则</strong>
+      <strong class="el_placeholder" @click="goForward('/rule', 'fade', 'bounce')">规则</strong>
       <strong class="el_balance">{{userAccount}}</strong>
     </div>
 
@@ -51,6 +51,7 @@
     },
     data () {
       return {
+        pageTransition: this.$route.query.pageTransition,
         user: JSON.parse(window.localStorage.getItem('elUser')),
         userAccount: '-',
         withdrawMoney: null,
@@ -110,6 +111,7 @@
           })
           .then(({data: {code, msg}})=>{
             if (code === 1) {
+              this.$set('pageTransition', 'fade')
               this.$route.router.go({path: '/withdrawals_complete?m=' + (this.withdrawMoney - this.poundage), replace: true})
             }
             else {
@@ -121,6 +123,15 @@
         }, ()=>{
           // 取消事件
         })
+      },
+      /*
+       * 跳转
+       */
+      goForward (url, thisMod, nextMod) {
+        this.$set('pageTransition', thisMod)
+        setTimeout(function () {
+          this.$route.router.go({path: url, query: { pageTransition: nextMod }, replace: false})
+        }.bind(this), 100)
       }
     },
     watch: {

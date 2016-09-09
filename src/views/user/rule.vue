@@ -6,7 +6,8 @@
   <div class="content" transition="bounce">
     <!-- 顶部操作栏 -->
     <div class="el_head">
-      <a class="el_return_btn" v-link="{path: '/withdrawals', replace: true}">
+      <a class="el_return_btn"
+        v-link="{path: '/withdrawals', query: { pageTransition: 'fade' }, replace: true}">
         <img src="/img/11/return.png">
       </a>
       <strong>提现规则</strong>

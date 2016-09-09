@@ -2,14 +2,16 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content user" distance="55" v-pull-to-refresh="refresh">
+  <div class="content user" distance="55" :transition="pageTransition"
+    v-pull-to-refresh="refresh">
     <v-layer></v-layer>
     <!-- 个人中心顶部信息栏 -->
     <div class="el_user_head_box">
 
       <!-- 顶部操作栏 -->
       <div class="el_head">
-        <a class="el_return_btn" v-link="{path: '/home', replace: true}">
+        <a class="el_return_btn"
+          @click="goForward('/home', 'bounce', '')">
           <img src="/img/11/return.png">
         </a>
         <strong>个人中心</strong>
@@ -44,7 +46,7 @@
     <!-- 提现按钮/充值按钮 -->
     <div class="el_property_operation">
       <div class="el_withdrawals_btn">
-        <strong  v-link="{path: '/withdrawals', replace: true}">提现</strong>
+        <strong @click="goForward('/withdrawals', 'fade', 'bounce')">提现</strong>
       </div>
       <div class="el_recharge_btn">
         <strong @click="recharge()">充值</strong>
@@ -127,6 +129,7 @@
     },
     data () {
       return {
+        pageTransition: this.$route.query.pageTransition,
         user: JSON.parse(window.localStorage.getItem('elUser')),
         userAccount: '-',
         userFrozeAccount: '-',
@@ -243,8 +246,20 @@
           console.error('获取账户信息失败:' + e)
         })
       },
+      /*
+       * 充值
+       */
       recharge () {
         $.toast('敬请期待!')
+      },
+      /*
+       * 跳转
+       */
+      goForward (url, thisMod, nextMod) {
+        this.$set('pageTransition', thisMod)
+        setTimeout(function () {
+          this.$route.router.go({path: url, query: { pageTransition: nextMod }, replace: false})
+        }.bind(this), 100)
       }
     },
     components: {

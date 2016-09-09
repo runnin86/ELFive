@@ -260,7 +260,7 @@ export default {
      */
     targetUserCenter () {
       if (window.localStorage.getItem('elUser')) {
-        this.$route.router.go({path: '/user', replace: true})
+        this.$route.router.go({path: '/user', query: { pageTransition: 'bounce' }, replace: false})
       }
       else {
         $.toast('你尚未登录')
@@ -360,8 +360,8 @@ body,ul{
   right:0;
   top:0;
   padding:0.7rem 0.7rem;
-  width:2.5rem;
-  height:2.5rem;
+  width:2.7rem;
+  height:2.7rem;
 }
 .el_recommend{
   width:100%;
