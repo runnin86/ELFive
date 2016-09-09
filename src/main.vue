@@ -13,8 +13,6 @@
 
 <script>
 import Bar from './components/Bar'
-import {api} from './util/service'
-import {getAllPeriodsOneDay} from './util/util'
 import BarItem from './components/BarItem'
 import {loadScrollMsgForPlan, loadBannerForPlan, loadRangeList, loadBannerForHP, loadScrollMsgForHP, loadHpList, loadHpList10, loadUserUnreadMsg, loadNotice, setShowImg} from './vuex/actions'
 import store from './vuex/store'
@@ -63,8 +61,6 @@ export default {
     //   this.loadRangeList()
     //   this.loadNotice()
     // }
-    // 保持和服务器的心跳
-    this.connectHeartbeat()
     // 微信配置参数
     $.sign = {
       appId: 'wxadccc645716a9348',
@@ -129,61 +125,6 @@ export default {
         pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
       }
       return pwd
-    },
-    /*
-     * 获取服务器时间
-     */
-    getServiceTime () {
-      let serviceTime = null
-      this.$http.get(api.serviceTime, {}, {
-        headers: {
-          'x-token': window.localStorage.getItem('elToken')
-        }
-      })
-      .then(({data: {code, data, msg}})=>{
-        if (code === 1) {
-          serviceTime = data
-        }
-      }).catch(()=>{
-        console.error('无法连接服务器-获取时间')
-      }).finally(()=>{
-      })
-      console.log(serviceTime)
-    },
-    /*
-     * 保持和服务器之间的心跳
-     */
-    connectHeartbeat () {
-      let token = window.localStorage.getItem('elToken')
-      if (token) {
-        this.$http.get(api.serviceTime, {}, {
-          headers: {
-            'x-token': token
-          }
-        })
-        .then(({data: {code, data, msg}})=>{
-          if (code === 1) {
-            // 根据服务器时间计算出全天的所有期
-            let map = getAllPeriodsOneDay(data)
-            // console.log(map.size)
-            // 获取当前期
-            let current = null
-            let currentStopTime = null
-            for (let [key, value] of map) {
-              if (new Date(key) > new Date(data)) {
-                // console.log(key, value)
-                currentStopTime = key
-                current = value - 1
-                break
-              }
-            }
-            console.log('now', current, 'end', currentStopTime)
-          }
-        }).catch(()=>{
-          console.error('无法连接服务器-获取时间')
-        }).finally(()=>{
-        })
-      }
     }
   },
   components: {
