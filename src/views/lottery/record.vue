@@ -43,7 +43,7 @@
       <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
-          <span>{{doc.startperiods?doc.startperiods.substr(2, 8):''}}</span>
+          <span>{{doc.startPeriods?doc.startPeriods.substr(2, 8):''}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">终止期</span>
