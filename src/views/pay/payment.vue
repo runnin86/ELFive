@@ -320,6 +320,9 @@ export default {
               this.$root.back()
             }
           }
+          else {
+            $.toast(msg)
+          }
         }).catch((e)=>{
           console.error(this.from + '付款提交失败:' + e)
         })
