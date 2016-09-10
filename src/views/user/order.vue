@@ -108,7 +108,7 @@
       <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
-          <span>{{more.frozeAccount | currency '¥'}}</span>
+          <span>{{more.totMount - more.nowTotAmount | currency '¥'}}</span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">已使用金额</span>
