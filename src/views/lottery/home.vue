@@ -361,36 +361,39 @@ export default {
       .then(({data: {code, data, msg}})=>{
         if (code === 1) {
           // 根据服务器时间计算出全天的所有期
-          let map = getAllPeriodsOneDay(data)
+          let map = getAllPeriodsOneDay(data.replace(/\-/g, '/'))
           // console.log(map.size)
           // 获取当前期
           let currentPeriods = null
           let currentStopTime = null
           for (let [key, value] of map) {
-            if (new Date(key) > new Date(data)) {
+            if (new Date(key.replace(/\-/g, '/')) > new Date(data.replace(/\-/g, '/'))) {
               // console.log(key, value)
               currentStopTime = key
               currentPeriods = value - 1
               break
             }
           }
-          let t = currentPeriods / 100
-          if (t - parseInt(t, 0) > 0) {
-            this.$set('serviceTime', data)
-            this.$set('currentStopTime', currentStopTime)
-            this.$set('currentPeriods', currentPeriods)
-            window.localStorage.setItem('currentPeriods', currentPeriods)
+          if (currentPeriods) {
+            let t = parseInt(currentPeriods.toString().substr(8, 2), 0)
+            if (t > 0 && t <= 78) {
+              this.$set('serviceTime', data)
+              this.$set('currentStopTime', currentStopTime)
+              this.$set('currentPeriods', currentPeriods)
+              window.localStorage.setItem('currentPeriods', currentPeriods)
+            }
           }
         }
-      }).catch(()=>{
-        console.error('无法连接服务器-获取时间')
+      }).catch((e)=>{
+        // $.toast(e)
+        console.error('无法连接服务器-获取时间:', e)
       }).finally(()=>{
         this.clock()
       })
     },
     clock () {
-      var overa = new Date(this.currentStopTime)
-      var local = new Date(this.serviceTime)
+      var overa = new Date(this.currentStopTime.replace(/\-/g, '/'))
+      var local = new Date(this.serviceTime.replace(/\-/g, '/'))
       var intDiff = overa.getTime() - local.getTime()
       if (intDiff <= 0) {
         return false
@@ -490,7 +493,7 @@ body,ul{
   margin: 0;
   padding: 0;
   width: 100%;
-  background-color: #79d5c9;
+  background-color: #3bad9f;
   height: 2.5rem;
 }
 .el_info tr{
