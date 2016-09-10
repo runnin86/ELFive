@@ -12,25 +12,6 @@
       <strong>账单</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
-    <div class="el_choice_box">
-      <!-- <strong class="el_recharge_btn"
-        @click="this.showTabs = 1"
-        :class="this.showTabs===1?'el_click_white':''">
-        充值
-      </strong> -->
-      <strong class="el_purchase_btn"
-        @click="this.showTabs = 1"
-        :class="this.showTabs===1?'el_click_white':''">
-      未结算</strong>
-      <strong class="el_bonus_btn"
-        @click="this.showTabs = 2"
-        :class="this.showTabs===2?'el_click_white':''">
-      已结算</strong>
-      <strong class="el_cash_btn"
-        @click="this.showTabs = 3"
-        :class="this.showTabs===3?'el_click_white':''">
-      提现</strong>
-    </div>
 
     <!-- 充值 -->
     <!-- <table class="el_recharge_box" width="100%" border="0" cellpadding="0" cellspacing="0"
@@ -54,26 +35,18 @@
         <th>期数</th>
         <th>玩法</th>
         <th>号码</th>
-        <th>消费</th>
+        <th>消费(元)</th>
       </tr>
       <tr align="center"
         v-for="p in purchaseList | orderBy 'orderPeriod' -1" track-by="$index">
         <td>{{p.orderPeriod?p.orderPeriod.substr(2, 8):''}}</td>
         <td>{{p.gameType | getGameTypeName}}</td>
         <td>
-          {{p.nums | split ','| getArray 0}}
-          {{p.nums | split ','| getArray 1}}
-          {{p.nums | split ','| getArray 2}}
-          {{p.nums | split ','| getArray 3}}
-          {{p.nums | split ','| getArray 4}}
-          {{p.nums | split ','| getArray 5}}
-          {{p.nums | split ','| getArray 6}}
-          {{p.nums | split ','| getArray 7}}
-          {{p.nums | split ','| getArray 8}}
-          {{p.nums | split ','| getArray 9}}
-          {{p.nums | split ','| getArray 10}}
+          <span v-if="p.nums" v-for="n in p.nums.split(',')">
+            {{p.isCanShow===1?n:'*'}}&nbsp;
+          </span>
         </td>
-        <td>{{p.totalPrice | currency '¥'}}</td>
+        <td>{{p.totalPrice | currency ''}}</td>
       </tr>
     </table>
 
@@ -84,26 +57,18 @@
         <th>期数</th>
         <th>玩法</th>
         <th>号码</th>
-        <th>奖金</th>
+        <th>奖金(元)</th>
       </tr>
       <tr align="center"
         v-for="b in bonusList | orderBy 'orderPeriod' -1" track-by="$index">
         <td>{{b.orderPeriod?b.orderPeriod.substr(2, 8):''}}</td>
         <td>{{b.gameType | getGameTypeName}}</td>
         <td>
-          {{b.nums | split ','| getArray 0}}
-          {{b.nums | split ','| getArray 1}}
-          {{b.nums | split ','| getArray 2}}
-          {{b.nums | split ','| getArray 3}}
-          {{b.nums | split ','| getArray 4}}
-          {{b.nums | split ','| getArray 5}}
-          {{b.nums | split ','| getArray 6}}
-          {{b.nums | split ','| getArray 7}}
-          {{b.nums | split ','| getArray 8}}
-          {{b.nums | split ','| getArray 9}}
-          {{b.nums | split ','| getArray 10}}
+          <span v-if="b.nums" v-for="n in b.nums.split(',')">
+            {{b.isCanShow===1?n:'*'}}&nbsp;
+          </span>
         </td>
-        <td>{{b.bonus | currency '¥'}}</td>
+        <td>{{b.bonus | currency ''}}</td>
       </tr>
     </table>
 
@@ -112,19 +77,38 @@
       :class="this.showTabs===3?'el_recharge_box':'hide'">
       <tr>
         <th>日期</th>
-        <th>金额</th>
+        <th>金额(元)</th>
         <th>状态</th>
       </tr>
       <tr align="center"
         v-for="w in withdrawList | orderBy 'withdraw_date' -1" track-by="$index">
         <td>{{w.withdraw_date}}</td>
-        <td>{{w.withdraw_money | currency '¥'}}</td>
+        <td>{{w.withdraw_money | currency ''}}</td>
         <td>
           {{w.withdraw_status===0?'审核中':(w.withdraw_status===1?'成功':'失败')}}
         </td>
       </tr>
     </table>
 
+  </div>
+  <div class="el_choice_box">
+    <!-- <strong class="el_recharge_btn"
+      @click="this.showTabs = 1"
+      :class="this.showTabs===1?'el_click_white':''">
+      充值
+    </strong> -->
+    <strong class="el_purchase_btn"
+      @click="this.showTabs = 1"
+      :class="this.showTabs===1?'el_click_white':''">
+    未结算</strong>
+    <strong class="el_bonus_btn"
+      @click="this.showTabs = 2"
+      :class="this.showTabs===2?'el_click_white':''">
+    已结算</strong>
+    <strong class="el_cash_btn"
+      @click="this.showTabs = 3"
+      :class="this.showTabs===3?'el_click_white':''">
+    提现</strong>
   </div>
 </template>
 
@@ -211,6 +195,8 @@ ul,a,p{
   width: 100%;
   height:2.5rem;
   background-color: #282828;
+  position: absolute;
+  bottom: 0;
 }
 .el_purchase_btn{
   width:33%;
@@ -250,8 +236,8 @@ ul,a,p{
 }
 .el_recharge_box tr th,.el_recharge_box tr td,.el_purchase_box tr th,.el_purchase_box tr td,.el_bonus_box tr th,.el_bonus_box tr td,.el_cash_box tr th,.el_cash_box tr td{
   border: 0.05rem solid #f0f0f0;
-  height: 2.5rem;
-  font-size: 0.7rem;
+  height: 3rem;
+  font-size: 0.6rem;
 }
 .hide {
   display: none;
