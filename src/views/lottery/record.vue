@@ -46,7 +46,7 @@
           <span>{{doc.startperiods?doc.startperiods.substr(2, 8):''}}</span>
         </li>
         <li class="el_state_top_2">
-          <span class="el_state_top_margin">终止</span>
+          <span class="el_state_top_margin">终止期</span>
           <span>{{doc.endPeriods?doc.endPeriods.substr(2, 8):''}}</span>
         </li>
         <li class="el_state_top_3">

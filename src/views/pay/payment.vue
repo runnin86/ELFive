@@ -422,7 +422,7 @@ ul,a,p{
 }
 .el_number_table{
   background-color: white;
-  margin-bottom: 6.35rem;
+  margin-bottom: 7.65rem;
   margin-top: 8.7rem;
 }
 .el_number_table tr{

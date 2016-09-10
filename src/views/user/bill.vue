@@ -100,11 +100,11 @@
     <strong class="el_purchase_btn"
       @click="this.showTabs = 1"
       :class="this.showTabs===1?'el_click_white':''">
-    未结算</strong>
+    进行中</strong>
     <strong class="el_bonus_btn"
       @click="this.showTabs = 2"
       :class="this.showTabs===2?'el_click_white':''">
-    已结算</strong>
+    已中奖</strong>
     <strong class="el_cash_btn"
       @click="this.showTabs = 3"
       :class="this.showTabs===3?'el_click_white':''">
@@ -230,13 +230,14 @@ ul,a,p{
 }
 .el_recharge_box,.el_purchase_box,.el_bonus_box,.el_cash_box{
   background-color: white;
+  margin-bottom: 2.5rem;
 }
 .el_recharge_box tr{
   width: 100%;
 }
 .el_recharge_box tr th,.el_recharge_box tr td,.el_purchase_box tr th,.el_purchase_box tr td,.el_bonus_box tr th,.el_bonus_box tr td,.el_cash_box tr th,.el_cash_box tr td{
   border: 0.05rem solid #f0f0f0;
-  height: 3rem;
+  height: 2.5rem;
   font-size: 0.6rem;
 }
 .hide {

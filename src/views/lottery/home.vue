@@ -65,7 +65,7 @@
     </table>
 
     <div class="el_recommend_state">
-      <span>进行至&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
+      <span>当前&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
       <span style="border-left: 0.05rem #f0f0f0 solid;">
         剩余时间&nbsp
         <font color="#c14242">

@@ -146,6 +146,10 @@
           <span>{{one.orderperiod}}</span>
         </li>
         <li class="el_state_top_2">
+          <span class="el_state_top_margin">使用金额</span>
+          <span>{{one.totalprice | currency '¥'}}</span>
+        </li>
+        <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
           <span v-if="one.orderstatus === 1">
             {{one.bonus | currency '¥'}}
@@ -153,10 +157,6 @@
           <span v-else>
             进行中
           </span>
-        </li>
-        <li class="el_state_top_3">
-          <span class="el_state_top_margin">利润率</span>
-          <span>-</span>
         </li>
       </ul>
     </div>
