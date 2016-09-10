@@ -66,7 +66,12 @@
 
     <div class="el_recommend_state">
       <span>进行至&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
-      <span style="border-left: 0.05rem #f0f0f0 solid;">剩余时间&nbsp<font color="#c14242">08:20</font></span>
+      <span style="border-left: 0.05rem #f0f0f0 solid;">
+        剩余时间&nbsp
+        <font color="#c14242" v-if="this.isShowTime().show">
+          <v-count-down :countTime="this.isShowTime().time"></v-count-down>
+        </font>
+      </span>
     </div>
 
     <!-- 跟单按钮 -->
@@ -140,6 +145,7 @@
 
 <script>
 import {api} from '../../util/service'
+import VCountDown from '../../components/Countdown'
 import VLayer from '../../components/PullToRefreshLayer'
 import {getCombinationCount, getAllPeriodsOneDay} from '../../util/util'
 import $ from 'zepto'
@@ -378,10 +384,26 @@ export default {
         console.error('无法连接服务器-获取时间')
       }).finally(()=>{
       })
+    },
+    /*
+     * 是否展示倒计时
+     */
+    isShowTime () {
+      let pubTime = new Date(this.currentStopTime)
+      let now = new Date()
+      if (now < pubTime) {
+        // 展示倒计时
+        return {show: true, time: pubTime}
+      }
+      else {
+        // 展示结果
+        return {show: false, time: pubTime}
+      }
     }
   },
   components: {
-    VLayer
+    VLayer,
+    VCountDown
   }
 }
 </script>
