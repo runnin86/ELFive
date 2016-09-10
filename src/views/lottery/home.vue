@@ -68,8 +68,8 @@
       <span>进行至&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
       <span style="border-left: 0.05rem #f0f0f0 solid;">
         剩余时间&nbsp
-        <font color="#c14242" v-if="this.isShowTime().show">
-          <v-count-down :countTime="this.isShowTime().time"></v-count-down>
+        <font color="#c14242">
+          {{countDown}}
         </font>
       </span>
     </div>
@@ -145,9 +145,8 @@
 
 <script>
 import {api} from '../../util/service'
-import VCountDown from '../../components/Countdown'
 import VLayer from '../../components/PullToRefreshLayer'
-import {getCombinationCount, getAllPeriodsOneDay} from '../../util/util'
+import {getCombinationCount, getAllPeriodsOneDay, dateFormat} from '../../util/util'
 import $ from 'zepto'
 
 var refreshMsg
@@ -172,8 +171,10 @@ export default {
   },
   data () {
     return {
+      countDown: null,
       currentPeriods: null,
       currentStopTime: null, // 当前期结束购买时间
+      serviceTime: null, // 服务器时间
       bets: 0,
       maxWinC: 0, // 多选情况下最多可能中奖的组合数
       numberList: new Set(), // 用户选中的号码
@@ -375,6 +376,7 @@ export default {
           }
           let t = currentPeriods / 100
           if (t - parseInt(t, 0) > 0) {
+            this.$set('serviceTime', data)
             this.$set('currentStopTime', currentStopTime)
             this.$set('currentPeriods', currentPeriods)
             window.localStorage.setItem('currentPeriods', currentPeriods)
@@ -383,27 +385,47 @@ export default {
       }).catch(()=>{
         console.error('无法连接服务器-获取时间')
       }).finally(()=>{
+        this.clock()
       })
     },
-    /*
-     * 是否展示倒计时
-     */
-    isShowTime () {
-      let pubTime = new Date(this.currentStopTime)
-      let now = new Date()
-      if (now < pubTime) {
-        // 展示倒计时
-        return {show: true, time: pubTime}
+    clock () {
+      var overa = new Date(this.currentStopTime)
+      var local = new Date(this.serviceTime)
+      var intDiff = overa.getTime() - local.getTime()
+      if (intDiff <= 0) {
+        return false
       }
-      else {
-        // 展示结果
-        return {show: false, time: pubTime}
+      var day = Math.floor(intDiff / (1000 * 60 * 60 * 24))
+      var hour = Math.floor(intDiff / (1000 * 60 * 60)) - (day * 24)
+      var minute = Math.floor(intDiff / (1000 * 60)) - (day * 24 * 60) - (hour * 60)
+      var second = Math.floor(intDiff / 1000) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60)
+      if (day <= 9) day = '0' + day
+      if (hour <= 9) hour = '0' + hour
+      if (minute <= 9) minute = '0' + minute
+      if (second <= 9) second = '0' + second
+      try {
+        this.$set('countDown', minute + ':' + second)
+        setTimeout(() => {
+          local.setSeconds(local.getSeconds() + 1)
+          this.serviceTime = dateFormat(local, 'yyyy-MM-dd HH:mm:ss')
+          let run = this.clock()
+          if (run !== undefined) {
+            this.getCurrentInfoByServiceTime()
+            // this.countDown = null
+            // setTimeout(() => {
+            //   this.getCurrentInfoByServiceTime()
+            // }, 10000)
+          }
+        }, 1000)
+      }
+      catch (e) {
+      }
+      finally {
       }
     }
   },
   components: {
-    VLayer,
-    VCountDown
+    VLayer
   }
 }
 </script>
