@@ -231,7 +231,6 @@ export default {
       let postBody = {}
       let postUrl = ''
       let openid = window.localStorage.getItem('elOpenid')
-      $.toast(openid)
       if (this.from === 'gd') {
         /*
          * 推荐号码跟单
@@ -266,7 +265,7 @@ export default {
           }
         }
         else if (parseInt(this.followPeriod, 0) > 1) {
-          console.log('自选多期跟单')
+          console.log('自选多期追号')
           postUrl = api.payOrderByZXMore
           postBody = {
             startMultiple: this.startMultiple, // 初始倍数
@@ -321,7 +320,6 @@ export default {
               this.$root.back()
             }
           }
-          $.toast(msg)
         }).catch((e)=>{
           console.error(this.from + '付款提交失败:' + e)
         })

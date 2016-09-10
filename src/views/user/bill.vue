@@ -40,7 +40,8 @@
       <tr align="center"
         v-for="p in purchaseList | orderBy 'orderPeriod' -1" track-by="$index">
         <td>{{p.orderPeriod?p.orderPeriod.substr(2, 8):''}}</td>
-        <td>{{p.gameType | getGameTypeName}}</td>
+        <td v-if="p.source === 1">跟单</td>
+        <td v-else>{{p.gameType | getGameTypeName}}</td>
         <td>
           <span v-if="p.nums" v-for="n in p.nums.split(',')">
             {{p.isCanShow===1?n:'*'}}&nbsp;
@@ -62,7 +63,8 @@
       <tr align="center"
         v-for="b in bonusList | orderBy 'orderPeriod' -1" track-by="$index">
         <td>{{b.orderPeriod?b.orderPeriod.substr(2, 8):''}}</td>
-        <td>{{b.gameType | getGameTypeName}}</td>
+        <td v-if="b.source === 1">跟单</td>
+        <td v-else>{{b.gameType | getGameTypeName}}</td>
         <td>
           <span v-if="b.nums" v-for="n in b.nums.split(',')">
             {{b.isCanShow===1?n:'*'}}&nbsp;
