@@ -67,7 +67,7 @@
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">利润率</span>
-          <span>-%</span>
+          <span>{{g.ratePercent}}%</span>
         </li>
       </ul>
     </div>
@@ -81,7 +81,9 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number"><font color="#42c1b1">NO.01&nbsp&nbsp&nbsp/</font></td>
+          <td class="el_record_number">
+            <font color="#42c1b1">NO.{{$index+1}}&nbsp&nbsp&nbsp/</font>
+          </td>
           <th v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</th>
         </tr>
       </table>
@@ -232,7 +234,7 @@ export default {
       })
     },
     /*
-     * 自选订单查询(跟单)
+     * 自选订单查询(追号)
      */
     getUserOrderZXMore () {
       let token = window.localStorage.getItem('elToken')
