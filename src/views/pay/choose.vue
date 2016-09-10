@@ -50,7 +50,7 @@
         <li style="border-right:0.05rem solid #f0f0f0">
           <span style="margin-top:0.3rem;">进行期数</span>
           <span>
-            <font color="#42c1b1">-</font>/-
+            <font color="#42c1b1">{{doc.alreadyPer}}</font>/{{doc.totPeriods}}
           </span>
         </li>
         <li>
