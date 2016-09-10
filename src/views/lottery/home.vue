@@ -273,7 +273,8 @@ export default {
             name: 'payment',
             query: {
               price: this.bets * 2,
-              maxWinC: this.maxWinC
+              maxWinC: this.maxWinC,
+              s: 1
             },
             params: {
               number: nums,

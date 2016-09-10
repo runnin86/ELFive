@@ -151,7 +151,7 @@ export default {
       currentPeriods: currentPeriods ? currentPeriods : 78, // 获取不到默认78
       price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)
       maxWinC: this.$route.query.maxWinC ? this.$route.query.maxWinC : 1, // 任六选六只有一种中奖可能性
-      followPeriod: 7,
+      followPeriod: this.$route.query.s ? this.$route.query.s : 7, // 默认追期由参数传递
       startMultiple: 1,
       expectProfit: 25,
       showList: [],
@@ -167,6 +167,11 @@ export default {
       this.showList = []
       let startMul = this.startMultiple
       let maxRate = 0
+      if (this.rid && this.$route.query.s - this.followPeriod < 0) {
+        $.toast('该方案最多只能生成' + this.$route.query.s + '期')
+        this.followPeriod = this.$route.query.s
+        return
+      }
       // 默认生成追号7期
       for (let i = 0; i < this.followPeriod; i++) {
         let obj = {}

@@ -190,7 +190,8 @@
           this.$route.router.go({
             name: 'payment',
             query: {
-              rid: doc.rid
+              rid: doc.rid,
+              s: doc.totPeriods - doc.alreadyPer
             },
             params: {
               number: nums,
