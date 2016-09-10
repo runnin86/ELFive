@@ -70,6 +70,17 @@
           <span>{{g.ratePercent}}%</span>
         </li>
       </ul>
+      <div class="el_state_box">
+        <span v-if="g.docStatus===1" style="color:#42c1b1">
+          进行中
+        </span>
+        <span v-if="g.docStatus===0" style="color:#999999">
+          订单已取消
+        </span>
+        <span v-if="g.docStatus===2">
+          已结束
+        </span>
+      </div>
     </div>
 
     <!-- 自选追号 -->
@@ -119,6 +130,17 @@
           <span>{{more.ratePercent}}%</span>
         </li>
       </ul>
+      <div class="el_state_box">
+        <span v-if="g.docStatus===1" style="color:#42c1b1">
+          进行中
+        </span>
+        <span v-if="g.docStatus===0" style="color:#999999">
+          订单已取消
+        </span>
+        <span v-if="g.docStatus===2">
+          已结束
+        </span>
+      </div>
       <div class="el_stop_btn">
         <span v-if="more.docStatus==='1'" @click="cancelZX(more.did)">
           终止追单
@@ -161,6 +183,17 @@
           </span>
         </li>
       </ul>
+      <div class="el_state_box">
+        <span v-if="g.docStatus===1" style="color:#42c1b1">
+          进行中
+        </span>
+        <span v-if="g.docStatus===0" style="color:#999999">
+          订单已取消
+        </span>
+        <span v-if="g.docStatus===2">
+          已结束
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -549,5 +582,15 @@ ul,a,p{
   line-height: 1.6rem;
   text-align: center;
   font-size: 0.6rem;
+}
+.el_state_box{
+  width: 100%;
+  background-color: white;
+}
+.el_state_box span{
+  line-height: 2.5rem;
+  text-align: center;
+  font-size: 0.7rem;
+  display: block;
 }
 </style>
