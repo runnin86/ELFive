@@ -55,7 +55,7 @@
         </li>
         <li>
           <span style="margin-top:0.3rem;">最低利润率</span>
-          <span>-%</span>
+          <span>{{doc.minRatePer}}%</span>
         </li>
       </ul>
       <div class="el_stop_btn">
