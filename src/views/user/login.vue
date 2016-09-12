@@ -34,9 +34,15 @@
         <div class="el_phone_input_box">
           <input type="tel" v-model="userPhone" class="el_phone" placeholder="输入手机号">
         </div>
+        <a class="clear" style="margin-left: 77%;"
+          :style="{display: userPhone?'block':'none'}"
+          @click="this.userPhone=null"></a>
         <div class="el_pw_input_box">
           <input type="password" v-model="password" class="el_password" placeholder="输入密码">
         </div>
+        <a class="clear" style="margin-left: 77%;"
+          :style="{display: password?'block':'none'}"
+          @click="this.password=null"></a>
         <div class="el_login_go_box">
           <a @click="login()" class="el_login_go"
             :style="{backgroundColor: (loginSubmit ? '#1a6be4' : '#c8c9cb')}">
@@ -51,6 +57,9 @@
         <div class="el_phone_input_box">
           <input type="tel" v-model="forgetPhone" class="el_phone" placeholder="输入手机号">
         </div>
+        <a class="clear" style="margin-left: 77%;"
+          :style="{display: forgetPhone?'block':'none'}"
+          @click="this.forgetPhone=null"></a>
         <div class="el_code_input_box">
           <input type="tel" v-model="vCode" class="el_code" placeholder="验证码">
           <a class="el_get_code" @click="getVerificationCode()"
@@ -58,9 +67,15 @@
             获取验证码
           </a>
         </div>
+        <a class="clear" style="margin-left: 50%;"
+          :style="{display: vCode?'block':'none'}"
+          @click="this.vCode=null"></a>
         <div class="el_pw_input_box">
           <input type="password" v-model="newPwd" class="el_password" placeholder="输入新密码">
         </div>
+        <a class="clear" style="margin-left: 77%;"
+          :style="{display: newPwd?'block':'none'}"
+          @click="this.newPwd=null"></a>
         <div class="el_login_go_box">
           <a @click="forgetPwd()" class="el_login_go"
             :style="{backgroundColor: (forgetSubmit ? '#1a6be4' : '#c8c9cb')}">
@@ -276,6 +291,7 @@ ul,a,p{
   background-color: white;
   height: 3.45rem;
   border-top: 0.05rem solid #f0f0f0;
+  position: relative;
 }
 .el_phone,.el_password{
   padding-left: 0.5rem;
@@ -333,5 +349,17 @@ ul,a,p{
 }
 .hide{
   display: none;
+}
+.clear{
+  background:no-repeat center center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAqCAMAAADyHTlpAAAAflBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCtoPsAAAAKnRSTlMAAQIDBAUHCQoLDA0ODxASGhscHR4fICEiIyQlJicoKSorLC0uLzAxMjOWCMFEAAABUklEQVR4Xo3U4W6CMBSG4a8dcyo4FUVAHCpa4bv/G1xiOJm1B9j7+0lz0rQHfibZlFeSzbnYriyGm2cPvtTmMfS+KgbVSwWatKPWIRgjOnGgy8yXXzcO5mJPPjhS9w0JUcPR2oVI88OJblFPUwH3YEyxeX/xckuFLXx5tLnY5EmPIg1M4UkDI/b8PLSXjQHEigSsDLUCkLEvhdg/aUr2lYB1DKwi2UVYkoFVJLnGhpqtAsk9SipWkaxxpWIVSQdHxSqSRMfAipyklZF7eAtOkbrFVZHquQ6lL+1zzlSxNTaKJBW7x1KTml3DulBqtouALJCqLV+e9l2kZ72njUpWjhEp9uXUi/8ND1ak2F7KocBu8HM3Igt5RPW/Vwai+/Qikubt9HqTFmNLM4HX5+C8zQxv2V2nyvwDYbMihNUceovMu4pHHmOkeFudHdmeT2lifPALZUK7MQNh4w4AAAAASUVORK5CYII=);
+  background-size: 15px 15px;
+  width:40px;
+  height:40px;
+  position: absolute;
+  margin-top: -2.74rem;
+  margin-right: 0.2rem;
+  margin-bottom: 0;
+  /*margin: -2.76rem 0.2rem 0 86%;*/
+  /*display: none;*/
 }
 </style>
