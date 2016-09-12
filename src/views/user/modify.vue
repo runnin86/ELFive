@@ -28,7 +28,7 @@
       </div>
       <div class="el_true_go_box">
         <a @click="changePwd()" class="el_login_go"
-          :style="{backgroundColor: (submitBtn ? '#1a6be4' : '#c8c9cb')}">确定</a>
+          :style="{backgroundColor: (submitBtn ? '#42c1b1' : '#c8c9cb')}">确定</a>
       </div>
     </div>
   </div>

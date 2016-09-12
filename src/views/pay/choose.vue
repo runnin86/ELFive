@@ -19,9 +19,7 @@
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
           <td class="el_record_number">
-            <font color="#42c1b1">
-              NO.{{$index+1}}&nbsp&nbsp&nbsp/
-            </font>
+            <span>{{$index+1}}</span>
           </td>
           <th>
             {{doc.nums | numberFilter doc.isToll doc.numPayStatus 0}}
@@ -451,7 +449,6 @@ ul,a,p{
 .el_confirm_info{
   width:100%;
   height:5rem;
-  border-bottom:solid 0.05rem #f0f0f0;
   overflow: hidden;
 }
 .el_confirm_info_up{
@@ -501,8 +498,17 @@ ul,a,p{
     border-bottom: 0.05rem solid #f0f0f0;
 }
 .el_record_number{
-  width: 30%;
+  width: 12%;
   text-align: center;
+  padding-right: 0.3rem;
+}
+.el_record_number span{
+  height: 1rem;
+  background-color: #42c1b1;
+  color: white;
+  display: block;
+  line-height: 1rem;
+  font-size: 0.7rem;
 }
 .el_state_top_box{
   width: 100%;
@@ -568,4 +574,5 @@ ul,a,p{
   width: 100%;
   text-align: center;
 }
+
 </style>

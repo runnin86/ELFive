@@ -58,7 +58,7 @@
         <td>
           <p>状态</p>
           <p>
-            {{recommendStatus === '1' ? '进行中' : '-'}}
+            {{recommendStatus === '1' ? '进行中' : '已结束'}}
           </p>
         </td>
       </tr>
@@ -95,7 +95,7 @@
     <!-- 最新开奖号码 -->
     <div class="el_news" v-link="{ path: '/history', replace: true}">
       <img src="/img/11/horn.png" class="el_horn">
-      <span v-if="lastWinObj">
+      <span v-if="lastWinObj" style="font-size: 0.6rem">
         第&nbsp{{lastWinObj.periods}}&nbsp期中奖号码
         &nbsp{{lastWinObj.nums.split(',').join('&nbsp&nbsp')}}
       </span>
@@ -460,8 +460,8 @@ body,ul{
   right:0;
   top:0;
   padding:0.7rem 0.7rem;
-  width:2.7rem;
-  height:2.7rem;
+  width:2.5rem;
+  height:2.5rem;
 }
 .el_recommend{
   width:100%;

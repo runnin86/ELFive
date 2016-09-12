@@ -45,7 +45,7 @@
           @click="this.password=null"></a>
         <div class="el_login_go_box">
           <a @click="login()" class="el_login_go"
-            :style="{backgroundColor: (loginSubmit ? '#1a6be4' : '#c8c9cb')}">
+            :style="{backgroundColor: (loginSubmit ? '#42c1b1' : '#c8c9cb')}">
             登录
           </a>
         </div>
@@ -63,7 +63,7 @@
         <div class="el_code_input_box">
           <input type="tel" v-model="vCode" class="el_code" placeholder="验证码">
           <a class="el_get_code" @click="getVerificationCode()"
-            :style="{backgroundColor: (forgetPhone ? '#1a6be4' : '#c8c9cb')}">
+            :style="{backgroundColor: (forgetPhone ? '#42c1b1' : 'white')}">
             获取验证码
           </a>
         </div>
@@ -78,7 +78,7 @@
           @click="this.newPwd=null"></a>
         <div class="el_login_go_box">
           <a @click="forgetPwd()" class="el_login_go"
-            :style="{backgroundColor: (forgetSubmit ? '#1a6be4' : '#c8c9cb')}">
+            :style="{backgroundColor: (forgetSubmit ? '#42c1b1' : '#c8c9cb')}">
             确定
           </a>
         </div>
@@ -234,7 +234,7 @@ ul,a,p{
 .el_head{
   width: 100%;
   height: 2.5rem;
-  background-color: #1a6be4;
+  background-color: #42c1b1;
   overflow: hidden;
 }
 .el_return_btn{
@@ -284,7 +284,7 @@ ul,a,p{
   border-right: 0.05rem #f0f0f0 solid;
 }
 .el_click_blue{
-  color: #1a6be4;
+  color: #42c1b1;
 }
 .el_phone_input_box,.el_pw_input_box,.el_login_go_box,.el_code_input_box{
   width: 100%;

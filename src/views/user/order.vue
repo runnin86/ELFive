@@ -33,14 +33,14 @@
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
           <td class="el_record_number">
-            <font color="#42c1b1">NO.{{$index+1}}&nbsp&nbsp&nbsp/</font>
+            <span>{{$index+1}}</span>
           </td>
           <th v-for="n in g.nums | split ','">
             {{g.payStatus === 1 ? n : '*'}}
           </th>
         </tr>
       </table>
-      <ul class="el_state_top_box">
+      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
           <span>{{g.startPeriods}}</span>
@@ -93,12 +93,12 @@
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
           <td class="el_record_number">
-            <font color="#42c1b1">NO.{{$index+1}}&nbsp&nbsp&nbsp/</font>
+            <span>{{$index+1}}</span>
           </td>
           <th v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</th>
         </tr>
       </table>
-      <ul class="el_state_top_box">
+      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
           <span>{{more.startPeriods}}</span>
@@ -131,13 +131,13 @@
         </li>
       </ul>
       <div class="el_state_box">
-        <span v-if="g.docStatus===1" style="color:#42c1b1">
+        <span v-if="more.docStatus==1" style="color:#42c1b1">
           进行中
         </span>
-        <span v-if="g.docStatus===0" style="color:#999999">
+        <span v-if="more.docStatus==0" style="color:#999999">
           订单已取消
         </span>
-        <span v-if="g.docStatus===2">
+        <span v-if="more.docStatus==2">
           已结束
         </span>
       </div>
@@ -159,12 +159,12 @@
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
           <td class="el_record_number">
-            <font color="#42c1b1">NO.{{$index+1}}&nbsp&nbsp&nbsp/</font>
+            <span>{{$index+1}}</span>
           </td>
           <th v-for="n in one.nums | split ','">{{n}}</th>
         </tr>
       </table>
-      <ul class="el_state_top_box">
+      <ul class="el_state_top_box"  style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">期数</span>
           <span>{{one.orderperiod}}</span>
@@ -184,13 +184,10 @@
         </li>
       </ul>
       <div class="el_state_box">
-        <span v-if="g.docStatus===1" style="color:#42c1b1">
+        <span v-if="one.orderstatus==0" style="color:#42c1b1">
           进行中
         </span>
-        <span v-if="g.docStatus===0" style="color:#999999">
-          订单已取消
-        </span>
-        <span v-if="g.docStatus===2">
+        <span v-if="one.orderstatus==1">
           已结束
         </span>
       </div>
@@ -535,12 +532,18 @@ ul,a,p{
 .el_record_box tr td{
   line-height: 2.5rem;
 }
-.el_record_number_box{
-    border-bottom: 0.05rem solid #f0f0f0;
-}
 .el_record_number{
-  width: 30%;
+  width: 12%;
   text-align: center;
+  padding-right: 0.3rem;
+}
+.el_record_number span{
+  height: 1rem;
+  background-color: #42c1b1;
+  color: white;
+  display: block;
+  line-height: 1rem;
+  font-size: 0.7rem;
 }
 .el_state_top_box{
   width: 100%;

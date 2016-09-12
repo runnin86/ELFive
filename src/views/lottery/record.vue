@@ -16,9 +16,7 @@
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
           <td class="el_record_number">
-            <font color="#42c1b1">
-              NO.{{$index+1}}&nbsp&nbsp&nbsp/
-            </font>
+            <span>{{$index+1}}</span>
           </td>
           <th>
             {{doc.nums | split ','| getArray 0}}
@@ -40,7 +38,7 @@
           </th>
         </tr>
       </table>
-      <ul class="el_state_top_box">
+      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
           <span>{{doc.startPeriods?doc.startPeriods.substr(2, 8):''}}</span>
@@ -50,13 +48,8 @@
           <span>{{doc.endPeriods?doc.endPeriods.substr(2, 8):''}}</span>
         </li>
         <li class="el_state_top_3">
-          <span class="el_state_top_margin">进行</span>
-          <span>
-            <font color="#42c1b1">
-              {{doc.alreadyPer}}
-            </font>
-            /{{doc.totPeriods}}期
-          </span>
+          <span class="el_state_top_margin">进行期数</span>
+          <span>{{doc.alreadyPer}}</span>
         </li>
       </ul>
       <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
@@ -188,12 +181,18 @@ ul,a,p{
 .el_record_box tr td{
   line-height: 2.5rem;
 }
-.el_record_number_box{
-    border-bottom: 0.05rem solid #f0f0f0;
-}
 .el_record_number{
-  width: 30%;
+  width: 12%;
+  padding-right: 0.3rem;
   text-align: center;
+}
+.el_record_number span{
+  height: 1rem;
+  background-color: #42c1b1;
+  color: white;
+  display: block;
+  line-height: 1rem;
+  font-size: 0.7rem;
 }
 .el_state_top_box{
   width: 100%;
@@ -206,7 +205,7 @@ ul,a,p{
 .el_state_top_box li span{
   font-size: 0.6rem;
   display: block;
-  margin-left: 0.6rem;
+  text-align: center;
 }
 .el_state_top_1{
   width: 33%;
