@@ -85,7 +85,7 @@
 
     <!-- 自选追号 -->
     <div class="el_record_box"
-      v-for="more in zxListMore | orderBy 'orderperiod' -1" track-by="$index"
+      v-for="more in zxListMore" track-by="$index"
       :class="this.showTabs===2?'el_bill_box':'hide'">
       <div class="el_title_rule">
         <span>{{more.gameType | getGameTypeName}}</span>
@@ -151,7 +151,7 @@
 
     <!-- 自选单注 -->
     <div class="el_record_box"
-      v-for="one in zxListOne | orderBy 'orderperiod' -1" track-by="$index"
+      v-for="one in zxListOne" track-by="$index"
       :class="this.showTabs===3?'el_bill_box':'hide'">
       <div class="el_title_rule">
         <span>{{one.gametype | getGameTypeName}}</span>
