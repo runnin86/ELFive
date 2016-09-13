@@ -13,7 +13,8 @@
     </div>
 
     <!-- 历史号码 -->
-    <table class="el_history_box"  width="100%" border="0" cellpadding="0"  cellspacing="0">
+    <div class="el_history_box">
+    <table class="el_history_table"  width="100%" border="0" cellpadding="0"  cellspacing="0">
       <tr>
         <th width="30%">期号</th>
         <th colspan="5">号码</th>
@@ -152,9 +153,12 @@ ul,a,p{
   float: left;
 }
 .el_history_box{
+  height: 100%;
+}
+.el_history_table{
   background-color: white;
 }
-.el_history_box tr th,.el_history_box tr td{
+.el_history_table tr th,.el_history_table tr td{
   border: 0.05rem solid #f0f0f0;
   height: 2.5rem;
   font-size: 0.7rem;

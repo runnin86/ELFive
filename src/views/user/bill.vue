@@ -1,4 +1,3 @@
-
 <template>
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
@@ -12,7 +11,26 @@
       <strong>账单</strong>
       <div class="el_placeholder">&nbsp</div>
     </div>
-
+    <div class="el_bill_box">
+    <div class="el_choice_box">
+      <!-- <strong class="el_recharge_btn"
+        @click="this.showTabs = 1"
+        :class="this.showTabs===1?'el_click_white':''">
+        充值
+      </strong> -->
+      <strong class="el_purchase_btn"
+        @click="this.showTabs = 1"
+        :class="this.showTabs===1?'el_click_white':''">
+      进行中</strong>
+      <strong class="el_bonus_btn"
+        @click="this.showTabs = 2"
+        :class="this.showTabs===2?'el_click_white':''">
+      已中奖</strong>
+      <strong class="el_cash_btn"
+        @click="this.showTabs = 3"
+        :class="this.showTabs===3?'el_click_white':''">
+      提现</strong>
+    </div>
     <!-- 充值 -->
     <!-- <table class="el_recharge_box" width="100%" border="0" cellpadding="0" cellspacing="0"
       :class="this.showTabs===1?'el_recharge_box':'hide'">
@@ -91,26 +109,6 @@
         </td>
       </tr>
     </table>
-
-  </div>
-  <div class="el_choice_box">
-    <!-- <strong class="el_recharge_btn"
-      @click="this.showTabs = 1"
-      :class="this.showTabs===1?'el_click_white':''">
-      充值
-    </strong> -->
-    <strong class="el_purchase_btn"
-      @click="this.showTabs = 1"
-      :class="this.showTabs===1?'el_click_white':''">
-    进行中</strong>
-    <strong class="el_bonus_btn"
-      @click="this.showTabs = 2"
-      :class="this.showTabs===2?'el_click_white':''">
-    已中奖</strong>
-    <strong class="el_cash_btn"
-      @click="this.showTabs = 3"
-      :class="this.showTabs===3?'el_click_white':''">
-    提现</strong>
   </div>
 </template>
 
@@ -197,8 +195,6 @@ ul,a,p{
   width: 100%;
   height:2.5rem;
   background-color: #282828;
-  position: absolute;
-  bottom: 0;
 }
 .el_purchase_btn{
   width:33%;
@@ -232,10 +228,10 @@ ul,a,p{
 }
 .el_recharge_box,.el_purchase_box,.el_bonus_box,.el_cash_box{
   background-color: white;
-  margin-bottom: 2.5rem;
 }
 .el_recharge_box tr{
   width: 100%;
+  height: 2.5rem;
 }
 .el_recharge_box tr th,.el_recharge_box tr td,.el_purchase_box tr th,.el_purchase_box tr td,.el_bonus_box tr th,.el_bonus_box tr td,.el_cash_box tr th,.el_cash_box tr td{
   border: 0.05rem solid #f0f0f0;
@@ -244,5 +240,8 @@ ul,a,p{
 }
 .hide {
   display: none;
+}
+.el_bill_box{
+  height: 100%;
 }
 </style>
