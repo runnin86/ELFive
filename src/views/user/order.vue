@@ -2,7 +2,7 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="bounce">
+  <div class="content" transition="bounce" v-infinite-scroll="loadMore">
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <a class="el_return_btn" v-link="{path: '/user', replace: true}">
@@ -13,15 +13,15 @@
     </div>
     <div class="el_choice_box">
       <strong class="el_documentary_btn "
-        @click="this.showTabs = 1"
+        @click="resizeQuery(1)"
         :class="this.showTabs===1?'el_click_white':''">
       跟单</strong>
       <strong class="el_optional_btn"
-        @click="this.showTabs = 2"
+        @click="resizeQuery(2)"
         :class="this.showTabs===2?'el_click_white':''">
       自选</strong>
       <strong class="el_optional_single_btn"
-        @click="this.showTabs = 3"
+        @click="resizeQuery(3)"
         :class="this.showTabs===3?'el_click_white':''">
       自选单注</strong>
     </div>
@@ -197,8 +197,11 @@
 
 <script>
 import $ from 'zepto'
+import {loader} from '../../util/util'
 import {api} from '../../util/service'
 
+let num = 1
+let size = 10
 export default {
   ready () {
     $.init()
@@ -210,7 +213,10 @@ export default {
       showTabs: 1,
       gdList: [],
       zxListOne: [],
-      zxListMore: []
+      zxListMore: [],
+      pagenum: num,
+      pagesize: size,
+      loading: false
     }
   },
   methods: {
@@ -218,6 +224,10 @@ export default {
      * 跟单订单查询
      */
     getUserOrderGD () {
+      // 无分页默认不加载更多
+      this.loading = false
+      loader.hide()
+      this.pagenum = -1
       let token = window.localStorage.getItem('elToken')
       // 获取跟单选购列表
       this.$http.get(api.userOrderGD, {}, {
@@ -244,8 +254,8 @@ export default {
       let token = window.localStorage.getItem('elToken')
       // 获取跟单选购列表
       this.$http.get(api.userORderZXOne, {
-        pagenum: 1,
-        pagesize: 10
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
       }, {
         headers: {
           'x-token': token
@@ -254,13 +264,24 @@ export default {
       .then(({data: {code, data, msg}})=>{
         // console.log(data)
         if (code === 1) {
-          this.zxListOne = data
+          if (data) {
+            if (data.length === 0) {
+              this.pagenum = -1
+              return
+            }
+            for (let m of data) {
+              this.zxListOne.push(m)
+            }
+          }
         }
         else {
           $.toast(msg)
         }
       }).catch((e)=>{
         console.error('获取我的订单(自选单注)失败:' + e)
+      }).finally(()=>{
+        this.loading = false
+        loader.hide()
       })
     },
     /*
@@ -270,8 +291,8 @@ export default {
       let token = window.localStorage.getItem('elToken')
       // 获取跟单选购列表
       this.$http.get(api.userORderZXMore, {
-        pagenum: 1,
-        pagesize: 10
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
       }, {
         headers: {
           'x-token': token
@@ -280,13 +301,24 @@ export default {
       .then(({data: {code, data, msg}})=>{
         // console.log(data)
         if (code === 1) {
-          this.zxListMore = data
+          if (data) {
+            if (data.length === 0) {
+              this.pagenum = -1
+              return
+            }
+            for (let m of data) {
+              this.zxListMore.push(m)
+            }
+          }
         }
         else {
           $.toast(msg)
         }
       }).catch((e)=>{
         console.error('获取我的订单(自选跟单)失败:' + e)
+      }).finally(()=>{
+        this.loading = false
+        loader.hide()
       })
     },
     /*
@@ -313,6 +345,56 @@ export default {
       }, ()=>{
         // 取消事件
       })
+    },
+    /*
+     * 切换时重新设置查询
+     */
+    resizeQuery (t) {
+      this.$set('showTabs', t)
+      // 分页
+      this.$set('pagenum', num)
+      this.$set('pagesize', size)
+      this.$set('loading', false)
+      // 数据
+      this.$set('gdList', [])
+      this.$set('zxListOne', [])
+      this.$set('zxListMore', [])
+    },
+    /*
+     * 读取更多数据
+     */
+    loadMore () {
+      // 1.加载中 2.pagenum为负数 3.当前记录的条数<当前页数*每页条数
+      if (this.loading || this.pagenum === -1) {
+        // 满足上述2条件的任一条,均不加载更多
+        return
+      }
+      this.loading = true
+      let scroller = $('.native-scroll')
+      loader.show()
+      setTimeout(() => {
+        // 查询更多数据
+        this.pagenum = this.pagenum + 1
+        // 需要判断执行哪个查询
+        switch (this.showTabs)
+        {
+          case 1:
+            this.getUserOrderGD()
+            break
+          case 2:
+            this.getUserOrderZXMore()
+            break
+          case 3:
+            this.getUserOrderZXOne()
+            break
+          default:
+            this.loading = false
+            loader.hide()
+            break
+        }
+        let scrollTop = scroller[0].scrollHeight - scroller.height()
+        scroller.scrollTop(scrollTop)
+      }, 500)
     }
   },
   watch: {
