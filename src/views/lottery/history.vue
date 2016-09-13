@@ -2,7 +2,7 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
 
-  <div class="content" transition="bounce">
+  <div class="content" transition="bounce" v-infinite-scroll="loadMore">
     <!-- 顶部操作栏 -->
     <div class="el_head">
       <a class="el_return_btn" v-link="{path: '/home', replace: true}">
@@ -31,48 +31,84 @@
 </template>
 
 <script>
-  import {api} from '../../util/service'
-  import $ from 'zepto'
+import {loader} from '../../util/util'
+import {api} from '../../util/service'
+import $ from 'zepto'
 
-  export default {
-    ready () {
-      $.init()
-      this.getHistoryList()
+export default {
+  ready () {
+    $.init()
+    this.getHistoryList()
+  },
+  data () {
+    return {
+      list: [],
+      pagenum: 1,
+      pagesize: 20,
+      loading: false
+    }
+  },
+  methods: {
+    /*
+     * 获取开奖号码的历史记录(分页未完成)
+     */
+    getHistoryList () {
+      let token = window.localStorage.getItem('elToken')
+      // 获取跟单选购列表
+      this.$http.post(api.winNumHistory, {
+        'pagenum': this.pagenum,
+        'pagesize': this.pagesize
+      }, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        // console.log(data)
+        if (code === 1) {
+          if (data) {
+            if (data.length === 0) {
+              this.pagenum = -1
+              return
+            }
+            for (let m of data) {
+              this.list.push(m)
+            }
+          }
+        }
+        else {
+          $.toast(msg)
+        }
+      }).catch((e)=>{
+        console.error('获取历史开奖号码失败:' + e)
+      }).finally(()=>{
+        this.loading = false
+        loader.hide()
+      })
     },
-    data () {
-      return {
-        list: []
+    /*
+     * 读取更多数据
+     */
+    loadMore () {
+      // 1.加载中 2.pagenum为负数 3.当前记录的条数<当前页数*每页条数
+      if (this.loading || this.pagenum === -1) {
+        // 满足上述2条件的任一条,均不加载更多
+        return
       }
-    },
-    methods: {
-      /*
-       * 获取开奖号码的历史记录(分页未完成)
-       */
-      getHistoryList () {
-        let token = window.localStorage.getItem('elToken')
-        // 获取跟单选购列表
-        this.$http.post(api.winNumHistory, {
-          'pagenum': 1,
-          'pagesize': 30
-        }, {
-          headers: {
-            'x-token': token
-          }
-        })
-        .then(({data: {code, data, msg}})=>{
-          // console.log(data)
-          if (code === 1) {
-            this.list = data
-          }
-          else {
-            $.toast(msg)
-          }
-        }).catch((e)=>{
-          console.error('获取历史开奖号码失败:' + e)
-        })
-      }
+      this.loading = true
+      let scroller = $('.native-scroll')
+      loader.show()
+      setTimeout(() => {
+        // 查询更多数据
+        this.pagenum = this.pagenum + 1
+        // 查询数据
+        this.getHistoryList()
+        let scrollTop = scroller[0].scrollHeight - scroller.height()
+        scroller.scrollTop(scrollTop)
+      }, 500)
     }
   }
+}
 </script>
 
 <style scoped>
