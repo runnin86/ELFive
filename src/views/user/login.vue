@@ -63,8 +63,8 @@
         <div class="el_code_input_box">
           <input type="tel" v-model="vCode" class="el_code" placeholder="验证码">
           <a class="el_get_code" @click="getVerificationCode()"
-            :style="{backgroundColor: (forgetPhone ? '#42c1b1' : 'white')}">
-            获取验证码
+            :style="{backgroundColor: (forgetPhone&&countDown===0 ? '#42c1b1' : 'white')}">
+            获取验证码{{countDown>0?'('+countDown+')':''}}
           </a>
         </div>
         <a class="clear" style="margin-left: 50%;"
@@ -103,6 +103,7 @@ export default {
       forgetSubmit: false,
       forgetPhone: null,
       vCode: null,
+      countDown: 0,
       newPwd: null,
       code: this.$route.query.code,
       state: this.$route.query.state
@@ -155,20 +156,34 @@ export default {
      */
     getVerificationCode () {
       if (this.forgetPhone) {
-        // 获取验证码
-        this.$http.post(api.getCheckCode, {
-          'uphone': this.forgetPhone
-        })
-        .then(({data: {code, msg}})=>{
-          if (code === 1) {
-            $.toast('验证码已发送至' + this.forgetPhone + ',请注意查收!')
-          }
-          else {
-            $.toast(msg)
-          }
-        }).catch((e)=>{
-          console.error('获取验证码失败:' + e)
-        })
+        if (this.countDown === 0) {
+          // 获取验证码
+          this.$http.post(api.getCheckCode, {
+            'uphone': this.forgetPhone
+          })
+          .then(({data: {code, msg}})=>{
+            if (code === 1) {
+              $.toast('验证码已发送至' + this.forgetPhone + ',请注意查收!')
+              this.countDown = 60
+              setInterval(() => {
+                if (this.countDown > 0) {
+                  this.countDown--
+                }
+                else {
+                  this.countDown = 0
+                }
+              }, 1000)
+            }
+            else {
+              $.toast(msg)
+            }
+          }).catch((e)=>{
+            console.error('获取验证码失败:' + e)
+          })
+        }
+        else {
+          $.toast('请' + this.countDown + '秒后再次获取验证码!')
+        }
       }
       else {
         $.toast('请输入手机号码')
