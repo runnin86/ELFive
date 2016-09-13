@@ -91,6 +91,7 @@
 import $ from 'zepto'
 import {api} from '../../util/service'
 
+var vCodeCountDown
 export default {
   ready () {
   },
@@ -164,8 +165,10 @@ export default {
           .then(({data: {code, msg}})=>{
             if (code === 1) {
               $.toast('验证码已发送至' + this.forgetPhone + ',请注意查收!')
+              // 显示倒计时
               this.countDown = 60
-              setInterval(() => {
+              window.clearInterval(vCodeCountDown)
+              vCodeCountDown = setInterval(() => {
                 if (this.countDown > 0) {
                   this.countDown--
                 }
