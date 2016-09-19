@@ -3,8 +3,8 @@
 
 export default {
   ready () {
-    let appid = 'wx74e81e3aa7edce63'
-    let redirect_uri = 'http://test.zcsml.com/login'
+    let appid = 'wxbd594e230ad03e37'
+    let redirect_uri = 'http://freh5.zqsml.com/login'
     let oauthUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?' +
     'appid=' + appid +
     '&redirect_uri=' + redirect_uri +
