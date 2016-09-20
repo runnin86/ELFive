@@ -393,6 +393,9 @@ export default {
       })
     },
     clock () {
+      if (this.currentStopTime === null || this.serviceTime === null) {
+        return
+      }
       var overa = new Date(this.currentStopTime.replace(/\-/g, '/'))
       var local = new Date(this.serviceTime.replace(/\-/g, '/'))
       var intDiff = overa.getTime() - local.getTime()
