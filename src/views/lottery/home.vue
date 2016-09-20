@@ -265,21 +265,20 @@ export default {
     buy () {
       if (this.numberList.size >= this.minBall) {
         if (window.localStorage.getItem('elUser')) {
-          let nums = []
+          let nums = ''
           for (let item of this.numberList.keys()) {
-            nums.push(item)
+            nums += item + ','
           }
+          nums = nums.substr(0, nums.length - 1)
           this.$route.router.go({
             name: 'payment',
             query: {
+              number: nums,
+              gameType: this.gameType,
+              from: 'zx',
               price: this.bets * 2,
               maxWinC: this.maxWinC,
               s: 1
-            },
-            params: {
-              number: nums,
-              gameType: this.gameType,
-              from: 'zx'
             },
             replace: false
           })

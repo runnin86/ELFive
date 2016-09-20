@@ -82,7 +82,7 @@ export default function (router) {
         require(['./views/user/rule'], resolve)
       }
     },
-    '/home/payment/:number/:gameType/:from': {
+    '/home/payment': {
       name: 'payment',
       component (resolve) {
         require(['./views/pay/payment'], resolve)

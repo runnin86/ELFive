@@ -188,13 +188,11 @@
           this.$route.router.go({
             name: 'payment',
             query: {
-              rid: doc.rid,
-              s: doc.totPeriods - doc.alreadyPer
-            },
-            params: {
               number: nums,
               gameType: 'R6',
-              from: 'gd'
+              from: 'gd',
+              rid: doc.rid,
+              s: doc.totPeriods - doc.alreadyPer
             },
             replace: false
           })

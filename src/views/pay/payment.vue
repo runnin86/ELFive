@@ -144,9 +144,9 @@ export default {
     return {
       showPayButton: false,
       rid: this.$route.query.rid,
-      from: this.$route.params.from,
-      gameType: this.$route.params.gameType,
-      numberList: this.$route.params.number.split(','), // 截取数组
+      from: this.$route.query.from,
+      gameType: this.$route.query.gameType,
+      numberList: this.$route.query.number.split(','), // 截取数组
       showPeriods: window.localStorage.getItem('currentPeriods'),
       currentPeriods: currentPeriods ? currentPeriods : 78, // 获取不到默认78
       price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)
@@ -255,7 +255,7 @@ export default {
           // nums,unitPrice,multiple,totalPrice,gameType,startPeriods,openId
           postUrl = api.payOrderByZXOne
           postBody = {
-            nums: this.$route.params.number,
+            nums: this.$route.query.number,
             unitPrice: this.price,
             multiple: this.startMultiple,
             totalPrice: this.totalMoney,
@@ -269,7 +269,7 @@ export default {
           postUrl = api.payOrderByZXMore
           postBody = {
             startMultiple: this.startMultiple, // 初始倍数
-            nums: this.$route.params.number, // 初始号码
+            nums: this.$route.query.number, // 初始号码
             unitPrice: this.price, // 单价
             ratePercent: this.expectProfit, // 利润率
             totPeriods: this.followPeriod, //  自定义追单期数
@@ -291,6 +291,8 @@ export default {
             if (data.paytype === 'wx_pub') {
               let payResult = false
               pingpp.createPayment(data.charge, function (result, err) {
+                // alert(JSON.stringify(err))
+                // alert(window.location.href)
                 if (result === 'success') {
                   // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
                   $.toast('支付成功!')
