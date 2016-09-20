@@ -58,7 +58,7 @@
         <td>
           <p>状态</p>
           <p>
-            {{recommendStatus === '1' ? '进行中' : '已结束'}}
+            {{recommendStatus === '1' ? '进行中' : '-'}}
           </p>
         </td>
       </tr>
