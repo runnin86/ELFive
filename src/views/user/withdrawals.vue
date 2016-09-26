@@ -93,7 +93,7 @@
           this.withdrawMoney = null
           return
         }
-        if (this.withdrawMoney > this.userAccount) {
+        if (this.withdrawMoney > parseFloat(this.userAccount.replace(',', ''))) {
           $.toast('提现金额大于账户余额!')
           this.withdrawMoney = null
           return
