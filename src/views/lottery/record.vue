@@ -13,31 +13,36 @@
     </div>
 
     <div class="el_record_box" v-for="doc in docList" track-by="$index">
-      <table class="el_record_number_table">
-        <tr class="el_record_number_box">
-          <td class="el_record_number">
-            <span>{{$index+1}}</span>
-          </td>
-          <th>
-            {{doc.nums | split ','| getArray 0}}
-          </th>
-          <th>
-            {{doc.nums | split ','| getArray 1}}
-          </th>
-          <th>
-            {{doc.nums | split ','| getArray 2}}
-          </th>
-          <th>
-            {{doc.nums | split ','| getArray 3}}
-          </th>
-          <th>
-            {{doc.nums | split ','| getArray 4}}
-          </th>
-          <th>
-            {{doc.nums | split ','| getArray 5}}
-          </th>
-        </tr>
-      </table>
+      <div class="el_record_box_table">
+        <table class="el_record_number_table">
+          <tr class="el_record_number_box">
+            <td class="el_record_number">
+              <span>{{$index+1}}</span>
+            </td>
+            <th>
+              <span>{{doc.nums | split ','| getArray 0}}</span>
+            </th>
+            <th>
+              <span>{{doc.nums | split ','| getArray 1}}</span>
+            </th>
+            <th>
+              <span>{{doc.nums | split ','| getArray 2}}</span>
+            </th>
+            <th>
+              <span>{{doc.nums | split ','| getArray 3}}</span>
+            </th>
+            <th>
+              <span>{{doc.nums | split ','| getArray 4}}</span>
+            </th>
+            <th>
+              <span>{{doc.nums | split ','| getArray 5}}</span>
+            </th>
+          </tr>
+        </table>
+        <div class="el_passengers">
+          <span>{{doc.totalPerson}}人购买</span>
+        </div>
+      </div>
       <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
@@ -203,9 +208,11 @@ ul,a,p{
   font-size: 0.7rem;
 }*/
 .el_record_number_table{
-  width: 100%;
+  width: 76%;
   overflow: hidden;
+  float: left;
 }
+
 .el_record_box{
   width: 96%;
   margin: 0.5rem 2%;
@@ -227,12 +234,14 @@ ul,a,p{
   background-color: #42c1b1;
   color: white;
   display: block;
+  width: 1.4rem;
   line-height: 1rem;
   font-size: 0.7rem;
 }
 .el_state_top_box{
   width: 100%;
   height: 2.5rem;
+  overflow: hidden;
 }
 .el_state_top_box li{
   display: block;
@@ -245,12 +254,10 @@ ul,a,p{
 }
 .el_state_top_1{
   width: 33%;
-  border-right: solid #f0f0f0 0.05rem;
   height: 2.5rem;
 }
 .el_state_top_3{
   width: 33%;
-  border-left: solid #f0f0f0 0.05rem;
   height: 2.5rem;
 }
 .el_state_top_2{
@@ -259,5 +266,22 @@ ul,a,p{
 }
 .el_state_top_margin{
   margin-top:0.3rem;
+}
+.el_record_box_table{
+  width: 100%;
+}
+.el_passengers{
+  width: 24%;
+  float: left;
+}
+.el_passengers span{
+  display: block;
+  line-height: 2.5rem;
+  text-align: center;
+  font-size: 0.6rem;
+}
+.el_record_number_box th span{
+  font-size: 0.6rem;
+  line-height: 2.5rem;
 }
 </style>

@@ -20,7 +20,7 @@
 
       <!-- 个人头像/名字 -->
       <div class="el_user_name_box">
-        <img src="/img/11/head_icon.png">
+        <img src="/img/11/head_photo.png">
         <span class="el_user_name">
           {{user.userName?user.userName:user.userPhone}}
         </span>

@@ -5,81 +5,94 @@
   <div class="content" v-pull-to-refresh="refresh">
     <v-layer></v-layer>
     <!-- 顶部操作栏 -->
-    <div class="el_head">
-      <img src="/img/11/title.png" class="el_title">
-      <a @click="targetUserCenter()">
-        <img src="/img/11/user_icon.png" class="el_user_btn">
-      </a>
-    </div>
+    <div class="el_head_box">
+      <div class="el_head">
+        <strong class="el_title">山东十一选五</strong>
+        <a @click="targetUserCenter()">
+          <img src="/img/11/user_icon.png" class="el_user_btn">
+        </a>
+      </div>
 
-    <!-- 推荐号码 -->
-    <div class="el_recommend">
-        <span>推荐号码</span>
-    </div>
-    <div class="recommendation_number_box">
-        <strong>
-          {{recommendBalls | split ','| getArray 0}}
-        </strong>
-        <strong>
-          {{recommendBalls | split ','| getArray 1}}
-        </strong>
-        <strong>
-          {{recommendBalls | split ','| getArray 2}}
-        </strong>
-        <strong>
-          {{recommendBalls | split ','| getArray 3}}
-        </strong>
-        <strong>
-          {{recommendBalls | split ','| getArray 4}}
-        </strong>
-        <strong>
-          {{recommendBalls | split ','| getArray 5}}
-        </strong>
-    </div>
-    <!-- 推荐号码即时状态 -->
-    <table class="el_info" width="100%" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td style="border-left:#fff;">
-          <p>推荐期数</p>
-          <p>
-            {{totperiods === null ? '-':totperiods}}
-          </p>
-        </td>
-        <td>
-          <p>已进行</p>
-          <p>
-            {{alreadyper === null ? '-':alreadyper}}
-          </p>
-        </td>
-        <td>
-          <p>最低利润</p>
-          <p>{{alreadyper === null ? '-' : '25%'}}</p>
-        </td>
-        <td>
-          <p>状态</p>
-          <p>
-            {{recommendStatus === '1' ? '进行中' : recommendStatus==='2'? '已结束': '未开始'}}
-          </p>
-        </td>
-      </tr>
-    </table>
+      <!-- 推荐号码 -->
+      <div class="el_recommend">
+          <span>推荐号码</span>
+      </div>
+      <div class="recommendation_number_box">
+        <div>
+          <span>
+            {{recommendBalls | split ','| getArray 0}}
+          </span>
+        </div>
+        <div>
+          <span>
+            {{recommendBalls | split ','| getArray 1}}
+          </span>
+        </div>
+        <div>
+          <span>
+            {{recommendBalls | split ','| getArray 2}}
+          </span>
+        </div>
+        <div>
+          <span>
+            {{recommendBalls | split ','| getArray 3}}
+          </span>
+        </div>
+        <div>
+          <span>
+            {{recommendBalls | split ','| getArray 4}}
+          </span>
+        </div>
+        <div>
+          <span>
+            {{recommendBalls | split ','| getArray 5}}
+          </span>
+        </div>
+      </div>
+      <!-- 推荐号码即时状态 -->
+      <table class="el_info" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="border-left:#fff;">
+            <p>推荐期数</p>
+            <p>
+              {{totperiods === null ? '-':totperiods}}
+            </p>
+          </td>
+          <td>
+            <p>已进行</p>
+            <p>
+              {{alreadyper === null ? '-':alreadyper}}
+            </p>
+          </td>
+          <td>
+            <p>最低利润</p>
+            <p>{{alreadyper === null ? '-' : '25%'}}</p>
+          </td>
+          <td>
+            <p>状态</p>
+            <p>
+              {{recommendStatus === '1' ? '进行中' : recommendStatus==='2'? '已结束': '未开始'}}
+            </p>
+          </td>
+        </tr>
+      </table>
 
-    <div class="el_recommend_state">
-      <span>当前&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
-      <span style="border-left: 0.05rem #f0f0f0 solid;">
-        剩余时间&nbsp
-        <font color="#c14242">
-          {{countDown}}
-        </font>
-      </span>
-    </div>
+      <div class="el_recommend_state">
+        <span>当前&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
+        <span style="border-left: 0.05rem #f0f0f0 solid;">
+          剩余时间&nbsp
+          <font color="#c14242">
+            {{countDown}}
+          </font>
+        </span>
+      </div>
 
-    <!-- 跟单按钮 -->
-    <div class="el_documentary_btn"
-      v-link="{path: '/choose', replace: true}">
-      <span>跟单</span>
+      <!-- 跟单按钮 -->
+      <div class="el_documentary_btn"
+        v-link="{path: '/choose', replace: true}">
+        <span>跟单</span>
+      </div>
     </div>
-
     <!-- 推荐记录/历史号码 -->
     <ul class="el_history_record_box">
         <li class="el_recommended_record" v-link="{path: '/record', replace: true}">
@@ -105,7 +118,7 @@
     <div class="el_pick_box">
       <div class="el_pick"
         @click="this.showSelect?this.showSelect=false:this.showSelect=true">
-        <span>{{gameType ? '玩法-' : ''}}{{gameType | getGameTypeName}}</span>
+        <span style="color:#42c1b1;">{{gameType ? '玩法-' : ''}}{{gameType | getGameTypeName}}</span>
       </div>
       <div class="el_pick_all"
         :style="this.showSelect ? 'display:block' : 'display:none'">
@@ -445,7 +458,6 @@ body,ul{
 .el_head {
   width:100%;
   height:50px;
-  background-color: #42c1b1;
   overflow:hidden;
   position: relative;
 }
@@ -454,8 +466,8 @@ body,ul{
   color:#fff;
   line-height:2.5rem;
   text-align:center;
-  margin:0.8rem auto;
-  width:4rem;
+  margin:0 auto;
+  width:6rem;
 }
 .el_user_btn{
   position: absolute;
@@ -468,7 +480,6 @@ body,ul{
 .el_recommend{
   width:100%;
   height:1rem;
-  background-color: #42c1b1;
 }
 .el_recommend span{
   font-size:0.6rem;
@@ -481,37 +492,41 @@ body,ul{
 .recommendation_number_box{
   width:100%;
   height:3rem;
-  background-color: #42c1b1;
 }
-.recommendation_number_box strong{
-  color: #fff;
-  line-height: 2.9rem;
-  display: block;
+.recommendation_number_box div{
   float: left;
-  text-align: center;
-  font-size: 1.4rem;
   width: 16.6%;
+}
+.recommendation_number_box div span{
+  background-image: url(/img/11/ball.png);
+  background-size: 100%;
+  width: 1.8rem;
+  display: block;
+  color: #333333;
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1.8rem;
+  font-weight: bold;
+  margin: 0.6rem auto;
+  border-radius: 0.9rem;
 }
 .el_info{
   margin: 0;
   padding: 0;
   width: 100%;
-  background-color: #3bad9f;
-  height: 2.5rem;
+  background-image: url(/img/11/el_info_black_bg.png);
 }
 .el_info tr{
-  height: 2.5rem;
 }
 
 .el_info tr td{
     width: 25%;
-    color: white;
-    height: 1rem;
+    color: #f5f5f5;
 }
 
 .el_info tr td p{
   font-size: 0.6rem;
-  line-height:0.4rem;
+  line-height:0.3rem;
   width:100%;
   text-align: center;
 }
@@ -663,5 +678,12 @@ body,ul{
   text-align: center;
   font-size: 0.6rem;
   float: left;
+}
+.el_head_box{
+  width: 100%;
+  overflow: hidden;
+  background-image: url(/img/11/home_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 </style>

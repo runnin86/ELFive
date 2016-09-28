@@ -14,7 +14,64 @@
     </div>
 
     <!-- 跟单票未购买状态 -->
-    <div class="el_record_box"
+    <div  class="el_record_box"
+      v-for="doc in docList | orderBy 'numPayStatus' -1" track-by="$index">
+      <div class="el_title_number">
+        <div class="el_number">
+          <span>{{doc.dailyNo.substr(4, 2)}}/{{doc.dailyNo.substr(6, 2)}} 推荐{{doc.dailyNo.substr(doc.dailyNo.length - 2, 2)}}</span>
+        </div>
+        <div class="el_section_box">
+          <span>{{doc.recInfo}}</span>
+        </div>
+      </div>
+      <ul class="el_documentary_state">
+        <li>
+          <span>进行期数 <font color="#42c1b1">{{doc.alreadyPer}}</font>/{{doc.totPeriods}}
+          </span>
+        </li>
+        <li style="border-left:0.05rem solid #f0f0f0">
+          <span>最低利润率 {{doc.minRatePer}}%</span>
+        </li>
+      </ul>
+      <div class="el_passengers_box">
+        <ul class="el_record_number_table">
+            <li>
+              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 0}}</span>
+            </li>
+            <li>
+              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 1}}</span>
+            </li>
+            <li>
+              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 2}}</span>
+            </li>
+            <li>
+              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 3}}</span>
+            </li>
+            <li>
+              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 4}}</span>
+            </li>
+            <li>
+              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 5}}</span>
+            </li>
+        </ul>
+        <div class="el_passengers">
+          <span>{{doc.totalPerson==null ? '0':doc.totalPerson}}人购买</span>
+        </div>
+      </div>
+      <div class="el_stop_btn">
+        <span v-if="doc.isToll===1 && doc.numPayStatus===0"
+          class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
+          付费查看
+        </span>
+        <span @click="doDocumentary(doc)"
+          :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
+          <font color="#42c1b1">
+            {{doc.flag==='1' ? '跟单' : '取消跟单'}}
+          </font>
+        </span>
+      </div>
+    </div>
+    <!-- <div class="el_record_box"
       v-for="doc in docList | orderBy 'numPayStatus' -1" track-by="$index">
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
@@ -69,7 +126,7 @@
         </span>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- 弹出窗口 -->
   <div :class="this.showPayWindow?'el_eject_window_box':'hide'">
@@ -160,7 +217,7 @@
           }
         })
         .then(({data: {code, data, msg}})=>{
-          // console.log(data)
+          console.log(data)
           if (code === 1) {
             this.docList = data
           }
@@ -404,23 +461,22 @@ ul,a,p{
 .el_see_btn{
   width: 50%;
 }
-.el_see_btn,.el_documentary_btn{
-  font-size: 0.7rem;
+.el_see_btn{
+  font-size: 0.6rem;
   line-height: 2.5rem;
   text-align: center;
   display: block;
   float: left;
 }
-.el_see_btn{
-  border-right: 0.05rem solid #f0f0f0;
-}
 .el_stop_btn{
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   width: 100%;
+  border-top: 0.05rem solid #f0f0f0;
+  overflow: hidden;
 }
 .el_stop_btn span{
   width: 50%;
-  line-height: 2.5rem;
+  line-height: 2rem;
   text-align: center;
   display: block;
   float: left;
@@ -478,35 +534,26 @@ ul,a,p{
   border-right: 0.05rem #f0f0f0 solid;
 }
 .el_record_number_table{
+  width: 36%;
+  float: left;
+  margin: 0 7%;
+}
+.el_record_number_table li{
+  float: left;
+  width: 16.6%;
+}
+.el_record_number_table li span{
+  font-size: 0.6rem;
+  display: block;
+  line-height: 2rem;
   width: 100%;
+  text-align: center;
 }
 .el_record_box{
   width: 96%;
   background-color: white;
   overflow: hidden;
   margin:0.5rem 2%;
-}
-.el_record_box tr{
-  height: 2.5rem;
-}
-.el_record_box tr td{
-  line-height: 2.5rem;
-}
-.el_record_number_box{
-    border-bottom: 0.05rem solid #f0f0f0;
-}
-.el_record_number{
-  width: 12%;
-  text-align: center;
-  padding-right: 0.3rem;
-}
-.el_record_number span{
-  height: 1rem;
-  background-color: #42c1b1;
-  color: white;
-  display: block;
-  line-height: 1rem;
-  font-size: 0.7rem;
 }
 .el_state_top_box{
   width: 100%;
@@ -521,41 +568,23 @@ ul,a,p{
   display: block;
   margin-left: 0.6rem;
 }
-.el_state_top_1{
-  width: 33%;
-  border-right: solid #f0f0f0 0.05rem;
-  height: 2.5rem;
-}
-.el_state_top_3{
-  width: 33%;
-  border-left: solid #f0f0f0 0.05rem;
-  height: 2.5rem;
-}
-.el_state_top_2{
-  width: 34%;
-  height: 2.5rem;
-}
-.el_state_top_margin{
-  margin-top:0.3rem;
-}
 .el_see_btn{
-  border-left: 0.05rem solid #f0f0f0;
+  border-right: 0.05rem solid #f0f0f0;
 }
 .el_section_box{
-  width: 100%;
-  height: 1.6rem;
-  background-color: white;
-  border-bottom: solid #f0f0f0 0.05rem;
+  width: 66%;
+  float: left;
 }
 .el_section_box span{
-  line-height: 1.6rem;
-  text-align: center;
+  line-height: 2rem;
+  text-align: left;
   display: block;
   font-size: 0.6rem;
+  color: white;
 }
 .el_documentary_state{
   width: 100%;
-  height: 2.5rem;
+  height: 2rem;
 }
 .el_documentary_state{
   border-bottom: #f0f0f0 solid 0.05rem;
@@ -564,13 +593,45 @@ ul,a,p{
   width: 50%;
   display: block;
   float: left;
-  height: 2.5rem;
+  height: 2rem;
 }
 .el_documentary_state li span{
   font-size: 0.6rem;
   display: block;
   width: 100%;
   text-align: center;
+  line-height: 2rem;
 }
-
+.el_title_number{
+  width: 100%;
+  height: 2rem;
+  background-color: #42c1b1;
+}
+.el_number{
+  float: left;
+  width: 34%;
+}
+.el_number span{
+  color: white;
+  font-size: 0.6rem;
+  display: block;
+  line-height: 2rem;
+  text-align: center;
+}
+.el_passengers{
+  width: 50%;
+  float: left;
+  border-left: 0.05rem solid #f0f0f0;
+  height: 2rem;
+}
+.el_passengers span{
+  width: 100%;
+  display: block;
+  line-height: 2rem;
+  text-align: center;
+  font-size: 0.6rem;
+}
+.el_passengers_box{
+  width: 100%;
+}
 </style>

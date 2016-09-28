@@ -30,17 +30,17 @@
     <div class="el_record_box"
       v-for="g in gdList | orderBy 'orderDate' -1" track-by="$index"
       :class="this.showTabs===1?'el_bill_box':'hide'">
-      <table class="el_record_number_table">
-        <tr class="el_record_number_box">
-          <td class="el_record_number">
-            <span>{{$index+1}}</span>
+      <table class="record_number_table">
+        <tr class="record_number_box">
+          <td class="record_number">
+            <span>{{g.dailyNo.substr(4,2)}}/{{g.dailyNo.substr(6,2)}} 推荐{{g.dailyNo.substr(8,2)}}</span>
           </td>
-          <th v-for="n in g.nums | split ','">
-            {{g.payStatus === 1 ? n : '*'}}
-          </th>
+          <td v-for="n in g.nums | split ','">
+            <span class="record_number_span">{{g.payStatus === 1 ? n : '*'}}</span>
+          </td>
         </tr>
       </table>
-      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
           <span>{{g.startPeriods}}</span>
@@ -56,7 +56,7 @@
           </span>
         </li>
       </ul>
-      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
           <span>{{g.frozeAccount | currency '¥'}}</span>
@@ -98,7 +98,7 @@
           <th v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</th>
         </tr>
       </table>
-      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
           <span>{{more.startPeriods}}</span>
@@ -116,7 +116,7 @@
           </span>
         </li>
       </ul>
-      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
           <span>{{more.totMount - more.nowTotAmount | currency '¥'}}</span>
@@ -141,8 +141,8 @@
           已结束
         </span>
       </div>
-      <div class="el_stop_btn">
-        <span v-if="more.docStatus==='1'" @click="cancelZX(more.did)">
+      <div class="el_stop_btn" v-if="more.docStatus==='1'" @click="cancelZX(more.did)">
+        <span>
           终止追单
         </span>
       </div>
@@ -164,7 +164,7 @@
           <th v-for="n in one.nums | split ','">{{n}}</th>
         </tr>
       </table>
-      <ul class="el_state_top_box"  style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box"  style="border-top:solid #f5f5f5 0.05rem;">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">期数</span>
           <span>{{one.orderperiod}}</span>
@@ -465,13 +465,11 @@ ul,a,p{
   margin-top: 0.5rem;
   margin-left: auto;
   margin-right: auto;
-  border: 0.05rem solid #eaeaea;
 }
 .el_bill_title{
   width: 100%;
   height: 1.3rem;
   background-color: #fff;
-  border-top: 0.05rem solid #f0f0f0;
 }
 .el_bill_title span{
   width: 100%;
@@ -500,7 +498,7 @@ ul,a,p{
   height: 1.3rem;
   width: 100%;
   background-color: #fff;
-  border-top: 0.05rem solid #f0f0f0;
+  border-top: 0.05rem solid #f5f5f5;
 }
 .el_proposal span{
   width: 100%;
@@ -513,7 +511,7 @@ ul,a,p{
   width: 100%;
   height: 2.5rem;
   background-color: #fff;
-  border-top: 0.05rem solid #f0f0f0;
+  border-top: 0.05rem solid #f5f5f5;
 }
 .el_process,.el_state{
   width: 50%;
@@ -524,18 +522,18 @@ ul,a,p{
   font-size: 0.7rem;
 }
 .el_state{
-  border-right: 0.05rem solid #f0f0f0;
+  border-right: 0.05rem solid #f5f5f5;
 }
 .el_button{
   width:100%;
   height:2.5rem;
-  border-top: 0.05rem solid #f0f0f0;
+  border-top: 0.05rem solid #f5f5f5;
   background-color: #fff;
 }
 .el_order_status_box{
   width:100%;
   height:2.5rem;
-  border-top: 0.05rem solid #f0f0f0;
+  border-top: 0.05rem solid #f5f5f5;
   background-color: #fff;
 }
 .el_see_btn,.el_documentary_btn{
@@ -547,7 +545,7 @@ ul,a,p{
   float: left;
 }
 .el_see_btn{
-  border-right: 0.05rem solid #f0f0f0;
+  border-right: 0.05rem solid #f5f5f5;
 }
 .el_stop_btn,.el_order_status{
   font-size: 0.7rem;
@@ -557,7 +555,7 @@ ul,a,p{
   display: block;
 }
 .el_stop_btn{
-  border-top:0.05rem solid #f0f0f0;
+  border-top:0.05rem solid #f5f5f5;
 }
 .el_choice_box{
   width: 100%;
@@ -591,13 +589,18 @@ ul,a,p{
   width: 100%;
   height:1.8rem;
   background-color: white;
-  border-bottom: 0.05rem solid #f0f0f0;
+  border-bottom: 0.05rem solid #f5f5f5;
 }
 .ul_bill_type span{
   font-size: 0.6rem;
   line-height: 1.8rem;
   text-align: center;
   display: block;
+}
+.record_number_table{
+  width: 100%;
+  background-color: #42c1b1;
+  height: 2.5rem;
 }
 .el_record_number_table{
   width: 100%;
@@ -607,12 +610,6 @@ ul,a,p{
   width: 96%;
   margin: 0.5rem 2%;
   background-color: white;
-}
-.el_record_box tr{
-  height: 2.5rem;
-}
-.el_record_box tr td{
-  line-height: 2.5rem;
 }
 .el_record_number{
   width: 12%;
@@ -625,6 +622,15 @@ ul,a,p{
   color: white;
   display: block;
   line-height: 1rem;
+  font-size: 0.7rem;
+}
+.record_number{
+  width: 36%;
+  text-align: center;
+}
+.record_number span{
+  color: white;
+  display: block;
   font-size: 0.7rem;
 }
 .el_state_top_box{
@@ -642,12 +648,10 @@ ul,a,p{
 }
 .el_state_top_1{
   width: 33%;
-  border-right: solid #f0f0f0 0.05rem;
   height: 2.5rem;
 }
 .el_state_top_3{
   width: 33%;
-  border-left: solid #f0f0f0 0.05rem;
   height: 2.5rem;
 }
 .el_state_top_2{
@@ -660,7 +664,7 @@ ul,a,p{
 .el_title_rule{
   width: 100%;
   height: 1.6rem;
-  border-bottom: solid #f0f0f0 0.05rem;
+  border-bottom: solid #f5f5f5 0.05rem;
 }
 .el_title_rule span{
   display: block;
@@ -677,5 +681,12 @@ ul,a,p{
   text-align: center;
   font-size: 0.7rem;
   display: block;
+}
+.record_number_span{
+  width: 100%;
+  font-size: 0.7rem;
+  color: white;
+  text-align: left;
+  display: block;;
 }
 </style>
