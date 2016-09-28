@@ -18,7 +18,9 @@
       v-for="doc in docList | orderBy 'numPayStatus' -1" track-by="$index">
       <div class="el_title_number">
         <div class="el_number">
-          <span>{{doc.dailyNo.substr(4, 2)}}/{{doc.dailyNo.substr(6, 2)}} 推荐{{doc.dailyNo.substr(doc.dailyNo.length - 2, 2)}}</span>
+          <span v-if="doc.dailyNo">
+            {{doc.dailyNo.substr(4, 2)}}/{{doc.dailyNo.substr(6, 2)}} 推荐{{doc.dailyNo.substr(doc.dailyNo.length - 2, 2)}}
+          </span>
         </div>
         <div class="el_section_box">
           <span>{{doc.recInfo}}</span>
@@ -217,7 +219,7 @@
           }
         })
         .then(({data: {code, data, msg}})=>{
-          console.log(data)
+          // console.log(data)
           if (code === 1) {
             this.docList = data
           }
