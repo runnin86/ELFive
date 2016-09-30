@@ -688,5 +688,7 @@ ul,a,p{
   color: white;
   text-align: left;
   display: block;;
+  font-weight: bold;
+  line-height: 2.5rem;
 }
 </style>

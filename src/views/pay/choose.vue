@@ -62,10 +62,11 @@
       </div>
       <div class="el_stop_btn">
         <span v-if="doc.isToll===1 && doc.numPayStatus===0"
-          class="el_see_btn" @click="this.showPayWindow=true,this.payRid=doc.rid">
+          @click="this.showPayWindow=true,this.payRid=doc.rid">
           付费查看
         </span>
         <span @click="doDocumentary(doc)"
+          class="el_see_btn"
           :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
           <font color="#42c1b1">
             {{doc.flag==='1' ? '跟单' : '取消跟单'}}
@@ -460,16 +461,6 @@ ul,a,p{
   border-top: 0.05rem solid #f0f0f0;
   background-color: #fff;
 }
-.el_see_btn{
-  width: 50%;
-}
-.el_see_btn{
-  font-size: 0.6rem;
-  line-height: 2.5rem;
-  text-align: center;
-  display: block;
-  float: left;
-}
 .el_stop_btn{
   font-size: 0.6rem;
   width: 100%;
@@ -571,7 +562,7 @@ ul,a,p{
   margin-left: 0.6rem;
 }
 .el_see_btn{
-  border-right: 0.05rem solid #f0f0f0;
+  border-left: 0.05rem #f0f0f0 solid;
 }
 .el_section_box{
   width: 66%;

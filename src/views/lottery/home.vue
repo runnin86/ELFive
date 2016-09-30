@@ -485,7 +485,8 @@ body,ul{
   font-size:0.6rem;
   color: #fff;
   display: block;
-  width:100%;
+  width:20%;
+  margin: 0 40%;
   line-height: 1rem;
   text-align: center;
 }
