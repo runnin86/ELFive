@@ -74,7 +74,7 @@
             this.userAccount = data.userAccount
           }
           else {
-            console.log('获取账户错误:' + msg)
+            $.toast(msg)
           }
         }).catch((e)=>{
           console.error('获取账户信息失败:' + e)
