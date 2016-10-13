@@ -166,7 +166,7 @@ ul,a,p{
   border-bottom: 0.05rem solid #f0f0f0;
 }
 .history_number span{
-  background-color: #c5210f;
+  background-color: #e23c3c;
   display: block;
   color: white;
   border-radius: 01rem;
