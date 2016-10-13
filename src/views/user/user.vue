@@ -351,7 +351,7 @@ ul,a,p{
   margin-top: 0.45rem;
 }
 .el_user_info_left{
-  border-right: 0.05rem #4c4c4c solid;
+  border-right: 0.05rem #f67577 solid;
 }
 .el_user_info_left span,.el_user_info_right span{
   display: block;

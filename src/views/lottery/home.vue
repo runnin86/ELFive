@@ -7,7 +7,7 @@
     <!-- 顶部操作栏 -->
     <div class="el_head_box">
       <div class="el_head">
-        <strong class="el_title">山东十一选五</strong>
+        <strong class="el_title">十一选五</strong>
         <a @click="targetUserCenter()">
           <img src="/img/11/user_icon.png" class="el_user_btn">
         </a>
@@ -111,7 +111,7 @@
       <img src="/img/11/horn.png" class="el_horn">
       <span v-if="lastWinObj" style="font-size: 0.6rem">
         第&nbsp{{lastWinObj.periods}}&nbsp期中奖号码
-        <font style="background-color:#c5210f;color:white; border-radius:1rem; margin-left:0.3rem; wdith:1rem; height:1rem; padding:0.1rem;" v-for="num in lastWinObj.nums.split(',')" track-by="$index">{{num}}</font>
+        <font style="background-color:#e23c3c;color:white; border-radius:1rem; margin-left:0.3rem; wdith:1rem; height:1rem; padding:0.1rem;" v-for="num in lastWinObj.nums.split(',')" track-by="$index">{{num}}</font>
       </span>
     </div>
 
@@ -123,9 +123,9 @@
       </div>
       <div class="el_pick_all"
         :style="this.showSelect ? 'display:block' : 'display:none'">
-        <span @click="selectGameType('R5', 5)">玩法-任选五 (至少选择5个号码)</span>
-        <span @click="selectGameType('R6', 6)">玩法-任选六 (至少选择6个号码)</span>
-        <span @click="selectGameType('R7', 7)">玩法-任选七 (至少选择7个号码)</span>
+        <span @click="selectGameType('R5', 5)">玩法-任选五 (至少选择5个号码，单注奖金540元)</span>
+        <span @click="selectGameType('R6', 6)">玩法-任选六 (至少选择6个号码，单注奖金90元)</span>
+        <span style="border-bottom:0.05rem #f0f0f0 solid" @click="selectGameType('R7', 7)">玩法-任选七 (至少选择7个号码，单注奖金26元)</span>
       </div>
     </div>
 
@@ -254,7 +254,7 @@ export default {
       else {
         // 不包含则新增
         this.numberList.add(num)
-        e.target.style.backgroundColor = '#c5210f'
+        e.target.style.backgroundColor = '#e23c3c'
         e.target.style.color = 'white'
         e.target.style.border = 'none'
       }
@@ -557,7 +557,7 @@ body,ul{
 .el_documentary_btn span{
   width: 90%;
   height: 1.7rem;
-  background-color: #c5210f;
+  background-color: #e23c3c;
   color: white;
   font-size: 0.7rem;
   display: block;
@@ -578,7 +578,7 @@ body,ul{
   text-align: center;
   line-height: 1.7rem;
   color: white;
-  background-color:#c5210f;
+  background-color:#e23c3c;
   width: 5rem;
   margin-top: 0.4rem;
   margin-left: 0.8rem;
@@ -647,7 +647,6 @@ body,ul{
   margin: 0.1rem 0.2rem;
 }
 .el_pick_all{
-  box-shadow:0px 3px 3px #dbdbdb;
   width: 100%;
   background-color: #fff;
   position: absolute;

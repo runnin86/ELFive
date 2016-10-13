@@ -21,7 +21,7 @@
       <strong class="el_purchase_btn"
         @click="this.showTabs = 1"
         :class="this.showTabs===1?'el_click_white':''">
-      进行中</strong>
+      已购买</strong>
       <strong class="el_bonus_btn"
         @click="this.showTabs = 2"
         :class="this.showTabs===2?'el_click_white':''">
@@ -61,15 +61,23 @@
         <td v-if="p.source === 1">跟单</td>
         <td v-else>{{p.gameType | getGameTypeName}}</td>
         <td>
-          <span v-if="p.nums" v-for="n in p.nums.split(',')">
-            {{p.isCanShow===1?n:'*'}}&nbsp;
-          </span>
+          <div style="width:100%; height:0.8rem;">
+           <table style="height:0.8rem;">
+             <tr style="height:0.8rem;">
+               <td style="height:0.8rem; border:none;"
+                 :class="p.isCanShow === 0&&$index>1?'record_star_td':'record_number_td'"
+                 v-if="p.nums" v-for="n in p.nums.split(',')">
+                 {{p.isCanShow === 1 ? n : $index<2 ? n : '*'}}
+               </td>
+             </tr>
+           </table>
+          </div>
         </td>
         <td>{{p.totalPrice | currency ''}}</td>
       </tr>
     </table>
 
-    <!-- 奖金 -->
+    <!-- 已中奖 -->
     <table class="el_bonus_box" width="100%" border="0" cellpadding="0" cellspacing="0"
       :class="this.showTabs===2?'el_bonus_box':'hide'">
       <tr>
@@ -84,9 +92,16 @@
         <td v-if="b.source === 1">跟单</td>
         <td v-else>{{b.gameType | getGameTypeName}}</td>
         <td>
-          <span v-if="b.nums" v-for="n in b.nums.split(',')">
-            {{b.isCanShow===1?n:'*'}}&nbsp;
-          </span>
+          <div style="width:100%; height:0.8rem;">
+           <table style="height:0.8rem;">
+             <tr style="height:0.8rem;">
+               <td style="height:0.8rem; border:none;"
+                 v-if="b.nums" v-for="n in b.nums.split(',')" class="record_number_td">
+                 {{n}}
+               </td>
+             </tr>
+           </table>
+          </div>
         </td>
         <td>{{b.bonus | currency ''}}</td>
       </tr>
@@ -243,5 +258,27 @@ ul,a,p{
 }
 .el_bill_box{
   height: 100%;
+}
+.record_number_td{
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.6rem;
+  color: white;
+  text-align: center;
+  display: block;;
+  line-height: 0.8rem;
+  background-color: #e23c3c;
+  border-radius: 1rem;
+  float: left;
+}
+.record_star_td{
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.6rem;
+  text-align: center;
+  display: block;;
+  line-height: 0.8rem;
+  border-radius: 1rem;
+  float: left;
 }
 </style>

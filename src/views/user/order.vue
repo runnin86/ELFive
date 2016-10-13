@@ -35,8 +35,10 @@
           <td class="record_number">
             <span>{{g.dailyNo.substr(4,2)}}/{{g.dailyNo.substr(6,2)}} 推荐{{g.dailyNo.substr(8,2)}}</span>
           </td>
-          <td v-for="n in g.nums | split ','">
-            <span class="record_number_span">{{g.payStatus === 1 ? n : '*'}}</span>
+          <td v-for="n in g.nums | split ','" >
+            <span :class="g.payStatus === 0&&$index>1?'record_star_td':'record_number_td'">
+              {{g.payStatus === 1 ? n : $index<2 ? n : '*'}}
+            </span>
           </td>
         </tr>
       </table>
@@ -47,12 +49,12 @@
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">进行</span>
-          <span><font color="#c52110">{{g.alreadyPer}}</font>/{{g.totPeriods}}期</span>
+          <span><font color="#e23c3c">{{g.alreadyPer}}</font>/{{g.totPeriods}}期</span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
           <span>
-            <font color="#c52110">{{g.bonus | currency '¥'}}</font>
+            <font color="#e23c3c">{{g.bonus | currency '¥'}}</font>
           </span>
         </li>
       </ul>
@@ -103,13 +105,13 @@
         <li class="el_state_top_2">
           <span class="el_state_top_margin">进行</span>
           <span>
-            <font color="#c52110">{{more.alreadyPer}}</font>/{{more.totPeriods}}期
+            <font color="#e23c3c">{{more.alreadyPer}}</font>/{{more.totPeriods}}期
           </span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
           <span>
-            <font color="#c52110">{{more.bonus | currency '¥'}}</font>
+            <font color="#e23c3c">{{more.bonus | currency '¥'}}</font>
           </span>
         </li>
       </ul>
@@ -559,7 +561,7 @@ ul,a,p{
 }
 .el_stop_btn span{
   width: 90%;
-  background-color: #c52110;
+  background-color: #e23c3c;
   display: block;
   height: 1.7rem;
   color: white;
@@ -629,7 +631,7 @@ ul,a,p{
 }
 .el_record_number span{
   height: 1rem;
-  background-color: #c52110;
+  background-color: #e23c3c;
   color: white;
   display: block;
   line-height: 1rem;
@@ -693,19 +695,19 @@ ul,a,p{
   font-size: 0.6rem;
   display: block;
 }
-.record_number_span{
+.record_number_td{
   width: 1rem;
   font-size: 0.6rem;
   color: white;
   text-align: center;
   display: block;;
   line-height: 1rem;
-  background-color: #c52110;
+  background-color: #e23c3c;
   border-radius: 1rem;
 }
 .record_num{
   font-size:0.6rem;
-  background-color: #c52110;
+  background-color: #e23c3c;
   border-radius: 2rem;
   width: 1rem;
   height: 1rem;
@@ -713,5 +715,15 @@ ul,a,p{
   display: block;
   line-height:1rem;
   margin:0 auto;
+}
+.record_star_td{
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.6rem;
+  text-align: center;
+  display: block;;
+  line-height: 0.8rem;
+  border-radius: 1rem;
+  float: left;
 }
 </style>

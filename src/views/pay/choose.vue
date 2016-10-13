@@ -28,7 +28,7 @@
       </div>
       <ul class="el_documentary_state">
         <li>
-          <span>进行期数 <font color="#c5210f">{{doc.alreadyPer}}</font>/{{doc.totPeriods}}
+          <span>进行期数 <font color="#e23c3c">{{doc.alreadyPer}}</font>/{{doc.totPeriods}}
           </span>
         </li>
         <li>
@@ -44,16 +44,77 @@
               <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 1}}</span>
             </li>
             <li>
-              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 2}}</span>
+              <span
+                :style="{
+                  'color':
+                  doc.isToll === 1
+                  ?
+                  (doc.numPayStatus === 1 ? '' : '#333333')
+                  :
+                  '',
+                  'background-color':
+                  doc.isToll === 1
+                  ?
+                  (doc.numPayStatus === 1 ? '' : 'white')
+                  :
+                  ''
+                  }">
+                {{doc.nums | numberFilter doc.isToll doc.numPayStatus 2}}
+              </span>
             </li>
             <li>
-              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 3}}</span>
+              <span
+              :style="{
+                'color':
+                doc.isToll === 1
+                ?
+                (doc.numPayStatus === 1 ? '' : '#333333')
+                :
+                '',
+                'background-color':
+                doc.isToll === 1
+                ?
+                (doc.numPayStatus === 1 ? '' : 'white')
+                :
+                ''
+                }">
+                {{doc.nums | numberFilter doc.isToll doc.numPayStatus 3}}</span>
             </li>
             <li>
-              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 4}}</span>
+              <span
+              :style="{
+                'color':
+                doc.isToll === 1
+                ?
+                (doc.numPayStatus === 1 ? '' : '#333333')
+                :
+                '',
+                'background-color':
+                doc.isToll === 1
+                ?
+                (doc.numPayStatus === 1 ? '' : 'white')
+                :
+                ''
+                }">
+                {{doc.nums | numberFilter doc.isToll doc.numPayStatus 4}}</span>
             </li>
             <li>
-              <span>{{doc.nums | numberFilter doc.isToll doc.numPayStatus 5}}</span>
+              <span
+              :style="{
+                'color':
+                doc.isToll === 1
+                ?
+                (doc.numPayStatus === 1 ? '' : '#333333')
+                :
+                '',
+                'background-color':
+                doc.isToll === 1
+                ?
+                (doc.numPayStatus === 1 ? '' : 'white')
+                :
+                ''
+                }">
+                {{doc.nums | numberFilter doc.isToll doc.numPayStatus 5}}</span>
             </li>
         </ul>
         <div class="el_passengers">
@@ -76,7 +137,8 @@
         <span
           @click="doDocumentary(doc)"
           :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
-          <font class="el_see_btn">
+          <font class="el_see_btn"
+            :style="{'background-color': (doc.flag==='1' ? '#e23c3c' : '#e5e5e5')}">
             {{doc.flag==='1' ? '跟单' : '取消跟单'}}
           </font>
         </span>
@@ -228,7 +290,7 @@
           }
         })
         .then(({data: {code, data, msg}})=>{
-          // console.log(data)
+          console.log(data)
           if (code === 1) {
             this.docList = data
           }
@@ -533,20 +595,26 @@ ul,a,p{
   border-right: 0.05rem #f0f0f0 solid;
 }
 .el_record_number_table{
-  width: 36%;
+  width: 42%;
   float: left;
-  margin: 0 7%;
+  margin: 0 4%;
 }
 .el_record_number_table li{
   float: left;
   width: 16.6%;
 }
 .el_record_number_table li span{
+  width: 1rem;
+  height: 1rem;
   font-size: 0.6rem;
-  display: block;
-  line-height: 2rem;
-  width: 100%;
+  color: white;
   text-align: center;
+  display: block;;
+  line-height: 1rem;
+  background-color: #e23c3c;
+  border-radius: 1rem;
+  float: left;
+  margin-top: 0.4rem;
 }
 .el_record_box{
   width: 96%;
@@ -629,7 +697,7 @@ ul,a,p{
 .payment_btn{
   width: 90%;
   height: 1.7rem;
-  background-color: #d7c149;
+  background-color: #16a8e5;
   display: block;
   color: white;
   line-height: 1.7rem;
@@ -639,7 +707,6 @@ ul,a,p{
 .el_see_btn{
   width: 90%;
   height: 1.7rem;
-  background-color: #c5210f;
   display: block;
   color: white;
   line-height: 1.7rem;

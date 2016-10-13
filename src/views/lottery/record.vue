@@ -64,7 +64,7 @@
       <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">中奖金额</span>
-          <span><font color="#c52110">{{doc.winMount | currency '¥'}}</font></span>
+          <span><font color="#e23c3c">{{doc.winMount | currency '¥'}}</font></span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">已使用金额</span>
@@ -302,7 +302,7 @@ ul,a,p{
   display: block;
 }
 .recommended_records{
-  background-color: #c52110;
+  background-color: #e23c3c;
   border-radius:2rem;
   color: white;
   margin:0 0.1rem;
