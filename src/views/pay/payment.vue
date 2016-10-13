@@ -116,7 +116,9 @@
         <span class="el_button_left" @click="this.showPayButton=false">
           取消
         </span>
-        <span class="el_button_right" @click="payOrder()">
+        <span class="el_button_right"
+          :style="{color: (paying ? '#c8c9cb' : '')}"
+          @click="payOrder()">
           确定
         </span>
       </div>
@@ -142,6 +144,7 @@ export default {
       currentPeriods = parseInt(currentPeriods.substr(8, 2), 0)
     }
     return {
+      paying: false,
       showPayButton: false,
       rid: this.$route.query.rid,
       from: this.$route.query.from,
@@ -228,6 +231,10 @@ export default {
      * 支付
      */
     payOrder () {
+      if (this.paying) {
+        // 若正在支付则返回
+        return
+      }
       let postBody = {}
       let postUrl = ''
       let openid = window.localStorage.getItem('elOpenid')
@@ -280,6 +287,8 @@ export default {
         }
       }
       if (postUrl) {
+        $.showIndicator()
+        this.paying = true
         let token = window.localStorage.getItem('elToken')
         this.$http.post(postUrl, postBody, {
           headers: {
@@ -327,6 +336,9 @@ export default {
           }
         }).catch((e)=>{
           console.error(this.from + '付款提交失败:' + e)
+        }).finally(()=>{
+          $.hideIndicator()
+          this.paying = false
         })
       }
     }
