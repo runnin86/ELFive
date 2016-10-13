@@ -57,7 +57,15 @@
             </li>
         </ul>
         <div class="el_passengers">
-          <span>{{doc.totalPerson==null ? '0':doc.totalPerson}}人购买</span>
+          <span>
+            {{
+              doc.alreadyPer>50
+              ?
+              (doc.alreadyPer + doc.totalPerson)
+              :
+              doc.alreadyPer * 3 + (doc.totalPerson == null ? 0 : doc.totalPerson)
+            }}人购买
+          </span>
         </div>
       </div>
       <div class="el_stop_btn">
