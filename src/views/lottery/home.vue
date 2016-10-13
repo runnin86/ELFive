@@ -15,7 +15,7 @@
 
       <!-- 推荐号码 -->
       <div class="el_recommend">
-          <span>推荐号码</span>
+        <span>推荐号码</span>
       </div>
       <div class="recommendation_number_box">
         <div>
@@ -79,7 +79,7 @@
 
       <div class="el_recommend_state">
         <span>当前&nbsp{{currentPeriods?currentPeriods:'-'}}&nbsp期</span>
-        <span style="border-left: 0.05rem #f0f0f0 solid;">
+        <span>
           剩余时间&nbsp
           <font color="#c14242">
             {{countDown}}
@@ -93,6 +93,7 @@
         <span>跟单</span>
       </div>
     </div>
+
     <!-- 推荐记录/历史号码 -->
     <ul class="el_history_record_box">
         <li class="el_recommended_record" v-link="{path: '/record', replace: true}">
@@ -110,7 +111,7 @@
       <img src="/img/11/horn.png" class="el_horn">
       <span v-if="lastWinObj" style="font-size: 0.6rem">
         第&nbsp{{lastWinObj.periods}}&nbsp期中奖号码
-        &nbsp{{lastWinObj.nums.split(',').join('&nbsp&nbsp')}}
+        <font style="background-color:#c5210f;color:white; border-radius:1rem; margin-left:0.3rem; wdith:1rem; height:1rem; padding:0.1rem;" v-for="num in lastWinObj.nums.split(',')" track-by="$index">{{num}}</font>
       </span>
     </div>
 
@@ -118,13 +119,13 @@
     <div class="el_pick_box">
       <div class="el_pick"
         @click="this.showSelect?this.showSelect=false:this.showSelect=true">
-        <span style="color:#42c1b1;">{{gameType ? '玩法-' : ''}}{{gameType | getGameTypeName}}</span>
+        <span>{{gameType ? '玩法-' : ''}}{{gameType | getGameTypeName}}<img src="/img/11/play_icon.png"></span>
       </div>
       <div class="el_pick_all"
         :style="this.showSelect ? 'display:block' : 'display:none'">
-        <span @click="selectGameType('R5', 5)">玩法-任选五</span>
-        <span @click="selectGameType('R6', 6)">玩法-任选六</span>
-        <span @click="selectGameType('R7', 7)">玩法-任选七</span>
+        <span @click="selectGameType('R5', 5)">玩法-任选五 (至少选择5个号码)</span>
+        <span @click="selectGameType('R6', 6)">玩法-任选六 (至少选择6个号码)</span>
+        <span @click="selectGameType('R7', 7)">玩法-任选七 (至少选择7个号码)</span>
       </div>
     </div>
 
@@ -151,7 +152,9 @@
     <!-- 购买按钮 -->
     <div class="el_documentary_box">
       <span class="el_documentary_amount">共{{bets}}注 {{bets*2}}元</span>
-      <span class="el_optional_btn" @click="buy()">购买</span>
+      <div class="el_optional_btn">
+      <span @click="buy()">购买</span>
+      </div>
     </div>
   </div>
 </template>
@@ -251,7 +254,7 @@ export default {
       else {
         // 不包含则新增
         this.numberList.add(num)
-        e.target.style.backgroundColor = '#42c1b1'
+        e.target.style.backgroundColor = '#c5210f'
         e.target.style.color = 'white'
         e.target.style.border = 'none'
       }
@@ -539,19 +542,47 @@ body,ul{
 .el_documentary_amount{
   display: block;
   font-size: 0.6rem;
-  width:100%;
-  text-align: center;
-  line-height: 1.2rem;
-}
-.el_documentary_btn,.el_optional_btn{
-  display: block;
-  font-size: 0.7rem;
-  width:100%;
+  width:60%;
   text-align: center;
   line-height: 2.5rem;
-  color: #42c1b1;
+  float:left;
   background-color: white;
-  border-top: 0.05rem #f0f0f0 solid;
+}
+.el_documentary_btn{
+  width:100%;
+  background-color: white;
+  height: 2.5rem;
+  overflow: hidden;
+}
+.el_documentary_btn span{
+  width: 90%;
+  height: 1.7rem;
+  background-color: #c5210f;
+  color: white;
+  font-size: 0.7rem;
+  display: block;
+  border-radius: 0.1rem;
+  text-align: center;
+  line-height: 1.7rem;
+  margin:0.2rem auto;
+}
+.el_optional_btn{
+  width:40%;
+  background-color: white;
+  float: left;
+  height: 2.5rem;
+}
+.el_optional_btn span{
+  display: block;
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1.7rem;
+  color: white;
+  background-color:#c5210f;
+  width: 5rem;
+  margin-top: 0.4rem;
+  margin-left: 0.8rem;
+  border-radius: 0.1rem;
 }
 .el_history_record_box{
   width:100%;
@@ -605,10 +636,15 @@ body,ul{
   width: 100%;
   margin-top: 0.5rem;
   position: relative;
+  border-bottom:solid #f0f0f0 0.05rem;
 }
 .el_pick{
   width: 100%;
   background-color: #fff;
+}
+.el_pick img{
+  width: 0.5rem;
+  margin: 0.1rem 0.2rem;
 }
 .el_pick_all{
   box-shadow:0px 3px 3px #dbdbdb;
@@ -639,14 +675,9 @@ body,ul{
 .el_number_btn tr{
   width: 100%;
   height: 2.5rem;
-  border-top:0.05rem solid #f0f0f0;
-}
-.el_number_btn tr td{
-  border-left:0.05rem solid #f0f0f0;
 }
 .el_number_btn tr td span{
   display: block;
-  border:0.05rem solid #f0f0f0;
   width:1.8rem;
   height:1.8rem;
   line-height: 1.8rem;
@@ -654,6 +685,7 @@ body,ul{
   text-align: center;
   margin: 0 auto;
   font-size: 0.7rem;
+  border:0.05rem solid #f0f0f0;
 }
 .el_number_click{
   display: block;
@@ -673,7 +705,7 @@ body,ul{
   background-color: white;
 }
 .el_recommend_state span{
-  width: 50%;
+  width:50%;
   line-height: 1.6rem;
   display: block;;
   text-align: center;
