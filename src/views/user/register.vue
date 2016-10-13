@@ -33,7 +33,12 @@
         </div>
         <div class="el_login_go_box">
           <div class="user_agreement">
-            <input type="checkbox" v-model="protocol"><span> 已阅读并同意<font color="#007dde" v-link="{path: '/protocol', replace: true}">《用户协议》</font></span>
+            <input type="checkbox" v-model="protocol">
+            <span>
+              已阅读并同意
+              <font color="#007dde"
+                v-link="{path: '/protocol', replace: true, query:{uid: this.uid }}">《用户协议》</font>
+            </span>
           </div>
           <a class="el_login_go" @click="register()"
             :style="{backgroundColor: (submitBtn ? '#1a6be4' : '#c8c9cb')}">
@@ -60,7 +65,7 @@ export default {
       uname: null,
       upass: null,
       alipayid: null,
-      protocol: null,
+      protocol: true,
       submitBtn: false
     }
   },
@@ -86,7 +91,7 @@ export default {
         return
       }
       if (!this.protocol) {
-        $.toast('您未同意本平台用户条款')
+        // $.toast('您未同意本平台用户条款')
         return
       }
       this.submitBtn = false
@@ -114,11 +119,11 @@ export default {
     }
   },
   watch: {
-    '[uphone,alipayid,uname,upass]': {
+    '[uphone,alipayid,uname,upass,protocol]': {
       handler: function (newVal, oldVal) {
         let flag = true
         newVal.map((v, k)=>{
-          if (v === null || v === '') {
+          if (v === null || v === '' || !v) {
             flag = false
             return
           }
