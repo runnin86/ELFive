@@ -516,7 +516,7 @@ ul,a,p{
 .el_payment_btn{
   width: 100%;
   height: 2.5rem;
-  background-color: #42c1b1;
+  background-color: #c52110;
 }
 .el_payment_btn span{
   display: block;

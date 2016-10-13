@@ -82,6 +82,11 @@ export default function (router) {
         require(['./views/user/rule'], resolve)
       }
     },
+    '/protocol': {
+      component (resolve) {
+        require(['./views/user/protocol'], resolve)
+      }
+    },
     '/home/payment': {
       name: 'payment',
       component (resolve) {

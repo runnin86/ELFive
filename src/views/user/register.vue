@@ -32,6 +32,9 @@
           <input type="password" v-model="upass" class="el_password" placeholder="输入密码">
         </div>
         <div class="el_login_go_box">
+          <div class="user_agreement">
+            <input type="checkbox" v-model="protocol"><span> 已阅读并同意<font color="#007dde" v-link="{path: '/protocol', replace: true}">《用户协议》</font></span>
+          </div>
           <a class="el_login_go" @click="register()"
             :style="{backgroundColor: (submitBtn ? '#1a6be4' : '#c8c9cb')}">
             注册
@@ -57,6 +60,7 @@ export default {
       uname: null,
       upass: null,
       alipayid: null,
+      protocol: null,
       submitBtn: false
     }
   },
@@ -79,6 +83,10 @@ export default {
       }
       if (!this.alipayid) {
         $.toast('请输入支付宝账号')
+        return
+      }
+      if (!this.protocol) {
+        $.toast('您未同意本平台用户条款')
         return
       }
       this.submitBtn = false
@@ -226,5 +234,15 @@ ul,a,p{
 }
 .hide{
   display: none;
+}
+.user_agreement{
+  width: 94%;
+  margin: 0.6rem auto;
+}
+.user_agreement input{
+
+}
+.user_agreement span{
+  font-size: 0.7rem;
 }
 </style>

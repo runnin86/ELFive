@@ -47,16 +47,16 @@
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">进行</span>
-          <span><font color="#42c1b1">{{g.alreadyPer}}</font>/{{g.totPeriods}}期</span>
+          <span><font color="#c52110">{{g.alreadyPer}}</font>/{{g.totPeriods}}期</span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
           <span>
-            <font color="#42c1b1">{{g.bonus | currency '¥'}}</font>
+            <font color="#c52110">{{g.bonus | currency '¥'}}</font>
           </span>
         </li>
       </ul>
-      <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
+      <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
           <span>{{g.frozeAccount | currency '¥'}}</span>
@@ -92,10 +92,7 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number">
-            <span>{{$index+1}}</span>
-          </td>
-          <th v-if="more.nums" v-for="n in more.nums.split(',')">{{n}}</th>
+          <th v-if="more.nums" v-for="n in more.nums.split(',')"><font class="record_num">{{n}}</font></th>
         </tr>
       </table>
       <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
@@ -106,17 +103,17 @@
         <li class="el_state_top_2">
           <span class="el_state_top_margin">进行</span>
           <span>
-            <font color="#42c1b1">{{more.alreadyPer}}</font>/{{more.totPeriods}}期
+            <font color="#c52110">{{more.alreadyPer}}</font>/{{more.totPeriods}}期
           </span>
         </li>
         <li class="el_state_top_3">
           <span class="el_state_top_margin">中奖金额</span>
           <span>
-            <font color="#42c1b1">{{more.bonus | currency '¥'}}</font>
+            <font color="#c52110">{{more.bonus | currency '¥'}}</font>
           </span>
         </li>
       </ul>
-      <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
+      <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">冻结金额</span>
           <span>{{more.totMount - more.nowTotAmount | currency '¥'}}</span>
@@ -158,10 +155,7 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <td class="el_record_number">
-            <span>{{$index+1}}</span>
-          </td>
-          <th v-for="n in one.nums | split ','">{{n}}</th>
+          <th v-for="n in one.nums | split ','"><font class="record_num">{{n}}</font></th>
         </tr>
       </table>
       <ul class="el_state_top_box"  style="border-top:solid #f5f5f5 0.05rem;">
@@ -509,7 +503,7 @@ ul,a,p{
 }
 .el_state_box{
   width: 100%;
-  height: 2.5rem;
+  height: 2rem;
   background-color: #fff;
   border-top: 0.05rem solid #f5f5f5;
 }
@@ -548,14 +542,29 @@ ul,a,p{
   border-right: 0.05rem solid #f5f5f5;
 }
 .el_stop_btn,.el_order_status{
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   width: 100%;
-  line-height: 2.5rem;
+  line-height: 2.4rem;
+  height: 2.4rem;
   text-align: center;
   display: block;
 }
-.el_stop_btn{
-  border-top:0.05rem solid #f5f5f5;
+.el_order_status{
+  font-size: 0.6rem;
+  width: 100%;
+  line-height: 2rem;
+  height: 2rem;
+  text-align: center;
+  display: block;
+}
+.el_stop_btn span{
+  width: 90%;
+  background-color: #c52110;
+  display: block;
+  height: 1.7rem;
+  color: white;
+  margin: 0 auto;
+  line-height: 1.7rem;
 }
 .el_choice_box{
   width: 100%;
@@ -599,17 +608,19 @@ ul,a,p{
 }
 .record_number_table{
   width: 100%;
-  background-color: #42c1b1;
   height: 2.5rem;
+  border-bottom:solid #f0f0f0 0.05rem;
 }
 .el_record_number_table{
   width: 100%;
   overflow: hidden;
+  height: 2rem;
 }
 .el_record_box{
   width: 96%;
   margin: 0.5rem 2%;
   background-color: white;
+  border:#e5e5e5 solid 0.05rem;
 }
 .el_record_number{
   width: 12%;
@@ -618,7 +629,7 @@ ul,a,p{
 }
 .el_record_number span{
   height: 1rem;
-  background-color: #42c1b1;
+  background-color: #c52110;
   color: white;
   display: block;
   line-height: 1rem;
@@ -629,9 +640,9 @@ ul,a,p{
   text-align: center;
 }
 .record_number span{
-  color: white;
   display: block;
   font-size: 0.7rem;
+  font-weight: bold;
 }
 .el_state_top_box{
   width: 100%;
@@ -677,18 +688,30 @@ ul,a,p{
   background-color: white;
 }
 .el_state_box span{
-  line-height: 2.5rem;
+  line-height: 2rem;
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   display: block;
 }
 .record_number_span{
-  width: 100%;
-  font-size: 0.7rem;
+  width: 1rem;
+  font-size: 0.6rem;
   color: white;
-  text-align: left;
+  text-align: center;
   display: block;;
-  font-weight: bold;
-  line-height: 2.5rem;
+  line-height: 1rem;
+  background-color: #c52110;
+  border-radius: 1rem;
+}
+.record_num{
+  font-size:0.6rem;
+  background-color: #c52110;
+  border-radius: 2rem;
+  width: 1rem;
+  height: 1rem;
+  color: white;
+  display: block;
+  line-height:1rem;
+  margin:0 auto;
 }
 </style>

@@ -28,10 +28,10 @@
       </div>
       <ul class="el_documentary_state">
         <li>
-          <span>进行期数 <font color="#42c1b1">{{doc.alreadyPer}}</font>/{{doc.totPeriods}}
+          <span>进行期数 <font color="#c5210f">{{doc.alreadyPer}}</font>/{{doc.totPeriods}}
           </span>
         </li>
-        <li style="border-left:0.05rem solid #f0f0f0">
+        <li>
           <span>最低利润率 {{doc.minRatePer}}%</span>
         </li>
       </ul>
@@ -63,12 +63,12 @@
       <div class="el_stop_btn">
         <span v-if="doc.isToll===1 && doc.numPayStatus===0"
           @click="this.showPayWindow=true,this.payRid=doc.rid">
-          付费查看
+          <font class="payment_btn">付费查看</font>
         </span>
-        <span @click="doDocumentary(doc)"
-          class="el_see_btn"
+        <span
+          @click="doDocumentary(doc)"
           :style="{width: (doc.isToll===1 && doc.numPayStatus===0 ? '50%' : '100%')}">
-          <font color="#42c1b1">
+          <font class="el_see_btn">
             {{doc.flag==='1' ? '跟单' : '取消跟单'}}
           </font>
         </span>
@@ -464,16 +464,14 @@ ul,a,p{
 .el_stop_btn{
   font-size: 0.6rem;
   width: 100%;
-  border-top: 0.05rem solid #f0f0f0;
   overflow: hidden;
+  height: 2.2rem;
 }
 .el_stop_btn span{
   width: 50%;
-  line-height: 2rem;
   text-align: center;
   display: block;
   float: left;
-  background-color: white;
 }
 .hide{
   display: none;
@@ -547,6 +545,7 @@ ul,a,p{
   background-color: white;
   overflow: hidden;
   margin:0.5rem 2%;
+  border: 0.05rem solid #e5e5e5;
 }
 .el_state_top_box{
   width: 100%;
@@ -561,9 +560,6 @@ ul,a,p{
   display: block;
   margin-left: 0.6rem;
 }
-.el_see_btn{
-  border-left: 0.05rem #f0f0f0 solid;
-}
 .el_section_box{
   width: 66%;
   float: left;
@@ -573,14 +569,10 @@ ul,a,p{
   text-align: left;
   display: block;
   font-size: 0.6rem;
-  color: white;
 }
 .el_documentary_state{
   width: 100%;
   height: 2rem;
-}
-.el_documentary_state{
-  border-bottom: #f0f0f0 solid 0.05rem;
 }
 .el_documentary_state li{
   width: 50%;
@@ -598,23 +590,22 @@ ul,a,p{
 .el_title_number{
   width: 100%;
   height: 2rem;
-  background-color: #42c1b1;
+  border-bottom: 0.05rem solid #f0f0f0;
 }
 .el_number{
   float: left;
   width: 34%;
 }
 .el_number span{
-  color: white;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   display: block;
   line-height: 2rem;
   text-align: center;
+  font-weight: bold;
 }
 .el_passengers{
   width: 50%;
   float: left;
-  border-left: 0.05rem solid #f0f0f0;
   height: 2rem;
 }
 .el_passengers span{
@@ -626,5 +617,25 @@ ul,a,p{
 }
 .el_passengers_box{
   width: 100%;
+}
+.payment_btn{
+  width: 90%;
+  height: 1.7rem;
+  background-color: #d7c149;
+  display: block;
+  color: white;
+  line-height: 1.7rem;
+  margin: 0 auto;
+  border-radius: 0.1rem;
+}
+.el_see_btn{
+  width: 90%;
+  height: 1.7rem;
+  background-color: #c5210f;
+  display: block;
+  color: white;
+  line-height: 1.7rem;
+  margin: 0 auto;
+  border-radius: 0.1rem;
 }
 </style>

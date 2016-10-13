@@ -16,34 +16,31 @@
       <div class="el_record_box_table">
         <table class="el_record_number_table">
           <tr class="el_record_number_box">
-            <td class="el_record_number">
-              <span>{{$index+1}}</span>
+            <td>
+              <span style="font-weight: bold; font-size:0.7rem;">{{doc.dailyNo.substr(4,2)}}/{{doc.dailyNo.substr(6,2)}}推荐{{doc.dailyNo.substr(8,2)}}</span>
             </td>
-            <th>
-              <span>{{doc.nums | split ','| getArray 0}}</span>
-            </th>
-            <th>
-              <span>{{doc.nums | split ','| getArray 1}}</span>
-            </th>
-            <th>
-              <span>{{doc.nums | split ','| getArray 2}}</span>
-            </th>
-            <th>
-              <span>{{doc.nums | split ','| getArray 3}}</span>
-            </th>
-            <th>
-              <span>{{doc.nums | split ','| getArray 4}}</span>
-            </th>
-            <th>
-              <span>{{doc.nums | split ','| getArray 5}}</span>
-            </th>
+            <td>
+              <span class="recommended_records">{{doc.nums | split ','| getArray 0}}</span>
+            </td>
+            <td>
+              <span class="recommended_records">{{doc.nums | split ','| getArray 1}}</span>
+            </td>
+            <td>
+              <span class="recommended_records">{{doc.nums | split ','| getArray 2}}</span>
+            </td>
+            <td>
+              <span class="recommended_records">{{doc.nums | split ','| getArray 3}}</span>
+            </td>
+            <td>
+              <span class="recommended_records">{{doc.nums | split ','| getArray 4}}</span>
+            </td>
+            <td>
+              <span class="recommended_records">{{doc.nums | split ','| getArray 5}}</span>
+            </td>
           </tr>
         </table>
-        <div class="el_passengers">
-          <span>{{doc.totalPerson}}人购买</span>
-        </div>
       </div>
-      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">起始期</span>
           <span>{{doc.startPeriods?doc.startPeriods.substr(2, 8):''}}</span>
@@ -57,10 +54,10 @@
           <span>{{doc.alreadyPer}}</span>
         </li>
       </ul>
-      <ul class="el_state_top_box" style="border-top:solid #f0f0f0 0.05rem;">
+      <ul class="el_state_top_box">
         <li class="el_state_top_1">
           <span class="el_state_top_margin">中奖金额</span>
-          <span><font color="#42c1b1">{{doc.winMount | currency '¥'}}</font></span>
+          <span><font color="#c52110">{{doc.winMount | currency '¥'}}</font></span>
         </li>
         <li class="el_state_top_2">
           <span class="el_state_top_margin">已使用金额</span>
@@ -73,6 +70,9 @@
           <span>{{doc.winRate}}%</span>
         </li>
       </ul>
+      <div class="el_purchases">
+       <span>{{doc.totalPerson}}人购买</span>
+     </div>
     </div>
   </div>
 </template>
@@ -208,15 +208,15 @@ ul,a,p{
   font-size: 0.7rem;
 }*/
 .el_record_number_table{
-  width: 76%;
-  overflow: hidden;
-  float: left;
+  width: 100%;
+  border-bottom:0.05rem solid #f0f0f0;
 }
 
 .el_record_box{
   width: 96%;
   margin: 0.5rem 2%;
   background-color: white;
+  border:0.05rem solid #e5e5e5;
 }
 .el_record_box tr{
   height: 2.5rem;
@@ -280,8 +280,26 @@ ul,a,p{
   text-align: center;
   font-size: 0.6rem;
 }
-.el_record_number_box th span{
+.el_record_number_box td span{
   font-size: 0.6rem;
-  line-height: 2.5rem;
+  line-height: 1rem;
+  text-align: center;
+  display: block;
+}
+.recommended_records{
+  background-color: #c52110;
+  border-radius:2rem;
+  color: white;
+  margin:0 0.1rem;
+  height: 1rem;
+  width: 1rem;
+}
+.el_purchases{
+  width: 100%;
+  border-top: 0.05rem solid #f0f0f0;
+  text-align: center;
+  font-size: 0.6rem;
+  color: 999999;
+  line-height: 1.4rem;
 }
 </style>

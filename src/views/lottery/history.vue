@@ -16,16 +16,16 @@
     <div class="el_history_box">
     <table class="el_history_table"  width="100%" border="0" cellpadding="0"  cellspacing="0">
       <tr>
-        <th width="30%">期号</th>
+        <th width="30%" style="border-right:0.05rem solid #f0f0f0">期号</th>
         <th colspan="5">号码</th>
       </tr>
       <tr align="center" v-for="item in list">
-        <td>{{item.periods?item.periods.substr(2, 8):''}}</td>
-        <td>{{item.nums | split ','| getArray 0}}</td>
-        <td>{{item.nums | split ','| getArray 1}}</td>
-        <td>{{item.nums | split ','| getArray 2}}</td>
-        <td>{{item.nums | split ','| getArray 3}}</td>
-        <td>{{item.nums | split ','| getArray 4}}</td>
+        <td style="border-right:0.05rem solid #f0f0f0">{{item.periods?item.periods.substr(2, 8):''}}</td>
+        <td class="history_number"><span>{{item.nums | split ','| getArray 0}}</span></td>
+        <td class="history_number"><span>{{item.nums | split ','| getArray 1}}</span></td>
+        <td class="history_number"><span>{{item.nums | split ','| getArray 2}}</span></td>
+        <td class="history_number"><span>{{item.nums | split ','| getArray 3}}</span></td>
+        <td class="history_number"><span>{{item.nums | split ','| getArray 4}}</span></td>
       </tr>
     </table>
   </div>
@@ -159,9 +159,20 @@ ul,a,p{
   background-color: white;
 }
 .el_history_table tr th,.el_history_table tr td{
-  border: 0.05rem solid #f0f0f0;
   height: 2.5rem;
   font-size: 0.7rem;
 }
-
+.el_history_table tr{
+  border-bottom: 0.05rem solid #f0f0f0;
+}
+.history_number span{
+  background-color: #c5210f;
+  display: block;
+  color: white;
+  border-radius: 01rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  font-size: 0.6rem;
+}
 </style>
