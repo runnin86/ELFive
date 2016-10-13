@@ -17,7 +17,14 @@
         <table class="el_record_number_table">
           <tr class="el_record_number_box">
             <td>
-              <span style="font-weight: bold; font-size:0.7rem;">{{doc.dailyNo.substr(4,2)}}/{{doc.dailyNo.substr(6,2)}}推荐{{doc.dailyNo.substr(8,2)}}</span>
+              <span style="font-weight: bold; font-size:0.7rem;" v-if="doc.dailyNo">
+                {{doc.dailyNo.substr(4,2)}}/{{doc.dailyNo.substr(6,2)}}推荐{{doc.dailyNo.substr(8,2)}}
+              </span>
+              <span style="font-weight: bold; font-size:0.7rem;" v-else>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
             </td>
             <td>
               <span class="recommended_records">{{doc.nums | split ','| getArray 0}}</span>

@@ -181,7 +181,7 @@
       num = value.split(',')[index]
     }
     else if (isFree === 1) {
-      if (isPay === 1) {
+      if (isPay === 1 || index < 2) {
         // 收费的付款后可看
         num = value.split(',')[index]
       }
