@@ -1,7 +1,7 @@
 <template>
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <div class="content" transition="bounce">
     <!-- 顶部操作栏 -->
     <div class="el_head">
@@ -21,7 +21,7 @@
       <strong class="el_purchase_btn"
         @click="this.showTabs = 1"
         :class="this.showTabs===1?'el_click_white':''">
-      已购买</strong>
+      已出票</strong>
       <strong class="el_bonus_btn"
         @click="this.showTabs = 2"
         :class="this.showTabs===2?'el_click_white':''">

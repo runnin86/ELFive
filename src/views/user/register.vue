@@ -1,7 +1,7 @@
 <template>
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <div class="content" transition="pushtop">
     <!-- 顶部操作栏 -->
     <div class="el_head">
@@ -78,6 +78,11 @@ export default {
         $.toast('请输入手机号')
         return
       }
+      else if (!(/^1[34578]\d{9}$/.test(this.uphone)))
+      {
+        $.toast('请输入正确的手机号')
+        return
+      }
       if (!this.uname) {
         $.toast('请输入姓名')
         return
@@ -88,6 +93,11 @@ export default {
       }
       if (!this.alipayid) {
         $.toast('请输入支付宝账号')
+        return
+      }
+      else if (!(/^1[34578]\d{9}$/.test(this.alipayid) || (/^[_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.){1,4}[a-z]{2,3}$/.test(this.alipayid))))
+      {
+        $.toast('请输入正确的付宝账号')
         return
       }
       if (!this.protocol) {
