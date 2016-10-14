@@ -22,27 +22,27 @@
       <tr align="center" v-for="item in list">
         <td style="border-right:0.05rem solid #f0f0f0">{{item.periods?item.periods.substr(2, 8):''}}</td>
         <td class="history_number">
-          <span :style="{'background-color': changeColor(item.nums, $index%2)}">
+          <span :style="{'background-color': '#f26438'}">
             {{item.nums | split ','| getArray 0}}
           </span>
         </td>
         <td class="history_number">
-          <span :style="{'background-color': changeColor(item.nums, $index%2)}">
+          <span :style="{'background-color': '#acb07c'}">
             {{item.nums | split ','| getArray 1}}
           </span>
         </td>
         <td class="history_number">
-          <span :style="{'background-color': changeColor(item.nums, $index%2)}">
+          <span :style="{'background-color': '#ea8f3d'}">
             {{item.nums | split ','| getArray 2}}
           </span>
         </td>
         <td class="history_number">
-          <span :style="{'background-color': changeColor(item.nums, $index%2)}">
+          <span :style="{'background-color': '#acb07c'}">
             {{item.nums | split ','| getArray 3}}
           </span>
         </td>
         <td class="history_number">
-          <span :style="{'background-color': changeColor(item.nums, $index%2)}">
+          <span :style="{'background-color': '#f26438'}">
             {{item.nums | split ','| getArray 4}}
           </span>
         </td>
@@ -70,53 +70,6 @@ export default {
     }
   },
   methods: {
-    changeColor (nums, i) {
-      console.log(i)
-      let color = ''
-      // let num = null
-      if (nums) {
-        // num = nums.split(',')[i]
-        switch ('0' + (i + 1))
-        {
-          case '01':
-            color = '#e93636'
-            break
-          case '02':
-            color = '#476e6c'
-            break
-          case '03':
-            color = '#ea8f3d'
-            break
-          case '04':
-            color = '#acb07c'
-            break
-          case '05':
-            color = '#476e6c'
-            break
-          case '06':
-            color = '#3889bc'
-            break
-          case '07':
-            color = '#1d5487'
-            break
-          case '08':
-            color = '#7982bd'
-            break
-          case '09':
-            color = '#6e5273'
-            break
-          case '10':
-            color = '#754645'
-            break
-          case '11':
-            color = '#333333'
-            break
-          default:
-            break
-        }
-      }
-      return color
-    },
     /*
      * 获取开奖号码的历史记录(分页未完成)
      */
