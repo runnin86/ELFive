@@ -1,4 +1,3 @@
-
 <template>
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
@@ -12,112 +11,131 @@
         </a>
       </div>
 
-      <!-- 购买模块 -->
-      <div class="buy_box">
-        <!-- 数字显示区域及付费查看按钮 -->
-        <div class="number_box">
-          <ul class="number">
-            <li>01</li>
-            <li>03</li>
-            <li style="background-color:#cccccc">?</li>
-            <li style="background-color:#cccccc">?</li>
-            <li style="background-color:#cccccc">?</li>
-            <li style="background-color:#cccccc">?</li>
+      <div v-for="t in togList | orderBy 'procesStatus' 1" track-by="$index">
+        <!-- 未开始 -->
+        <div class="buy_box" v-if="t.procesStatus===0">
+          <!-- 数字显示区域及付费查看按钮 -->
+          <div class="number_box">
+            <ul class="number">
+              <li>
+                {{t.nums | numberFilter t.isPayView 0}}
+              </li>
+              <li>
+                {{t.nums | numberFilter t.isPayView 1}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 2}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 3}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 4}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 5}}
+              </li>
+            </ul>
+            <div class="view_btn"
+              :style="{'background-color': (t.isPayView !== 1 ? '' : '#cccccc')}">
+              <span @click="this.showPayWindow=(t.isPayView !== 1)">付费查看</span>
+            </div>
+          </div>
+          <!-- 限购时间 -->
+          <div class="time_interval">
+            <span>开始购买 {{t.startSaleTime | dataFilter 'MM.dd HH:mm'}}</span>
+            <span>截止购买 {{t.endSaleTime | dataFilter 'MM.dd HH:mm'}}</span>
+          </div>
+          <!-- 购买期数区间 -->
+          <div class="period_interval">
+            <span>{{t.recInfo}}</span>
+          </div>
+          <!-- 进度条 -->
+          <div class="progress_bar">
+            <div class="schedule" :style="{width: (t.nowAmount/t.initAmount)*100+'%'}">
+            </div>
+          </div>
+          <!-- 已售/利润率/总需 -->
+          <div class="purchases">
+            <span class="sales">已售 {{t.nowAmount}}元</span>
+            <span class="profitability">利润率 {{t.initRatePer}}%</span>
+            <span class="total">总需 {{t.initAmount}}元</span>
+          </div>
+          <!-- 认购按钮 -->
+          <div class="subscription_btn">
+            <span @click="this.showPaymentWindow=true">马上认购</span>
+          </div>
+          <!-- 认购凭证 -->
+          <div class="certificate"
+            v-for="sub in t.subList | orderBy 'orderdate' -1" track-by="$index">
+            <span class="certificate_title">认购凭证</span>
+            <span class="buying_information">
+              购买 {{sub.subamount}}元&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+              日期 {{sub.orderdate | dataFilter 'yyyy.MM.dd HH:mm'}}
+            </span>
+            <img class="certificate_off" src="/img/11/delete_btn.png"
+              @click="this.showCancelWindow=true">
+          </div>
+        </div>
+
+        <!-- 进行中 -->
+        <div class="processing_box" v-if="t.procesStatus===1">
+          <ul class="processing_head_box">
+            <li class="buy_period">认购 20161018期</li>
+            <li class="processing_icon">进行中</li>
+            <li class="process" style=><font color="1ac7f9">118</font> / 150</li>
           </ul>
-          <div class="view_btn">
-            <span @click="this.showPayWindow=true">付费查看</span>
+          <div class="number_box">
+            <ul class="number">
+              <li>01</li>
+              <li>03</li>
+              <li style="background-color:#cccccc">?</li>
+              <li style="background-color:#cccccc">?</li>
+              <li style="background-color:#cccccc">?</li>
+              <li style="background-color:#cccccc">?</li>
+            </ul>
+            <div class="view_btn">
+              <span @click="this.showPayWindow=true">付费查看</span>
+            </div>
+          </div>
+          <div class="processing_progress_bar">
+          </div>
+          <div class="sold_condition">
+            <span class="sold">已售 22580元</span>
+            <span class="purchase">您未购买</span>
+            <span class="processing_profitability">100%利润率</span>
           </div>
         </div>
-        <!-- 限购时间 -->
-        <div class="time_interval">
-          <span>开始购买 10.16 00:01</span>
-          <span>截止购买 10.16 23:59</span>
-        </div>
-        <!-- 购买期数区间 -->
-        <div class="period_interval">
-          <span>起始&nbsp2016101801&nbsp-&nbsp终止&nbsp2016101972&nbsp&nbsp共150期</span>
-        </div>
-        <!-- 进度条 -->
-        <div class="progress_bar">
-          <div class="schedule">
+
+        <!-- 已结束 -->
+        <div class="over_box" v-if="t.procesStatus===2">
+          <ul class="processing_head_box">
+            <li class="buy_period">认购 20161018期</li>
+            <li class="over_icon">已结束</li>
+            <li class="hit">118期命中</li>
+          </ul>
+          <div class="over_number_box">
+            <ul class="over_number">
+              <li>02</li>
+              <li>03</li>
+              <li>06</li>
+              <li>08</li>
+              <li>10</li>
+              <li>11</li>
+            </ul>
+            <div class="view_btn">
+              <span>获奖1200元</span>
+            </div>
           </div>
-        </div>
-        <!-- 已售/利润率/总需 -->
-        <div class="purchases">
-          <span class="sales">已售 2008元</span>
-          <span class="profitability">利润率 25%</span>
-          <span class="total">总需 2628元</span>
-        </div>
-        <!-- 认购按钮 -->
-        <div class="subscription_btn">
-          <span @click="this.showPaymentWindow=true">马上认购</span>
-        </div>
-        <!-- 认购凭证 -->
-        <div class="certificate">
-          <span class="certificate_title">认购凭证</span>
-          <span class="buying_information">购买 280元&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日期 2016.10.18 20:20</span>
-          <img class="certificate_off" src="/img/11/delete_btn.png" @click="this.showCancelWindow=true">
+          <div class="over_progress_bar">
+          </div>
+          <div class="over_condition">
+            <span class="over_sold">已售 22580元</span>
+            <span class="over_purchase">您购买了 600元</span>
+            <span class="over_profitability">100%利润率</span>
+          </div>
         </div>
       </div>
-
-      <!-- 进行中 -->
-      <div class="processing_box">
-        <ul class="processing_head_box">
-          <li class="buy_period">认购 20161018期</li>
-          <li class="processing_icon">进行中</li>
-          <li class="process" style=><font color="1ac7f9">118</font> / 150</li>
-        </ul>
-        <div class="number_box">
-          <ul class="number">
-            <li>01</li>
-            <li>03</li>
-            <li style="background-color:#cccccc">?</li>
-            <li style="background-color:#cccccc">?</li>
-            <li style="background-color:#cccccc">?</li>
-            <li style="background-color:#cccccc">?</li>
-          </ul>
-          <div class="view_btn">
-            <span @click="this.showPayWindow=true">付费查看</span>
-          </div>
-        </div>
-        <div class="processing_progress_bar">
-        </div>
-        <div class="sold_condition">
-          <span class="sold">已售 22580元</span>
-          <span class="purchase">您未购买</span>
-          <span class="processing_profitability">100%利润率</span>
-        </div>
-      </div>
-
-      <!-- 已结束订单 -->
-      <div class="over_box">
-        <ul class="processing_head_box">
-          <li class="buy_period">认购 20161018期</li>
-          <li class="over_icon">已结束</li>
-          <li class="hit">118期命中</li>
-        </ul>
-        <div class="over_number_box">
-          <ul class="over_number">
-            <li>02</li>
-            <li>03</li>
-            <li>06</li>
-            <li>08</li>
-            <li>10</li>
-            <li>11</li>
-          </ul>
-          <div class="view_btn">
-            <span>获奖1200元</span>
-          </div>
-        </div>
-        <div class="over_progress_bar">
-        </div>
-        <div class="over_condition">
-          <span class="over_sold">已售 22580元</span>
-          <span class="over_purchase">您购买了 600元</span>
-          <span class="over_profitability">100%利润率</span>
-        </div>
-      </div>
-
       <!-- 占位符 -->
       <div class="placeholder">
       </div>
@@ -178,17 +196,70 @@
 </template>
 
 <script>
+import {api} from '../../util/service'
+import {dateFormat} from '../../util/util'
+import Vue from 'vue'
+import $ from 'zepto'
+
+Vue.filter('dataFilter', function (value, format) {
+  return dateFormat(new Date(value), format)
+})
+
+Vue.filter('numberFilter', function (value, isPay, index) {
+  // isPay: 0 未付费   1 已付
+  let num = '?'
+  if (isPay === 1 || index < 2) {
+    // 收费的付款后可看
+    num = value.split(',')[index]
+  }
+  return num
+})
+
 export default {
+  ready () {
+    $.init()
+    this.getTogList()
+  },
   data () {
     return {
-      docList: [],
+      togList: [],
       quantity: '50',
       showCertificateWindow: false,
       showPayWindow: false,
       showCancelWindow: false,
       showPaymentWindow: false,
       payRid: null,
-      cancelDid: null
+      cancelDid: null,
+      pagenum: 1,
+      pagesize: 5
+    }
+  },
+  methods: {
+    /*
+     * 获取跟单选购列表
+     */
+    getTogList () {
+      let token = window.localStorage.getItem('elToken')
+      // 获取跟单选购列表
+      this.$http.get(api.togetherList, {
+        'pagenum': this.pagenum,
+        'pagesize': this.pagesize
+      }, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        console.log(data)
+        if (code === 1) {
+          this.togList = data
+        }
+        else {
+          $.toast(msg)
+        }
+      }).catch((e)=>{
+        console.error('获取合买列表失败:' + e)
+      })
     }
   }
 }
@@ -211,7 +282,7 @@ ul,a,p{
 }
 .el_subscription_head{
   width: 100%;
-  height:6rem;
+  height:5.4rem;
   background-image: url(/img/11/subscription_bg.png);
   background-size: 100%;
   overflow: hidden;
@@ -231,11 +302,11 @@ ul,a,p{
 .buy_box{
   width: 94%;
   background-color: white;
-  margin-top: -1.1rem;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
   border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 .number_box{
   width: 100%;
@@ -309,7 +380,6 @@ ul,a,p{
   margin-right: auto;
 }
 .schedule{
-  width: 80%;
   height: 100%;
   background-color: #f3bc26;
   border-radius: 1rem;
