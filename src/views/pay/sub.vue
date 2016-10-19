@@ -83,7 +83,8 @@
           <ul class="processing_head_box">
             <li class="buy_period">认购 20161018期</li>
             <li class="processing_icon">进行中</li>
-            <li class="process" style=><font color="1ac7f9">118</font> / 150</li>
+            <li class="process">
+              <font color="1ac7f9">{{t.alreadyPer}}</font> / {{t.totPeriods}}</li>
           </ul>
           <div class="number_box">
             <ul class="number">
@@ -114,9 +115,20 @@
           <div class="processing_progress_bar">
           </div>
           <div class="sold_condition">
-            <span class="sold">已售 22580元</span>
-            <span class="purchase">您未购买</span>
-            <span class="processing_profitability">100%利润率</span>
+            <span class="sold">已售 {{t.nowAmount}}元</span>
+            <span class="purchase">
+              {{t.subList.length===0 ? '您未购买' : '&nbsp;'}}
+            </span>
+            <span class="processing_profitability">{{t.nowRatePer}}%利润率</span>
+          </div>
+          <!-- 认购凭证 -->
+          <div class="certificate"
+            v-for="sub in t.subList | orderBy 'orderdate' -1" track-by="$index">
+            <span class="certificate_title">认购凭证</span>
+            <span class="buying_information">
+              购买 {{sub.subamount}}元&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+              日期 {{sub.orderdate | dataFilter 'yyyy.MM.dd HH:mm'}}
+            </span>
           </div>
         </div>
 
