@@ -95,6 +95,16 @@
       </div>
     </div>
 
+    <!-- 认购入口 -->
+    <div class="subscription_box" v-link="{path: '/subscription', replace: true}">
+      <img src="/img/11/subscription_icon.png" class="subscription_icon">
+      <div class="subscription_slogan">
+        <h4>齐力夺金</h4>
+        <h5>全民合力购买150期超长跟单</h5>
+      </div>
+      <img src="/img/11/new_icon.png" class="new_icon">
+    </div>
+
     <!-- 推荐记录/历史号码 -->
     <ul class="el_history_record_box">
         <li class="el_recommended_record" v-link="{path: '/record', replace: true}">
@@ -459,6 +469,11 @@ body,ul{
   padding:0;
   background-color: #f0f0f0
 }
+h1,h2,h3,h4,h5,h6{
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
 .el_head {
   width:100%;
   height:50px;
@@ -718,5 +733,36 @@ body,ul{
   background-image: url(/img/11/home_bg.png);
   background-repeat: no-repeat;
   background-size: 100%;
+}
+.subscription_box{
+  height: 3.7rem;
+  width: 100%;
+  background-color: white;
+  margin-top:0.5rem;
+  position:relative;
+}
+.subscription_icon{
+  display: block;
+  float: left;
+  height: 2.4rem;
+  margin: 0.65rem 1rem;
+}
+.subscription_slogan{
+  height: 3.7rem;
+  float: left;
+}
+.subscription_slogan h4{
+  margin-top:0.6rem;
+}
+.subscription_slogan h5{
+  color: #999999;
+  margin-top: 0.1rem;
+}
+.new_icon{
+  display: block;
+  position: absolute;
+  right: 0.4rem;
+  width: 1rem;
+  top: 0.4rem;
 }
 </style>

@@ -22,6 +22,11 @@ export default function (router) {
         require(['./views/lottery/home'], resolve)
       }
     },
+    '/subscription': {
+      component (resolve) {
+        require(['./views/pay/subscription'], resolve)
+      }
+    },
     '/choose': {
       component (resolve) {
         require(['./views/pay/choose'], resolve)

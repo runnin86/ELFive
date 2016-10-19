@@ -575,7 +575,20 @@ ul,a,p{
   font-size: 0.8rem;
   margin-top: 0.9rem;
 }
-.el_confirm_info_lower{
+..el_confirm_info{
+  width:100%;
+  height:5rem;
+  overflow: hidden;
+}
+.el_confirm_info_up{
+  text-align: center;
+  line-height:3rem;
+  display: block;
+}
+.el_confirm_info_up{
+  font-size: 0.8rem;
+  margin-top: 0.9rem;
+}{
   font-size: 0.6rem;
 }
 .el_button{
