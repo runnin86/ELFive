@@ -96,7 +96,7 @@
     </div>
 
     <!-- 认购入口 -->
-    <div class="subscription_box" v-link="{path: '/subscription', replace: true}">
+    <div class="subscription_box" v-link="{path: '/sub', replace: true}">
       <img src="/img/11/subscription_icon.png" class="subscription_icon">
       <div class="subscription_slogan">
         <h4>齐力夺金</h4>
