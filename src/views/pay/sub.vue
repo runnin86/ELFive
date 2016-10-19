@@ -87,15 +87,28 @@
           </ul>
           <div class="number_box">
             <ul class="number">
-              <li>01</li>
-              <li>03</li>
-              <li style="background-color:#cccccc">?</li>
-              <li style="background-color:#cccccc">?</li>
-              <li style="background-color:#cccccc">?</li>
-              <li style="background-color:#cccccc">?</li>
+              <li>
+                {{t.nums | numberFilter t.isPayView 0}}
+              </li>
+              <li>
+                {{t.nums | numberFilter t.isPayView 1}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 2}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 3}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 4}}
+              </li>
+              <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
+                {{t.nums | numberFilter t.isPayView 5}}
+              </li>
             </ul>
-            <div class="view_btn">
-              <span @click="this.showPayWindow=true">付费查看</span>
+            <div class="view_btn"
+              :style="{'background-color': (t.isPayView !== 1 ? '' : '#cccccc')}">
+              <span @click="this.showPayWindow=(t.isPayView !== 1)">付费查看</span>
             </div>
           </div>
           <div class="processing_progress_bar">
@@ -116,12 +129,12 @@
           </ul>
           <div class="over_number_box">
             <ul class="over_number">
-              <li>02</li>
-              <li>03</li>
-              <li>06</li>
-              <li>08</li>
-              <li>10</li>
-              <li>11</li>
+              <li>{{t.nums | numberFilter 1 0}}</li>
+              <li>{{t.nums | numberFilter 1 1}}</li>
+              <li>{{t.nums | numberFilter 1 2}}</li>
+              <li>{{t.nums | numberFilter 1 3}}</li>
+              <li>{{t.nums | numberFilter 1 4}}</li>
+              <li>{{t.nums | numberFilter 1 5}}</li>
             </ul>
             <div class="view_btn">
               <span>获奖1200元</span>
