@@ -38,7 +38,7 @@
             </ul>
             <div class="view_btn"
               :style="{'background-color': (t.isPayView !== 1 ? '' : '#cccccc')}">
-              <span @click="this.showPayWindow=(t.isPayView !== 1)">付费查看</span>
+              <span @click="this.showPayWindow=(t.isPayView !== 1),this.payTid=t.tId">付费查看</span>
             </div>
           </div>
           <!-- 限购时间 -->
@@ -63,7 +63,9 @@
           </div>
           <!-- 认购按钮 -->
           <div class="subscription_btn">
-            <span @click="this.showPaymentWindow=true">马上认购</span>
+            <span @click="this.showPaymentWindow=true,this.paymentTog=t">
+              马上认购
+            </span>
           </div>
           <!-- 认购凭证 -->
           <div class="certificate"
@@ -74,7 +76,7 @@
               日期 {{sub.orderdate | dataFilter 'yyyy.MM.dd HH:mm'}}
             </span>
             <img class="certificate_off" src="/img/11/delete_btn.png"
-              @click="this.showCancelWindow=true">
+              @click="this.showCancelWindow=true,this.cancelSid=sub.sid">
           </div>
         </div>
 
@@ -109,7 +111,9 @@
             </ul>
             <div class="view_btn"
               :style="{'background-color': (t.isPayView !== 1 ? '' : '#cccccc')}">
-              <span @click="this.showPayWindow=(t.isPayView !== 1)">付费查看</span>
+              <span @click="this.showPayWindow=(t.isPayView !== 1),this.payTid=t.tId">
+                付费查看
+              </span>
             </div>
           </div>
           <div class="processing_progress_bar">
@@ -175,7 +179,7 @@
           <span class="view_confirm_info">查看所有号码需支付500.00元</span>
         </div>
         <div class="view_confirm_btn">
-          <span>立即支付</span>
+          <span @click="this.buyViewTog()">立即支付</span>
         </div>
       </div>
     </div>
@@ -188,12 +192,11 @@
         <span class="el_confirm_info_up">是否确认取消本次认购?</span>
       </div>
       <div class="el_button">
-        <span class="el_button_left" @click="this.showCancelWindow = false">
+        <span class="el_button_left" @click="this.showCancelWindow=false">
           取消
         </span>
         <span class="el_button_right"
-          @click="this.showCancelWindow = false"
-          @click="this.showCertificateWindow = false">
+          @click="this.cancelTog()">
           确定
         </span>
       </div>
@@ -214,7 +217,7 @@
         <input class="quantity" v-model="quantity" type="text" name="quantity" placeholder="请输入您要购买的金额">
       </div>
       <div class="confirm_btn">
-        <span>立即支付</span>
+        <span @click="this.buyTog()">立即支付</span>
       </div>
     </div>
   </div>
@@ -223,6 +226,7 @@
 <script>
 import {api} from '../../util/service'
 import {dateFormat} from '../../util/util'
+import pingpp from 'pingpp-js'
 import Vue from 'vue'
 import $ from 'zepto'
 
@@ -249,12 +253,12 @@ export default {
     return {
       togList: [],
       quantity: '50',
-      showCertificateWindow: false,
       showPayWindow: false,
       showCancelWindow: false,
       showPaymentWindow: false,
-      payRid: null,
-      cancelDid: null,
+      payTid: null, // 支付查看
+      paymentTog: null, // 认购对象
+      cancelSid: null, // 取消认购
       pagenum: 1,
       pagesize: 5
     }
@@ -275,7 +279,7 @@ export default {
         }
       })
       .then(({data: {code, data, msg}})=>{
-        console.log(data)
+        // console.log(data)
         if (code === 1) {
           this.togList = data
         }
@@ -285,6 +289,157 @@ export default {
       }).catch((e)=>{
         console.error('获取合买列表失败:' + e)
       })
+    },
+    /*
+     * 付费查看支付
+     */
+    buyViewTog () {
+      if (this.payTid) {
+        // 付费查看
+        let openid = window.localStorage.getItem('elOpenid')
+        let token = window.localStorage.getItem('elToken')
+        this.$http.post(api.viewTogether, {
+          'tid': this.payTid,
+          'price': 1,
+          'openid': openid
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {data, code, msg}})=>{
+          console.log(data)
+          if (code === 1) {
+            if (data.paytype === 'wx_pub') {
+              let payResult = false
+              pingpp.createPayment(data.charge, function (result, err) {
+                if (result === 'success') {
+                  // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                  $.toast('支付成功!')
+                  payResult = true
+                }
+                else if (result === 'fail') {
+                  // charge 不正确或者微信公众账号支付失败时会在此处返回
+                  $.toast('支付失败!')
+                }
+                else if (result === 'cancel') {
+                  // 微信公众账号支付取消支付
+                  $.toast('支付取消!')
+                }
+              })
+              // 在支付完成后做操作
+              setTimeout(function () {
+                this.showPayWindow = false
+                if (payResult) {
+                  this.getTogList()
+                }
+              }.bind(this), 1200)
+            }
+            else {
+              // 账户金额支付
+              $.toast(msg)
+              this.showPayWindow = false
+              this.getTogList()
+            }
+          }
+          else {
+            $.toast(msg)
+          }
+        }).catch((e)=>{
+          console.error('付费查看失败:' + e)
+        }).finally(()=>{
+          this.payTid = null
+        })
+      }
+    },
+    /*
+     * 认购支付
+     */
+    buyTog () {
+      if (this.paymentTog) {
+        // 参与合买
+        let openid = window.localStorage.getItem('elOpenid')
+        let token = window.localStorage.getItem('elToken')
+        this.$http.post(api.joinTogether, {
+          'tid': this.paymentTog.tId,
+          'subAmount': this.quantity,
+          'nowAmount': this.paymentTog.initAmount,
+          'openid': openid
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          if (code === 1) {
+            if (data && data.paytype === 'wx_pub') {
+              let payResult = false
+              pingpp.createPayment(data.charge, function (result, err) {
+                if (result === 'success') {
+                  // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+                  $.toast('支付成功!')
+                  payResult = true
+                }
+                else if (result === 'fail') {
+                  // charge 不正确或者微信公众账号支付失败时会在此处返回
+                  $.toast('支付失败!')
+                }
+                else if (result === 'cancel') {
+                  // 微信公众账号支付取消支付
+                  $.toast('支付取消!')
+                }
+              })
+              // 在支付完成后做操作
+              setTimeout(function () {
+                this.showPaymentWindow = false
+                if (payResult) {
+                  this.getTogList()
+                }
+              }.bind(this), 1200)
+            }
+            else {
+              // 账户金额支付
+              $.toast(msg)
+              this.showPaymentWindow = false
+              this.getTogList()
+            }
+          }
+          else {
+            $.toast(msg)
+          }
+        }).catch((e)=>{
+          console.error('参与合买失败:' + e)
+        }).finally(()=>{
+          this.paymentTog = null
+        })
+      }
+    },
+    /*
+     * 取消认购
+     */
+    cancelTog () {
+      if (this.cancelSid) {
+        // 参与合买
+        let token = window.localStorage.getItem('elToken')
+        this.$http.post(api.cancelTogether, {
+          'sid': this.cancelSid
+        }, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, msg}})=>{
+          $.toast(msg)
+          if (code === 1) {
+            this.showCancelWindow = false
+            this.getTogList()
+          }
+        }).catch((e)=>{
+          console.error('取消认购失败:' + e)
+        }).finally(()=>{
+          this.cancelSid = null
+        })
+      }
     }
   }
 }
