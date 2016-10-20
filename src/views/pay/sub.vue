@@ -62,8 +62,9 @@
             <span class="total">总需 {{t.initAmount}}元</span>
           </div>
           <!-- 认购按钮 -->
-          <div class="subscription_btn">
-            <span @click="this.showPaymentWindow=true,this.paymentTog=t">
+          <div class="subscription_btn"
+            :style="{'background-color': (t.isCanBuy ? '' : '#cccccc')}">
+            <span @click="this.showPaymentWindow=t.isCanBuy,this.paymentTog=t">
               马上认购
             </span>
           </div>
@@ -75,8 +76,8 @@
               购买 {{sub.subamount}}元&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
               日期 {{sub.orderdate | dataFilter 'yyyy.MM.dd HH:mm'}}
             </span>
-            <img class="certificate_off" src="/img/11/delete_btn.png"
-              @click="this.showCancelWindow=true,this.cancelSid=sub.sid">
+            <img v-if="t.isCanBuy" class="certificate_off" src="/img/11/delete_btn.png"
+              @click="this.showCancelWindow=t.isCanBuy,this.cancelSid=sub.sid">
           </div>
         </div>
 
@@ -308,7 +309,7 @@ export default {
           }
         })
         .then(({data: {data, code, msg}})=>{
-          console.log(data)
+          // console.log(data)
           if (code === 1) {
             if (data.paytype === 'wx_pub') {
               let payResult = false
