@@ -140,9 +140,9 @@
         <!-- 已结束 -->
         <div class="over_box" v-if="t.procesStatus===2">
           <ul class="processing_head_box">
-            <li class="buy_period">认购 20161018期</li>
+            <li class="buy_period">认购 {{t.endPeriods}}期</li>
             <li class="over_icon">已结束</li>
-            <li class="hit">118期命中</li>
+            <li class="hit">{{t.winnerPeriods}}期命中</li>
           </ul>
           <div class="over_number_box">
             <ul class="over_number">
@@ -154,15 +154,17 @@
               <li>{{t.nums | numberFilter 1 5}}</li>
             </ul>
             <div class="view_btn">
-              <span>获奖1200元</span>
+              <span>获奖{{t.winMoney}}元</span>
             </div>
           </div>
           <div class="over_progress_bar">
           </div>
           <div class="over_condition">
-            <span class="over_sold">已售 22580元</span>
-            <span class="over_purchase">您购买了 600元</span>
-            <span class="over_profitability">100%利润率</span>
+            <span class="over_sold">已售 {{t.nowAmount}}元</span>
+            <span class="over_purchase">
+              {{t.buyMoney>0 ? '您购买了 ' + t.buyMoney + '元' : '您未购买'}}
+            </span>
+            <span class="over_profitability">{{t.nowRatePer}}%利润率</span>
           </div>
         </div>
       </div>
@@ -260,7 +262,7 @@ export default {
       payTid: null, // 支付查看
       paymentTog: null, // 认购对象
       cancelSid: null, // 取消认购
-      pagenum: 1,
+      pagenum: 2,
       pagesize: 5
     }
   },
