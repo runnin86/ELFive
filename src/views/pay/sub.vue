@@ -140,9 +140,13 @@
         <!-- 已结束 -->
         <div class="over_box" v-if="t.procesStatus===2">
           <ul class="processing_head_box">
-            <li class="buy_period">认购 {{t.endPeriods}}期</li>
+            <li class="buy_period">
+              认购 {{t.endPeriods?t.endPeriods.substr(2, 8):''}}期
+            </li>
             <li class="over_icon">已结束</li>
-            <li class="hit">{{t.winnerPeriods}}期命中</li>
+            <li class="hit">
+              {{t.winnerPeriods?t.winnerPeriods.substr(2, 8):''}}期命中
+            </li>
           </ul>
           <div class="over_number_box">
             <ul class="over_number">
