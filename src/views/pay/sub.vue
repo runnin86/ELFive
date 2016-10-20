@@ -2,7 +2,7 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <div class="content" transition="">
+  <div class="content" transition="" v-infinite-scroll="loadMore">
     <div class="subscription_background">
     <!-- 顶部操作栏 -->
       <div class="el_subscription_head">
@@ -183,7 +183,7 @@
         <img src="/img/11/delete_btn.png" class="view_confirm_off"
           @click="this.showPayWindow = false">
         <div class="el_confirm_info">
-          <span class="view_confirm_info">查看所有号码需支付500.00元</span>
+          <span class="view_confirm_info">查看所有号码需支付{{viewPrice}}元</span>
         </div>
         <div class="view_confirm_btn">
           <span @click="this.buyViewTog()">立即支付</span>
@@ -232,6 +232,7 @@
 
 <script>
 import {api} from '../../util/service'
+import {loader} from '../../util/util'
 import {dateFormat} from '../../util/util'
 import pingpp from 'pingpp-js'
 import Vue from 'vue'
@@ -259,15 +260,17 @@ export default {
   data () {
     return {
       togList: [],
-      quantity: '50',
+      quantity: 50,
+      viewPrice: 500,
       showPayWindow: false,
       showCancelWindow: false,
       showPaymentWindow: false,
       payTid: null, // 支付查看
       paymentTog: null, // 认购对象
       cancelSid: null, // 取消认购
-      pagenum: 2,
-      pagesize: 5
+      pagenum: 1,
+      pagesize: 5,
+      loading: false
     }
   },
   methods: {
@@ -288,14 +291,44 @@ export default {
       .then(({data: {code, data, msg}})=>{
         // console.log(data)
         if (code === 1) {
-          this.togList = data
+          if (data.length === 0) {
+            this.pagenum = -1
+            return
+          }
+          for (let m of data) {
+            this.togList.push(m)
+          }
         }
         else {
           $.toast(msg)
         }
       }).catch((e)=>{
         console.error('获取合买列表失败:' + e)
+      }).finally(()=>{
+        this.loading = false
+        loader.hide()
       })
+    },
+    /*
+     * 读取更多数据
+     */
+    loadMore () {
+      // 1.加载中 2.pagenum为负数 3.当前记录的条数<当前页数*每页条数
+      if (this.loading || this.pagenum === -1) {
+        // 满足上述2条件的任一条,均不加载更多
+        return
+      }
+      this.loading = true
+      let scroller = $('.native-scroll')
+      loader.show()
+      setTimeout(() => {
+        // 查询更多数据
+        this.pagenum = this.pagenum + 1
+        // 查询数据
+        this.getTogList()
+        let scrollTop = scroller[0].scrollHeight - scroller.height()
+        scroller.scrollTop(scrollTop)
+      }, 500)
     },
     /*
      * 付费查看支付
@@ -307,7 +340,7 @@ export default {
         let token = window.localStorage.getItem('elToken')
         this.$http.post(api.viewTogether, {
           'tid': this.payTid,
-          'price': 1,
+          'price': this.viewPrice,
           'openid': openid
         }, {
           headers: {
@@ -820,7 +853,7 @@ ul,a,p{
   margin-right: 0.4rem;
   border: 0.05rem solid #f0f0f0;
   border-radius: 0.2rem;
-  width: 3.4rem;
+  padding: 0 0.2rem;
   text-align: center
 }
 .over_number_box{
