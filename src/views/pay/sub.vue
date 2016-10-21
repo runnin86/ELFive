@@ -403,7 +403,6 @@ export default {
         this.$http.post(api.joinTogether, {
           'tid': this.paymentTog.tId,
           'subAmount': this.quantity,
-          'nowAmount': this.paymentTog.initAmount,
           'openid': openid
         }, {
           headers: {
