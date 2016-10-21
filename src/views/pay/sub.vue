@@ -179,18 +179,18 @@
       <div class="placeholder">
       </div>
     </div>
+  </div>
 
-    <!-- 付费查看弹出窗口 -->
-    <div :class="this.showPayWindow?'el_eject_window_box':'hide'">
-      <div class="el_eject_window">
-        <img src="/img/11/delete_btn.png" class="view_confirm_off"
-          @click="this.showPayWindow = false">
-        <div class="el_confirm_info">
-          <span class="view_confirm_info">查看所有号码需支付{{viewPrice}}元</span>
-        </div>
-        <div class="view_confirm_btn">
-          <span @click="this.buyViewTog()">立即支付</span>
-        </div>
+  <!-- 付费查看弹出窗口 -->
+  <div :class="this.showPayWindow?'el_eject_window_box':'hide'">
+    <div class="el_eject_window">
+      <img src="/img/11/delete_btn.png" class="view_confirm_off"
+        @click="this.showPayWindow = false">
+      <div class="el_confirm_info">
+        <span class="view_confirm_info">查看所有号码需支付{{viewPrice}}元</span>
+      </div>
+      <div class="view_confirm_btn">
+        <span @click="this.buyViewTog()">立即支付</span>
       </div>
     </div>
   </div>
