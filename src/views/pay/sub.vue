@@ -224,7 +224,7 @@
       <div class="pw_input" id="pw_input">
         <span class="amount">购买 {{quantity}}元</span>
         <input v-model="quantity" class="quantity"
-          placeholder="请输入您要购买的金额" type="number" min=10 max={{userAccount}}
+          placeholder="请输入您要购买的金额" type="number" min=10
           onKeyPress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
           onKeyUp="this.value=this.value.replace(/\D/g,'')"/>
       </div>
@@ -401,6 +401,10 @@ export default {
      * 认购支付
      */
     buyTog () {
+      if (!this.quantity || this.quantity < 1) {
+        $.toast('请输入有效购买金额')
+        return
+      }
       if (this.paymentTog) {
         // 参与合买
         let openid = window.localStorage.getItem('elOpenid')
@@ -485,6 +489,15 @@ export default {
         })
       }
     }
+  },
+  watch: {
+    // 'quantity': {
+    //   handler: function (newVal, oldVal) {
+    //     if (newVal > 0 && newVal % 2 > 0) {
+    //       this.quantity = parseInt(newVal, 0) + 1
+    //     }
+    //   }
+    // }
   }
 }
 </script>
