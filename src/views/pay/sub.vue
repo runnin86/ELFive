@@ -15,25 +15,25 @@
         <!-- 未开始 -->
         <div class="buy_box" v-if="t.procesStatus===0">
           <!-- 数字显示区域及付费查看按钮 -->
-          <div class="number_box">
-            <ul class="number">
+          <div class="sub_number_box">
+            <ul class="sub_number">
               <li>
-                {{t.nums | numberFilter t.isPayView 0}}
+                {{t.nums | subNumberFilter t.isPayView 0}}
               </li>
               <li>
-                {{t.nums | numberFilter t.isPayView 1}}
+                {{t.nums | subNumberFilter t.isPayView 1}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 2}}
+                {{t.nums | subNumberFilter t.isPayView 2}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 3}}
+                {{t.nums | subNumberFilter t.isPayView 3}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 4}}
+                {{t.nums | subNumberFilter t.isPayView 4}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 5}}
+                {{t.nums | subNumberFilter t.isPayView 5}}
               </li>
             </ul>
             <div class="view_btn"
@@ -91,25 +91,25 @@
             <li class="process">
               <font color="1ac7f9">{{t.alreadyPer}}</font> / {{t.totPeriods}}</li>
           </ul>
-          <div class="number_box">
-            <ul class="number">
+          <div class="sub_number_box">
+            <ul class="sub_number">
               <li>
-                {{t.nums | numberFilter t.isPayView 0}}
+                {{t.nums | subNumberFilter t.isPayView 0}}
               </li>
               <li>
-                {{t.nums | numberFilter t.isPayView 1}}
+                {{t.nums | subNumberFilter t.isPayView 1}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 2}}
+                {{t.nums | subNumberFilter t.isPayView 2}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 3}}
+                {{t.nums | subNumberFilter t.isPayView 3}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 4}}
+                {{t.nums | subNumberFilter t.isPayView 4}}
               </li>
               <li :style="{'background-color': (t.isPayView === 1 ? '' : '#cccccc')}">
-                {{t.nums | numberFilter t.isPayView 5}}
+                {{t.nums | subNumberFilter t.isPayView 5}}
               </li>
             </ul>
             <div class="view_btn"
@@ -152,12 +152,12 @@
           </ul>
           <div class="over_number_box">
             <ul class="over_number">
-              <li>{{t.nums | numberFilter 1 0}}</li>
-              <li>{{t.nums | numberFilter 1 1}}</li>
-              <li>{{t.nums | numberFilter 1 2}}</li>
-              <li>{{t.nums | numberFilter 1 3}}</li>
-              <li>{{t.nums | numberFilter 1 4}}</li>
-              <li>{{t.nums | numberFilter 1 5}}</li>
+              <li>{{t.nums | subNumberFilter 1 0}}</li>
+              <li>{{t.nums | subNumberFilter 1 1}}</li>
+              <li>{{t.nums | subNumberFilter 1 2}}</li>
+              <li>{{t.nums | subNumberFilter 1 3}}</li>
+              <li>{{t.nums | subNumberFilter 1 4}}</li>
+              <li>{{t.nums | subNumberFilter 1 5}}</li>
             </ul>
             <div class="view_btn">
               <span>获奖{{t.winMoney}}元</span>
@@ -247,7 +247,7 @@ Vue.filter('dataFilter', function (value, format) {
   return dateFormat(new Date(value), format)
 })
 
-Vue.filter('numberFilter', function (value, isPay, index) {
+Vue.filter('subNumberFilter', function (value, isPay, index) {
   // isPay: 0 未付费   1 已付
   let num = '?'
   if (isPay === 1 || index < 2) {
@@ -502,7 +502,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body,ul{
   margin: 0;
   padding: 0;
@@ -545,17 +545,17 @@ ul,a,p{
   border-radius: 0.3rem;
   margin-bottom: 0.5rem;
 }
-.number_box{
+.sub_number_box{
   width: 100%;
   overflow: hidden;
 }
-.number{
+.sub_number{
   float: left;
   width: 74%;
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
 }
-.number li{
+.sub_number li{
   float: left;
   width: 1.4rem;
   height: 1.4rem;
@@ -615,6 +615,7 @@ ul,a,p{
   margin-top: 0.6rem;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
 }
 .schedule{
   height: 100%;
