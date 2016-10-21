@@ -39,7 +39,9 @@
             </ul>
             <div class="view_btn"
               :style="{'background-color': (t.isPayView !== 1 ? '' : '#cccccc')}">
-              <span @click="this.showPayWindow=(t.isPayView !== 1),this.payTid=t.tId">付费查看</span>
+              <span @click="this.showPayWindow=(t.isPayView !== 1),this.payTid=t.tId,this.refreshTid=t.tId">
+                付费查看
+              </span>
             </div>
           </div>
           <!-- 限购时间 -->
@@ -67,7 +69,7 @@
           <!-- 认购按钮 -->
           <div class="subscription_btn"
             :style="{'background-color': (t.isCanBuy ? '' : '#cccccc')}">
-            <span @click="this.showPaymentWindow=t.isCanBuy,this.paymentTog=t">
+            <span @click="this.showPaymentWindow=t.isCanBuy,this.paymentTog=t,this.refreshTid=t.tId">
               马上认购
             </span>
           </div>
@@ -80,7 +82,7 @@
               日期 {{sub.orderdate | dataFilter 'yyyy.MM.dd HH:mm'}}
             </span>
             <img v-if="t.isCanBuy" class="certificate_off" src="/img/11/delete_btn.png"
-              @click="this.showCancelWindow=t.isCanBuy,this.cancelSid=sub.sid">
+              @click="this.showCancelWindow=t.isCanBuy,this.cancelSid=sub.sid,this.refreshTid=t.tId">
           </div>
         </div>
 
@@ -115,7 +117,7 @@
             </ul>
             <div class="view_btn"
               :style="{'background-color': (t.isPayView !== 1 ? '' : '#cccccc')}">
-              <span @click="this.showPayWindow=(t.isPayView !== 1),this.payTid=t.tId">
+              <span @click="this.showPayWindow=(t.isPayView !== 1),this.payTid=t.tId,this.refreshTid=t.tId">
                 付费查看
               </span>
             </div>
@@ -275,8 +277,9 @@ export default {
       payTid: null, // 支付查看
       paymentTog: null, // 认购对象
       cancelSid: null, // 取消认购
+      refreshTid: null, // 单个刷新的主键
       pagenum: 1,
-      pagesize: 2,
+      pagesize: 5,
       loading: false
     }
   },
@@ -298,6 +301,27 @@ export default {
           $.hideIndicator()
         }.bind(this), 800)
       }
+    },
+    /*
+     * 读取更多数据
+     */
+    loadMore () {
+      // 1.加载中 2.pagenum为负数 3.当前记录的条数<当前页数*每页条数
+      if (this.loading || this.pagenum === -1) {
+        // 满足上述2条件的任一条,均不加载更多
+        return
+      }
+      this.loading = true
+      let scroller = $('.native-scroll')
+      loader.show()
+      setTimeout(() => {
+        // 查询更多数据
+        this.pagenum = this.pagenum + 1
+        // 查询数据
+        this.getTogList()
+        let scrollTop = scroller[0].scrollHeight - scroller.height()
+        scroller.scrollTop(scrollTop)
+      }, 500)
     },
     /*
      * 获取跟单选购列表
@@ -335,25 +359,38 @@ export default {
       })
     },
     /*
-     * 读取更多数据
+     * 获取单个合买数据
      */
-    loadMore () {
-      // 1.加载中 2.pagenum为负数 3.当前记录的条数<当前页数*每页条数
-      if (this.loading || this.pagenum === -1) {
-        // 满足上述2条件的任一条,均不加载更多
+    getTogOne () {
+      if (!this.refreshTid) {
         return
       }
-      this.loading = true
-      let scroller = $('.native-scroll')
-      loader.show()
-      setTimeout(() => {
-        // 查询更多数据
-        this.pagenum = this.pagenum + 1
-        // 查询数据
-        this.getTogList()
-        let scrollTop = scroller[0].scrollHeight - scroller.height()
-        scroller.scrollTop(scrollTop)
-      }, 500)
+      let token = window.localStorage.getItem('elToken')
+      // 获取跟单选购列表
+      this.$http.get(api.togetherOne, {
+        'tid': this.refreshTid
+      }, {
+        headers: {
+          'x-token': token
+        }
+      })
+      .then(({data: {code, data, msg}})=>{
+        // console.log(data)
+        if (code === 1) {
+          for (var i = 0; i < this.togList.length; i++) {
+            if (this.togList[i].tId === data.tId) {
+              // 查找到对应的进行替换
+              this.togList.splice(i, 1, data)
+              return
+            }
+          }
+        }
+        else {
+          $.toast(msg)
+        }
+      }).catch((e)=>{
+        console.error('刷新单个合买失败:' + e)
+      })
     },
     /*
      * 付费查看支付
@@ -396,7 +433,7 @@ export default {
               setTimeout(function () {
                 this.showPayWindow = false
                 if (payResult) {
-                  this.getTogList()
+                  this.getTogOne(this.refreshTid)
                 }
               }.bind(this), 1200)
             }
@@ -404,7 +441,7 @@ export default {
               // 账户金额支付
               $.toast(msg)
               this.showPayWindow = false
-              this.getTogList()
+              this.getTogOne(this.refreshTid)
             }
           }
           else {
@@ -414,6 +451,7 @@ export default {
           console.error('付费查看失败:' + e)
         }).finally(()=>{
           this.payTid = null
+          this.refreshTid = null
         })
       }
     },
@@ -461,7 +499,7 @@ export default {
               setTimeout(function () {
                 this.showPaymentWindow = false
                 if (payResult) {
-                  this.getTogList()
+                  this.getTogOne(this.refreshTid)
                 }
               }.bind(this), 1200)
             }
@@ -469,7 +507,7 @@ export default {
               // 账户金额支付
               $.toast(msg)
               this.showPaymentWindow = false
-              this.getTogList()
+              this.getTogOne(this.refreshTid)
             }
           }
           else {
@@ -479,6 +517,7 @@ export default {
           console.error('参与合买失败:' + e)
         }).finally(()=>{
           this.paymentTog = null
+          this.refreshTid = null
         })
       }
     },
@@ -500,12 +539,13 @@ export default {
           $.toast(msg)
           if (code === 1) {
             this.showCancelWindow = false
-            this.getTogList()
+            this.getTogOne(this.refreshTid)
           }
         }).catch((e)=>{
           console.error('取消认购失败:' + e)
         }).finally(()=>{
           this.cancelSid = null
+          this.refreshTid = null
         })
       }
     }
