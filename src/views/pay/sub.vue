@@ -87,7 +87,7 @@
         <!-- 进行中 -->
         <div class="processing_box" v-if="t.procesStatus===1">
           <ul class="processing_head_box">
-            <li class="buy_period">认购 20161018期</li>
+            <li class="buy_period">认购 {{t.dailyNo}}期</li>
             <li class="processing_icon">进行中</li>
             <li class="process">
               <font color="1ac7f9">{{t.alreadyPer}}</font> / {{t.totPeriods}}</li>
