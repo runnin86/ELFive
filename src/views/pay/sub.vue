@@ -292,9 +292,9 @@ export default {
         // console.log(data)
         if (code === 1) {
           if (data.length === 0) {
-            this.pagenum = -1
-            return
+            this.pagenum--
           }
+          this.togList = []
           for (let m of data) {
             this.togList.push(m)
           }
@@ -314,7 +314,7 @@ export default {
      */
     loadMore () {
       // 1.加载中 2.pagenum为负数 3.当前记录的条数<当前页数*每页条数
-      if (this.loading || this.pagenum === -1) {
+      if (this.loading || this.togList.length < this.pagenum * this.pagesize) {
         // 满足上述2条件的任一条,均不加载更多
         return
       }
