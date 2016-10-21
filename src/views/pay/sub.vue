@@ -58,7 +58,9 @@
           <!-- 已售/利润率/总需 -->
           <div class="purchases">
             <span class="sales">已售 {{t.nowAmount}}元</span>
-            <span class="profitability">利润率 {{t.initRatePer}}%</span>
+            <span class="profitability">
+              利润率 {{t.nowRatePer>t.initRatePer?t.nowRatePer:t.initRatePer}}%
+            </span>
             <span class="total">总需 {{t.initAmount}}元</span>
           </div>
           <!-- 认购按钮 -->
