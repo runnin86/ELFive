@@ -223,7 +223,10 @@
       </div>
       <div class="pw_input" id="pw_input">
         <span class="amount">购买 {{quantity}}元</span>
-        <input class="quantity" v-model="quantity" type="text" name="quantity" placeholder="请输入您要购买的金额">
+        <input v-model="quantity" class="quantity"
+          placeholder="请输入您要购买的金额" type="number" min=10 max={{userAccount}}
+          onKeyPress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+          onKeyUp="this.value=this.value.replace(/\D/g,'')"/>
       </div>
       <div class="confirm_btn">
         <span @click="this.buyTog()">立即支付</span>
