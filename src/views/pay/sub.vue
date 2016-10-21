@@ -2,7 +2,8 @@
   <!-- 防止ios自动获取电话号码 -->
   <meta name = "format-detection" content = "telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <div class="content" transition="" v-infinite-scroll="loadMore">
+  <div class="content" transition="" v-infinite-scroll="loadMore" v-pull-to-refresh="refresh">
+    <v-layer></v-layer>
     <div class="subscription_background">
     <!-- 顶部操作栏 -->
       <div class="el_subscription_head">
@@ -239,6 +240,7 @@
 import {api} from '../../util/service'
 import {loader} from '../../util/util'
 import {dateFormat} from '../../util/util'
+import VLayer from '../../components/PullToRefreshLayer'
 import pingpp from 'pingpp-js'
 import Vue from 'vue'
 import $ from 'zepto'
@@ -279,6 +281,23 @@ export default {
     }
   },
   methods: {
+    /*
+     * 刷新
+     */
+    refresh () {
+      $.showIndicator()
+      if (window.localStorage.getItem('elUser')) {
+        // 执行查询
+        setTimeout(function () {
+          this.pagenum = 1
+          // 重新获取数据
+          this.getTogList()
+          // 加载完毕需要重置
+          $.pullToRefreshDone('.pull-to-refresh-content')
+          $.hideIndicator()
+        }.bind(this), 800)
+      }
+    },
     /*
      * 获取跟单选购列表
      */
@@ -489,6 +508,9 @@ export default {
         })
       }
     }
+  },
+  components: {
+    VLayer
   },
   watch: {
     // 'quantity': {
