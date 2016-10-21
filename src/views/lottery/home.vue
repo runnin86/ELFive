@@ -380,9 +380,10 @@ export default {
      * 根据获得服务器时间,计算出当前期和当前期截止购买时间
      */
     getCurrentInfoByServiceTime () {
+      let token = window.localStorage.getItem('elToken')
       this.$http.get(api.serviceTime, {}, {
         headers: {
-          'x-token': window.localStorage.getItem('elToken')
+          'x-token': token
         }
       })
       .then(({data: {code, data, msg}})=>{
