@@ -574,8 +574,8 @@ ul,a,p{
 .sub_number{
   float: left;
   width: 74%;
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
 }
 .sub_number li{
   float: left;
@@ -593,7 +593,7 @@ ul,a,p{
   float: left;
   width: 24%;
   height: 1.4rem;
-  margin-top: 0.4rem;
+  margin-top: 0.6rem;
   background-color: #fb4127;
   border-radius: 1.4rem;
 }
@@ -903,8 +903,8 @@ ul,a,p{
 .over_number{
   float: left;
   width: 74%;
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
 }
 .over_number li{
   float: left;
