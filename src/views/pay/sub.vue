@@ -269,7 +269,7 @@ export default {
   data () {
     return {
       togList: [],
-      quantity: 50,
+      quantity: 500,
       viewPrice: 500,
       showPayWindow: false,
       showCancelWindow: false,
