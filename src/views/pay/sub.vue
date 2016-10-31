@@ -150,7 +150,7 @@
             </li>
             <li class="over_icon">已结束</li>
             <li class="hit">
-              {{t.winnerPeriods?t.winnerPeriods.substr(2, 8):''}}期命中
+              {{t.winnerPeriods?t.winnerPeriods.substr(2, 8)+'期命中':'未命中'}}
             </li>
           </ul>
           <div class="over_number_box">
@@ -162,8 +162,18 @@
               <li>{{t.nums | subNumberFilter 1 4}}</li>
               <li>{{t.nums | subNumberFilter 1 5}}</li>
             </ul>
-            <div class="view_btn">
-              <span>获奖{{t.winMoney}}元</span>
+            <div class="view_btn"
+              :style="{'background-color': (t.winnerPeriods ? '' : '#cccccc')}">
+              <span>
+                盈利{{
+                  t.winnerPeriods
+                  ?
+                  (t.winMoney+parseFloat((t.buyMoney/t.nowAmount)*(t.nowAmount-t.nowTotAmount)-t.buyMoney)).toFixed(2)
+                  :
+                  0
+                }}元
+              </span>
+              </span>
             </div>
           </div>
           <div class="over_progress_bar">
@@ -953,7 +963,7 @@ ul,a,p{
   height: 1.4rem;
   border-radius: 1.4rem;
   line-height: 1.4rem;
-  margin-left: 0.4rem;
+  margin-left: 0.28rem;
   text-align: center;
   font-size: 0.7rem;
   background-color: #cccccc;

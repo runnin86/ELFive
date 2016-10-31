@@ -78,7 +78,7 @@
         </li>
       </ul>
       <div class="el_purchases">
-       <span>
+       <span v-if="doc.totalPerson>0">
          {{
            doc.alreadyPer>50
            ?
@@ -86,6 +86,9 @@
            :
            doc.alreadyPer * 3 + (doc.totalPerson == null ? 0 : doc.totalPerson)
          }}人购买
+       </span>
+       <span v-else>
+         0人购买
        </span>
      </div>
     </div>
