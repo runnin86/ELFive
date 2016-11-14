@@ -94,8 +94,20 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <th v-if="more.nums" v-for="n in more.nums.split(',')" track-by="$index">
+          <th v-if="more.nums.indexOf('|')===-1"
+            v-for="n in more.nums | split ','" track-by="$index">
             <font class="record_num">{{n}}</font>
+          </th>
+          <th v-if="more.nums.indexOf('|')>0" style="border:none;">
+            <font class="record_num" style="margin-left: 0.3rem;"
+              v-for="m in more.nums.split('|')[0].split(',')" track-by="$index">
+              {{m}}
+            </font>
+            </br>
+            <font class="record_num" style="margin-left: 0.3rem;"
+              v-for="n in more.nums.split('|')[1].split(',')" track-by="$index">
+              {{n}}
+            </font>
           </th>
         </tr>
       </table>
@@ -158,8 +170,20 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <th v-for="n in one.nums | split ','" track-by="$index">
+          <th v-if="one.nums.indexOf('|')===-1"
+            v-for="n in one.nums | split ','" track-by="$index">
             <font class="record_num">{{n}}</font>
+          </th>
+          <th v-if="one.nums.indexOf('|')>0" style="border:none;">
+            <font class="record_num" style="margin-left: 0.3rem;"
+              v-for="m in one.nums.split('|')[0].split(',')" track-by="$index">
+              {{m}}
+            </font>
+            </br>
+            <font class="record_num" style="margin-left: 0.3rem;"
+              v-for="n in one.nums.split('|')[1].split(',')" track-by="$index">
+              {{n}}
+            </font>
           </th>
         </tr>
       </table>
@@ -715,7 +739,7 @@ ul,a,p{
   width: 1rem;
   height: 1rem;
   color: white;
-  display: block;
+  display: inline-block;
   line-height:1rem;
   margin:0 auto;
 }

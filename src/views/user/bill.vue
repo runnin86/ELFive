@@ -46,7 +46,7 @@
       </tr>
     </table> -->
 
-    <!-- 购买 -->
+    <!-- 已出票 -->
     <table class="el_purchase_box" width="100%" border="0" cellpadding="0" cellspacing="0"
       :class="this.showTabs===1?'el_recharge_box':'hide'">
       <tr>
@@ -61,18 +61,29 @@
         <td v-if="p.source === 1">跟单</td>
         <td v-else>{{p.gameType | getGameTypeName}}</td>
         <td>
-          <div style="width:100%; height:0.8rem;">
-           <table style="height:0.8rem;">
+          <div style="width:100%;">
+           <table>
              <tr style="height:0.8rem;">
-               <td style="height:0.8rem; border:none;"
+               <td style="height:0.8rem; border:none;margin-right:0.2rem;"
                  :class="p.isCanShow === 0&&$index>1?'record_star_td':'record_number_td'"
-                 v-if="p.nums" v-for="n in p.nums.split(',')" track-by="$index">
+                 v-if="p.nums.indexOf('|')===-1" v-for="n in p.nums.split(',')" track-by="$index">
                  {{p.isCanShow === 1
                    ?
                    n
                    :
                    $index<2 ? n : '*'
                  }}
+               </td>
+               <td v-if="p.nums.indexOf('|')>0" style="border:none;">
+                 <span class="record_number_td" style="margin-right:0.2rem;"
+                   v-for="m in p.nums.split('|')[0].split(',')" track-by="$index">
+                   {{m}}
+                 </span>
+                 </br>
+                 <span class="record_number_td" style="margin-right:0.2rem;"
+                   v-for="n in p.nums.split('|')[1].split(',')" track-by="$index">
+                   {{n}}
+                 </span>
                </td>
              </tr>
            </table>
@@ -97,12 +108,23 @@
         <td v-if="b.source === 1">跟单</td>
         <td v-else>{{b.gameType | getGameTypeName}}</td>
         <td>
-          <div style="width:100%; height:0.8rem;">
-           <table style="height:0.8rem;">
+          <div style="width:100%;">
+           <table>
              <tr style="height:0.8rem;">
-               <td style="height:0.8rem; border:none;"
-                 v-if="b.nums" v-for="n in b.nums.split(',')" class="record_number_td" track-by="$index">
+               <td style="height:0.8rem; border:none;margin-right:0.2rem;"
+                 v-if="b.nums.indexOf('|')===-1" v-for="n in b.nums.split(',')" class="record_number_td" track-by="$index">
                  {{n}}
+               </td>
+               <td v-if="b.nums.indexOf('|')>0" style="border:none;">
+                 <span class="record_number_td" style="margin-right:0.2rem;"
+                   v-for="m in b.nums.split('|')[0].split(',')" track-by="$index">
+                   {{m}}
+                 </span>
+                 </br>
+                 <span class="record_number_td" style="margin-right:0.2rem;"
+                   v-for="n in b.nums.split('|')[1].split(',')" track-by="$index">
+                   {{n}}
+                 </span>
                </td>
              </tr>
            </table>
