@@ -13,12 +13,8 @@
     </div>
     <div class="result">
       <span>最新开奖结果</span>
-      <ul>
-        <li>01</li>
-        <li>04</li>
-        <li>06</li>
-        <li>08</li>
-        <li>11</li>
+      <ul v-if="lastWinObj">
+        <li v-for="num in lastWinObj.nums.split(',')" track-by="$index">{{num}}</li>
       </ul>
     </div>
     <div class="prompt">
@@ -27,33 +23,33 @@
     <div class="first">
       <span>万位号码</span>
       <ul>
-        <li z-name="ball" @click="choseNumber('01', $event)">02</li>
-        <li z-name="ball" @click="choseNumber('02', $event)">03</li>
-        <li z-name="ball" @click="choseNumber('03', $event)">04</li>
-        <li z-name="ball" @click="choseNumber('04', $event)">05</li>
-        <li z-name="ball" @click="choseNumber('05', $event)">06</li>
-        <li z-name="ball" @click="choseNumber('06', $event)">07</li>
-        <li z-name="ball" @click="choseNumber('07', $event)">08</li>
-        <li z-name="ball" @click="choseNumber('08', $event)">09</li>
-        <li z-name="ball" @click="choseNumber('09', $event)">10</li>
-        <li z-name="ball" @click="choseNumber('10', $event)">11</li>
-        <li z-name="ball" @click="choseNumber('11', $event)">02</li>
+        <li z-name="ball" @click="choseNumber('m', '01', $event)">01</li>
+        <li z-name="ball" @click="choseNumber('m', '02', $event)">02</li>
+        <li z-name="ball" @click="choseNumber('m', '03', $event)">03</li>
+        <li z-name="ball" @click="choseNumber('m', '04', $event)">04</li>
+        <li z-name="ball" @click="choseNumber('m', '05', $event)">05</li>
+        <li z-name="ball" @click="choseNumber('m', '06', $event)">06</li>
+        <li z-name="ball" @click="choseNumber('m', '07', $event)">07</li>
+        <li z-name="ball" @click="choseNumber('m', '08', $event)">08</li>
+        <li z-name="ball" @click="choseNumber('m', '09', $event)">09</li>
+        <li z-name="ball" @click="choseNumber('m', '10', $event)">10</li>
+        <li z-name="ball" @click="choseNumber('m', '11', $event)">11</li>
       </ul>
     </div>
     <div class="last">
       <span>千位号码</span>
       <ul>
-        <li z-name="ball" @click="choseNumber('01', $event)">02</li>
-        <li z-name="ball" @click="choseNumber('02', $event)">03</li>
-        <li z-name="ball" @click="choseNumber('03', $event)">04</li>
-        <li z-name="ball" @click="choseNumber('04', $event)">05</li>
-        <li z-name="ball" @click="choseNumber('05', $event)">06</li>
-        <li z-name="ball" @click="choseNumber('06', $event)">07</li>
-        <li z-name="ball" @click="choseNumber('07', $event)">08</li>
-        <li z-name="ball" @click="choseNumber('08', $event)">09</li>
-        <li z-name="ball" @click="choseNumber('09', $event)">10</li>
-        <li z-name="ball" @click="choseNumber('10', $event)">11</li>
-        <li z-name="ball" @click="choseNumber('11', $event)">02</li>
+        <li z-name="ball" @click="choseNumber('k', '01', $event)">01</li>
+        <li z-name="ball" @click="choseNumber('k', '02', $event)">02</li>
+        <li z-name="ball" @click="choseNumber('k', '03', $event)">03</li>
+        <li z-name="ball" @click="choseNumber('k', '04', $event)">04</li>
+        <li z-name="ball" @click="choseNumber('k', '05', $event)">05</li>
+        <li z-name="ball" @click="choseNumber('k', '06', $event)">06</li>
+        <li z-name="ball" @click="choseNumber('k', '07', $event)">07</li>
+        <li z-name="ball" @click="choseNumber('k', '08', $event)">08</li>
+        <li z-name="ball" @click="choseNumber('k', '09', $event)">09</li>
+        <li z-name="ball" @click="choseNumber('k', '10', $event)">10</li>
+        <li z-name="ball" @click="choseNumber('k', '11', $event)">11</li>
       </ul>
     </div>
 
@@ -68,63 +64,94 @@
 </template>
 
 <script>
-import {api} from '../../util/service'
 import $ from 'zepto'
+import {api} from '../../util/service'
+// import {getCombinationCount} from '../../util/util'
 
 export default {
   ready () {
     $.init()
-    this.getBill()
+    // this.getLatelyNum()
   },
   data () {
     return {
-      selected: false,
-      showTabs: 1,
-      bonusList: [],
-      purchaseList: [],
-      withdrawList: [],
-      numberList: new Set(),
+      lastWinObj: null, // 上期中奖对象
+      myriabitList: new Set(), // 万位号码组合
+      kilobitList: new Set(), // 千位号码组合
       bets: 0
     }
   },
   methods: {
-    getBill () {
+    /*
+     * 获取上期中奖号码
+     */
+    getLatelyNum () {
       let token = window.localStorage.getItem('elToken')
-      // 获取跟单选购列表
-      this.$http.get(api.userBill, {}, {
-        headers: {
-          'x-token': token
-        }
-      })
-      .then(({data: {code, data, msg}})=>{
-        // console.log(data)
-        if (code === 1) {
-          this.bonusList = data.bonus
-          this.purchaseList = data.purchase
-          this.withdrawList = data.withdraw
+      if (token) {
+        this.$http.get(api.lastWinNum, {}, {
+          headers: {
+            'x-token': token
+          }
+        })
+        .then(({data: {code, data, msg}})=>{
+          // console.log(data)
+          if (code === 1) {
+            this.lastWinObj = data
+          }
+        }).catch((e)=>{
+          console.error('获取上一期中奖号码失败:' + e)
+        })
+      }
+    },
+    choseNumber (type, num, e) {
+      // 判断是否已选
+      if (type === 'm') {
+        if (this.myriabitList.has(num)) {
+          // 包含则删除
+          this.myriabitList.delete(num)
+          e.target.style.backgroundColor = ''
+          e.target.style.color = ''
+          e.target.style.border = ''
         }
         else {
-          $.toast(msg)
+          // 不包含则新增
+          this.myriabitList.add(num)
+          e.target.style.backgroundColor = '#e23c3c'
+          e.target.style.color = 'white'
+          e.target.style.border = 'none'
         }
-      }).catch((e)=>{
-        console.error('获取我的账单失败:' + e)
-      })
-    },
-    choseNumber (num, e) {
-      // 判断是否已选
-      if (this.numberList.has(num)) {
-        // 包含则删除
-        this.numberList.delete(num)
-        e.target.style.backgroundColor = ''
-        e.target.style.color = ''
-        e.target.style.border = ''
+      }
+      else if (type === 'k') {
+        if (this.kilobitList.has(num)) {
+          // 包含则删除
+          this.kilobitList.delete(num)
+          e.target.style.backgroundColor = ''
+          e.target.style.color = ''
+          e.target.style.border = ''
+        }
+        else {
+          // 不包含则新增
+          this.kilobitList.add(num)
+          e.target.style.backgroundColor = '#e23c3c'
+          e.target.style.color = 'white'
+          e.target.style.border = 'none'
+        }
+      }
+
+      // 计算多少注
+      this.bets = 0
+      if (this.myriabitList.size > 0 && this.kilobitList.size > 0) {
+        for (let m of this.myriabitList.keys()) {
+          for (let k of this.kilobitList.keys()) {
+            if (m !== k) {
+              // getCombinationCount(this.kilobitList.size, 2)
+              this.bets++
+            }
+          }
+        }
       }
       else {
-        // 不包含则新增
-        this.numberList.add(num)
-        e.target.style.backgroundColor = '#e23c3c'
-        e.target.style.color = 'white'
-        e.target.style.border = 'none'
+        this.$set('bets', 0)
       }
     }
   }
