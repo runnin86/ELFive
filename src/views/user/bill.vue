@@ -101,7 +101,7 @@
            <table style="height:0.8rem;">
              <tr style="height:0.8rem;">
                <td style="height:0.8rem; border:none;"
-                 v-if="b.nums" v-for="n in b.nums.split(',')" class="record_number_td">
+                 v-if="b.nums" v-for="n in b.nums.split(',')" class="record_number_td" track-by="$index">
                  {{n}}
                </td>
              </tr>
