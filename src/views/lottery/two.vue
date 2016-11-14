@@ -121,7 +121,7 @@ export default {
           this.myriabitList.add(num)
           e.target.style.backgroundColor = '#e23c3c'
           e.target.style.color = 'white'
-          e.target.style.border = 'none'
+          e.target.style.border = 'solid 0.05rem #e23c3c'
         }
       }
       else if (type === 'k') {
@@ -137,7 +137,7 @@ export default {
           this.kilobitList.add(num)
           e.target.style.backgroundColor = '#e23c3c'
           e.target.style.color = 'white'
-          e.target.style.border = 'none'
+          e.target.style.border = 'solid 0.05rem #e23c3c'
         }
       }
 

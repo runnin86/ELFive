@@ -66,8 +66,13 @@
              <tr style="height:0.8rem;">
                <td style="height:0.8rem; border:none;"
                  :class="p.isCanShow === 0&&$index>1?'record_star_td':'record_number_td'"
-                 v-if="p.nums" v-for="n in p.nums.split(',')">
-                 {{p.isCanShow === 1 ? n : $index<2 ? n : '*'}}
+                 v-if="p.nums" v-for="n in p.nums.split(',')" track-by="$index">
+                 {{p.isCanShow === 1
+                   ?
+                   n
+                   :
+                   $index<2 ? n : '*'
+                 }}
                </td>
              </tr>
            </table>

@@ -94,7 +94,9 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <th v-if="more.nums" v-for="n in more.nums.split(',')"><font class="record_num">{{n}}</font></th>
+          <th v-if="more.nums" v-for="n in more.nums.split(',')" track-by="$index">
+            <font class="record_num">{{n}}</font>
+          </th>
         </tr>
       </table>
       <ul class="el_state_top_box" style="border-top:solid #f5f5f5 0.05rem;">
@@ -147,7 +149,6 @@
       </div>
     </div>
 
-
     <!-- 自选单注 -->
     <div class="el_record_box"
       v-for="one in zxListOne" track-by="$index"
@@ -157,7 +158,9 @@
       </div>
       <table class="el_record_number_table">
         <tr class="el_record_number_box">
-          <th v-for="n in one.nums | split ','"><font class="record_num">{{n}}</font></th>
+          <th v-for="n in one.nums | split ','" track-by="$index">
+            <font class="record_num">{{n}}</font>
+          </th>
         </tr>
       </table>
       <ul class="el_state_top_box"  style="border-top:solid #f5f5f5 0.05rem;">
