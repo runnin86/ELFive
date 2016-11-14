@@ -89,8 +89,14 @@
     <table width="100%" class="recommendation_number_box">
       <tr align="center">
         <!-- 数组带入并根据数组数量自动循环 -->
-        <td v-for="n in numberList" track-by="$index">
-          {{n}}
+        <td v-for="n in numberList.split(',')" track-by="$index">
+          {{
+            n.indexOf('|')>0
+            ?
+            n.replace('|','&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;')
+            :
+            n
+          }}
         </td>
       </tr>
     </table>
@@ -149,7 +155,7 @@ export default {
       rid: this.$route.query.rid,
       from: this.$route.query.from,
       gameType: this.$route.query.gameType,
-      numberList: this.$route.query.number.split(','), // 截取数组
+      numberList: this.$route.query.number, // 截取数组
       showPeriods: window.localStorage.getItem('currentPeriods'),
       currentPeriods: currentPeriods ? currentPeriods : 78, // 获取不到默认78
       price: this.$route.query.price ? this.$route.query.price : 2, // 单价(默认2元)

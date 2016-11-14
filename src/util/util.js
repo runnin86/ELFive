@@ -146,6 +146,12 @@ export let getOdds = (gameType) => {
   let odds = 0
   switch (gameType)
   {
+    case 'F2G':
+      odds = 32.5
+      break
+    case 'F2D':
+      odds = 65
+      break
     case 'R1':
       odds = 6.5
       break
