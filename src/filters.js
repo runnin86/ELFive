@@ -54,7 +54,7 @@ export let getArray = (arr, i) => {
  */
 export let gameTypeFilterDesc = (gt) => {
   let name = ''
-  if (gt === 'Z2') {
+  if (gt === 'F2D') {
     name = '前二直选'
   }
   else if (gt === 'R3') {

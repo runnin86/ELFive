@@ -103,6 +103,9 @@ export default {
         })
       }
     },
+    /*
+     * 选择号码
+     */
     choseNumber (type, num, e) {
       // 判断是否已选
       if (type === 'm') {
@@ -152,6 +155,45 @@ export default {
       }
       else {
         this.$set('bets', 0)
+      }
+    },
+    /*
+     * 选中购买
+     */
+    buy () {
+      if (this.myriabitList.size > 0 && this.kilobitList.size > 0) {
+        if (window.localStorage.getItem('elUser')) {
+          let nums = ''
+          // 组装万位
+          for (let item of this.myriabitList.keys()) {
+            nums += item + ','
+          }
+          nums = nums.substr(0, nums.length - 1)
+          nums += '|'
+          // 组装千位
+          for (let item of this.kilobitList.keys()) {
+            nums += item + ','
+          }
+          nums = nums.substr(0, nums.length - 1)
+          this.$route.router.go({
+            name: 'payment',
+            query: {
+              number: nums,
+              gameType: 'F2D',
+              from: 'zx',
+              price: this.bets * 2,
+              s: 1
+            },
+            replace: false
+          })
+        }
+        else {
+          $.toast('你尚未登录')
+          this.$route.router.go({path: '/login', replace: false})
+        }
+      }
+      else {
+        $.toast('本玩法万位,千位至少选择一个号码')
       }
     }
   }
