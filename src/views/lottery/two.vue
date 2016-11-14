@@ -161,7 +161,7 @@ export default {
      * 选中购买
      */
     buy () {
-      if (this.myriabitList.size > 0 && this.kilobitList.size > 0) {
+      if (this.myriabitList.size > 0 && this.kilobitList.size > 0 && this.bets > 0) {
         if (window.localStorage.getItem('elUser')) {
           let nums = ''
           // 组装万位
@@ -193,7 +193,7 @@ export default {
         }
       }
       else {
-        $.toast('本玩法万位,千位至少选择一个号码')
+        $.toast('不满足投注条件')
       }
     }
   }
