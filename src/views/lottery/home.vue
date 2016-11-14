@@ -134,6 +134,7 @@
       </div>
       <div class="el_pick_all"
         :style="this.showSelect ? 'display:block' : 'display:none'">
+        <span v-link="{path: '/two', replace: true}">玩法-前二直选 (至少选择2个号码，单注奖金130元)</span>
         <span @click="selectGameType('R3', 3)">玩法-任选三 (至少选择3个号码，单注奖金19元)</span>
         <span @click="selectGameType('R5', 5)">玩法-任选五 (至少选择5个号码，单注奖金540元)</span>
         <span @click="selectGameType('R6', 6)">玩法-任选六 (至少选择6个号码，单注奖金90元)</span>

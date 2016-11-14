@@ -37,6 +37,11 @@ export default function (router) {
         require(['./views/lottery/history'], resolve)
       }
     },
+    '/two': {
+      component (resolve) {
+        require(['./views/lottery/two'], resolve)
+      }
+    },
     '/user': {
       component (resolve) {
         require(['./views/user/user'], resolve)
