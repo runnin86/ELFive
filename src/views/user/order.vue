@@ -99,15 +99,18 @@
             <font class="record_num">{{n}}</font>
           </th>
           <th v-if="more.nums.indexOf('|')>0" style="border:none;">
-            <font class="record_num" style="margin-left: 0.3rem;"
-              v-for="m in more.nums.split('|')[0].split(',')" track-by="$index">
-              {{m}}
-            </font>
-            </br>
-            <font class="record_num" style="margin-left: 0.3rem;"
-              v-for="n in more.nums.split('|')[1].split(',')" track-by="$index">
-              {{n}}
-            </font>
+            <span class="ten_thousand">
+              <font class="record_num" style="margin-left: 0.3rem;"
+                v-for="m in more.nums.split('|')[0].split(',')" track-by="$index">
+                {{m}}
+              </font>
+            </span>
+            <span class="thousand">
+              <font class="record_num" style="margin-left: 0.3rem;"
+                v-for="n in more.nums.split('|')[1].split(',')" track-by="$index">
+                {{n}}
+              </font>
+            </span>
           </th>
         </tr>
       </table>
@@ -175,15 +178,18 @@
             <font class="record_num">{{n}}</font>
           </th>
           <th v-if="one.nums.indexOf('|')>0" style="border:none;">
-            <font class="record_num" style="margin-left: 0.3rem;"
-              v-for="m in one.nums.split('|')[0].split(',')" track-by="$index">
-              {{m}}
-            </font>
-            </br>
-            <font class="record_num" style="margin-left: 0.3rem;"
-              v-for="n in one.nums.split('|')[1].split(',')" track-by="$index">
-              {{n}}
-            </font>
+            <span class="ten_thousand">
+              <font class="record_num" style="margin-left: 0.3rem;"
+                v-for="m in one.nums.split('|')[0].split(',')" track-by="$index">
+                {{m}}
+              </font>
+            </span>
+            <span class="ten_thousand">
+              <font class="record_num" style="margin-left: 0.3rem;"
+                v-for="n in one.nums.split('|')[1].split(',')" track-by="$index">
+                {{n}}
+              </font>
+            </span>
           </th>
         </tr>
       </table>
@@ -736,12 +742,12 @@ ul,a,p{
   font-size:0.6rem;
   background-color: #e23c3c;
   border-radius: 2rem;
-  width: 1rem;
-  height: 1rem;
+  width: 0.8rem;
+  height: 0.8rem;
   color: white;
   display: inline-block;
-  line-height:1rem;
-  margin:0 auto;
+  line-height: 0.8rem;
+  margin: 0 auto;
 }
 .record_star_td{
   width: 0.8rem;
@@ -752,5 +758,9 @@ ul,a,p{
   line-height: 0.8rem;
   border-radius: 1rem;
   float: left;
+}
+.ten_thousand,.thousand{
+  width: 100%;
+  display: block;
 }
 </style>

@@ -89,14 +89,21 @@
     <table width="100%" class="recommendation_number_box">
       <tr align="center">
         <!-- 数组带入并根据数组数量自动循环 -->
-        <td v-for="n in numberList.split(',')" track-by="$index">
-          {{
-            n.indexOf('|')>0
-            ?
-            n.replace('|','&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;')
-            :
-            n
-          }}
+        <td v-if="numberList.indexOf('|')===-1"
+          v-for="n in numberList.split(',')" track-by="$index">
+          {{n}}
+        </td>
+        <td v-if="numberList.indexOf('|')>0" style="border:none;">
+          <span style="display:block">
+            <font v-for="m in numberList.split('|')[0].split(',')" track-by="$index">
+              {{m}}
+            </font>
+          </span>
+          <span style="display:block">
+            <font v-for="n in numberList.split('|')[1].split(',')" track-by="$index">
+              {{n}}
+            </font>
+          </span>
         </td>
       </tr>
     </table>
